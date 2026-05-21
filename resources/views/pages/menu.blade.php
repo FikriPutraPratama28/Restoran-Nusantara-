@@ -248,63 +248,64 @@
     </div>
 
     {{-- Detail Popup --}}
-    <div x-show="selectedMenu" x-cloak @click="closeDetail()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
-        <div @click.stop class="w-full max-w-5xl overflow-hidden rounded-[2rem] bg-white dark:bg-dark-800 shadow-2xl border border-gray-200 dark:border-dark-700">
-            <div class="relative">
-                <img :src="selectedMenu.image" :alt="selectedMenu.name" class="w-full h-72 object-cover">
-                <button @click="closeDetail()" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 dark:bg-dark-900/90 flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-dark-800 transition-all">
-                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 p-6">
-                <div>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="badge bg-primary-600 text-white">Detail Menu</span>
-                        <span x-show="selectedMenu.isPromo" class="badge bg-red-500 text-white">PROMO</span>
-                        <span x-show="selectedMenu.isNew" class="badge bg-green-600 text-white">BARU</span>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-3" x-text="selectedMenu.name"></h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4" x-text="selectedMenu.description"></p>
-                    <div class="flex items-center gap-3 mb-5">
-                        <div class="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-gray-100 dark:bg-dark-700 text-sm text-gray-600 dark:text-gray-300">
-                            ⭐ <span x-text="selectedMenu.rating"></span> • <span x-text="selectedMenu.reviews + ' ulasan'"></span>
+    <template x-if="selectedMenu">
+        <div x-cloak @click="closeDetail()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
+            <div @click.stop class="w-full max-w-5xl overflow-hidden rounded-[2rem] bg-white dark:bg-dark-800 shadow-2xl border border-gray-200 dark:border-dark-700">
+                <div class="relative">
+                    <img :src="selectedMenu.image" :alt="selectedMenu.name" class="w-full h-72 object-cover">
+                    <button @click="closeDetail()" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 dark:bg-dark-900/90 flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-dark-800 transition-all">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 p-6">
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="badge bg-primary-600 text-white">Detail Menu</span>
+                            <span x-show="selectedMenu.isPromo" class="badge bg-red-500 text-white">PROMO</span>
+                            <span x-show="selectedMenu.isNew" class="badge bg-green-600 text-white">BARU</span>
                         </div>
-                        <div class="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-primary-50 text-sm text-primary-600">
-                            <span x-text="formatPrice(selectedMenu.price)"></span>
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-3" x-text="selectedMenu.name"></h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4" x-text="selectedMenu.description"></p>
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-gray-100 dark:bg-dark-700 text-sm text-gray-600 dark:text-gray-300">
+                                ⭐ <span x-text="selectedMenu.rating"></span> • <span x-text="selectedMenu.reviews + ' ulasan'"></span>
+                            </div>
+                            <div class="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-primary-50 text-sm text-primary-600">
+                                <span x-text="formatPrice(selectedMenu.price)"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 mb-6 text-sm text-gray-600 dark:text-gray-300">
-                        <div class="p-4 rounded-3xl bg-gray-50 dark:bg-dark-700">
-                            <div class="font-semibold">Kategori</div>
-                            <div x-text="selectedMenu.category"></div>
+                        <div class="grid grid-cols-2 gap-3 mb-6 text-sm text-gray-600 dark:text-gray-300">
+                            <div class="p-4 rounded-3xl bg-gray-50 dark:bg-dark-700">
+                                <div class="font-semibold">Kategori</div>
+                                <div x-text="selectedMenu.category"></div>
+                            </div>
+                            <div class="p-4 rounded-3xl bg-gray-50 dark:bg-dark-700">
+                                <div class="font-semibold">Label</div>
+                                <div x-text="selectedMenu.label ? selectedMenu.label.replace('-', ' ') : 'Standar'"></div>
+                            </div>
                         </div>
-                        <div class="p-4 rounded-3xl bg-gray-50 dark:bg-dark-700">
-                            <div class="font-semibold">Label</div>
-                            <div x-text="selectedMenu.label ? selectedMenu.label.replace('-', ' ') : 'Standar'"></div>
+                        <div class="space-y-4">
+                            <button @click.stop="addToCart(selectedMenu)" class="btn btn-primary w-full py-3">Tambah ke Keranjang</button>
+                            <button @click="closeDetail()" class="btn btn-outline w-full py-3">Tutup</button>
                         </div>
                     </div>
                     <div class="space-y-4">
-                        <button @click.stop="addToCart(selectedMenu)" class="btn btn-primary w-full py-3">Tambah ke Keranjang</button>
-                        <button @click="closeDetail()" class="btn btn-outline w-full py-3">Tutup</button>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <div class="rounded-3xl overflow-hidden bg-black">
-                        <video :src="detailVideo(selectedMenu)" :poster="selectedMenu.image" controls class="w-full h-64 object-cover bg-black"></video>
-                    </div>
-                    <div class="rounded-3xl bg-gray-50 dark:bg-dark-700 p-4">
-                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Kenapa menu ini cocok untukmu?</h3>
-                        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                            <li>• Bahan segar dan resep asli Nusantara</li>
-                            <li>• Pilihan populer untuk makan siang dan santai</li>
-                            <li>• Tersedia paket hemat & promo spesial</li>
-                        </ul>
+                        <div class="rounded-3xl overflow-hidden bg-black">
+                            <video :src="detailVideo(selectedMenu)" :poster="selectedMenu.image" controls class="w-full h-64 object-cover bg-black"></video>
+                        </div>
+                        <div class="rounded-3xl bg-gray-50 dark:bg-dark-700 p-4">
+                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Kenapa menu ini cocok untukmu?</h3>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                <li>• Bahan segar dan resep asli Nusantara</li>
+                                <li>• Pilihan populer untuk makan siang dan santai</li>
+                                <li>• Tersedia paket hemat & promo spesial</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    </template>
 
 
 @endsection

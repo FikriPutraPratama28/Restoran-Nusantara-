@@ -28,13 +28,28 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(self), geolocation=(self), microphone=()');
 
         // Content Security Policy — izinkan CDN yang dipakai (Unsplash, QR API, Tailwind CDN)
+        $scriptSrc = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
+        $styleSrc = ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'];
+        $connectSrc = ["'self'"];
+
+        if (app()->environment('local')) {
+            $scriptSrc[] = 'http://127.0.0.1:5173';
+            $scriptSrc[] = 'http://localhost:5173';
+            $styleSrc[] = 'http://127.0.0.1:5173';
+            $styleSrc[] = 'http://localhost:5173';
+            $connectSrc[] = 'http://127.0.0.1:5173';
+            $connectSrc[] = 'http://localhost:5173';
+            $connectSrc[] = 'ws://127.0.0.1:5173';
+            $connectSrc[] = 'ws://localhost:5173';
+        }
+
         $csp = implode('; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            'script-src ' . implode(' ', $scriptSrc),
+            'style-src ' . implode(' ', $styleSrc),
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https: http:",
-            "connect-src 'self'",
+            'connect-src ' . implode(' ', $connectSrc),
             "frame-ancestors 'self'",
         ]);
         $response->headers->set('Content-Security-Policy', $csp);

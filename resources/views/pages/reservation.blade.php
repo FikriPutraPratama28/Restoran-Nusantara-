@@ -17,7 +17,7 @@
 
 <section class="section bg-gray-50 dark:bg-dark-900">
     <div class="container-custom">
-        <div class="max-w-3xl mx-auto" x-data="reservation(@json($menus ?? []))">
+        <div class="max-w-3xl mx-auto" x-data='reservation(@json($menus ?? []))'>
 
             {{-- Success State --}}
             <div x-show="submitted" class="text-center py-16 animate-fade-in">
