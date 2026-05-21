@@ -151,14 +151,34 @@ class DashboardController extends Controller
     public function customers()    { return view('admin.customers'); }
     public function reservations() {
         if (!Schema::hasTable('reservations')) {
-            return view('admin.reservations')->with('reservations', collect());
+            $stats = [
+                'today' => 0,
+                'tomorrow' => 0,
+                'week' => 0,
+            ];
+
+            return view('admin.reservations')
+                ->with('reservations', collect())
+                ->with('stats', $stats);
         }
+
+        $today = now()->toDateString();
+        $tomorrow = now()->addDay()->toDateString();
+        $weekStart = now()->startOfWeek()->toDateString();
+        $weekEnd = now()->endOfWeek()->toDateString();
+
+        $stats = [
+            'today' => Reservation::whereDate('reservation_date', $today)->count(),
+            'tomorrow' => Reservation::whereDate('reservation_date', $tomorrow)->count(),
+            'week' => Reservation::whereBetween('reservation_date', [$weekStart, $weekEnd])->count(),
+        ];
 
         $reservations = Reservation::with('user')
             ->orderBy('reservation_date', 'desc')
+            ->orderBy('reservation_time', 'desc')
             ->paginate(15);
         
-        return view('admin.reservations', compact('reservations'));
+        return view('admin.reservations', compact('reservations', 'stats'));
     }
     public function reports(Request $request)
     {

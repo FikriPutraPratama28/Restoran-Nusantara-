@@ -338,6 +338,10 @@ Alpine.data('reservation', (dbMenus = []) => ({
     selectedItems: [],
     paymentMethod: 'cash',
 
+    formatPrice(price) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
+    },
+
     get selectedMenuTotal() {
         return this.selectedItems.reduce((sum, item) => sum + item.price * item.qty, 0);
     },

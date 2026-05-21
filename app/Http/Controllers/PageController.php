@@ -12,10 +12,9 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function home()
+    private function buildMenuList()
     {
-        // Menu
-        $menus = Menu::active()->orderBy('sort_order')->orderBy('id')->get()
+        return Menu::active()->orderBy('sort_order')->orderBy('id')->get()
             ->map(fn($m) => [
                 'id'            => $m->id,
                 'name'          => $m->name,
@@ -31,6 +30,12 @@ class PageController extends Controller
                 'isPromo'       => $m->is_promo,
                 'isStock'       => $m->is_stock,
             ]);
+    }
+
+    public function home()
+    {
+        // Menu
+        $menus = $this->buildMenuList();
 
         // Hero slides
         $heroSlides = HeroSlide::active()->orderBy('sort_order')->get();
@@ -55,24 +60,31 @@ class PageController extends Controller
 
     public function menu()
     {
-        $menus = Menu::active()->orderBy('sort_order')->orderBy('id')->get()
-            ->map(fn($m) => [
-                'id'            => $m->id,
-                'name'          => $m->name,
-                'description'   => $m->description ?? '',
-                'category'      => $m->category,
-                'price'         => $m->price,
-                'originalPrice' => $m->original_price,
-                'image'         => $m->image_src,
-                'rating'        => $m->rating,
-                'reviews'       => $m->review_count,
-                'label'         => $m->label,
-                'isNew'         => $m->is_new,
-                'isPromo'       => $m->is_promo,
-                'isStock'       => $m->is_stock,
-            ]);
+        $menus = $this->buildMenuList();
 
         return view('pages.menu', compact('menus'));
+    }
+
+    public function reservation()
+    {
+        $menus = $this->buildMenuList();
+
+        return view('pages.reservation', compact('menus'));
+    }
+
+    public function promo()
+    {
+        return view('pages.promo');
+    }
+
+    public function about()
+    {
+        return view('pages.about');
+    }
+
+    public function contact()
+    {
+        return view('pages.contact');
     }
 
     public function checkout()
