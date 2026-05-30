@@ -32,14 +32,32 @@
     @foreach([
         ['key'=>'penjualan', 'icon'=>'🛒', 'label'=>'Penjualan'],
         ['key'=>'reservasi', 'icon'=>'📅', 'label'=>'Reservasi'],
-        ['key'=>'absensi',   'icon'=>'📍', 'label'=>'Absensi'],
-        ['key'=>'cuti',      'icon'=>'🏖️', 'label'=>'Cuti'],
     ] as $t)
     <a href="{{ request()->fullUrlWithQuery(['tab' => $t['key']]) }}"
         class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold whitespace-nowrap transition-all
         {{ $tab === $t['key'] ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/30' : 'text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700' }}">
         <span>{{ $t['icon'] }}</span>
         <span>{{ $t['label'] }}</span>
+        @if($t['key'] === 'penjualan')
+            @php
+            $spark = array_column($salesHarian ?? [], 'items') ?: [];
+            $smax = max($spark ?: [1]);
+            @endphp
+            <span class="ml-3 hidden sm:inline-block">
+                <svg width="72" height="18" viewBox="0 0 72 18" class="opacity-90">
+                    @foreach($spark as $i => $v)
+                        @php $w = 6; $gap = 3; $x = $i * ($w + $gap); $h = (int) max(($v / max($smax,1)) * 14, 2); $y = 18 - $h; @endphp
+                        <rect x="{{ $x }}" y="{{ $y }}" width="{{ $w }}" height="{{ $h }}" rx="2" fill="url(#sp{{ $i }})"></rect>
+                        <defs>
+                            <linearGradient id="sp{{ $i }}" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#7c3aed" />
+                                <stop offset="100%" stop-color="#a78bfa" />
+                            </linearGradient>
+                        </defs>
+                    @endforeach
+                </svg>
+            </span>
+        @endif
     </a>
     @endforeach
 </div>
@@ -69,232 +87,59 @@
     @endforeach
 </div>
 
-{{-- Sub-tab Harian/Mingguan/Bulanan --}}
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 mb-5">
-    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-700">
-        <div>
-            <h3 class="font-bold text-gray-900 dark:text-white">Grafik Penjualan</h3>
-            <p class="text-xs text-gray-400 dark:text-slate-500 mt-0.5">Estimasi berdasarkan sold_count menu</p>
-        </div>
-        <div class="flex gap-1 bg-gray-100 dark:bg-slate-700 p-1 rounded-xl">
-            @foreach(['harian'=>'7 Hari','mingguan'=>'4 Minggu','bulanan'=>'6 Bulan'] as $rKey => $rLabel)
-            <a href="{{ request()->fullUrlWithQuery(['range' => $rKey]) }}"
-                class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all
-                {{ $range === $rKey ? 'bg-white dark:bg-slate-800 shadow text-gray-900 dark:text-white' : 'text-gray-500 dark:text-slate-400' }}">
-                {{ $rLabel }}
-            </a>
-            @endforeach
+{{-- Grafik Penjualan --}}
+@php
+    $salesData = $range === 'mingguan' ? $salesMingguan : ($range === 'bulanan' ? $salesBulanan : $salesHarian);
+    $maxChart = max(array_column($salesData ?? [['items'=>1]], 'items')) ?: 1;
+@endphp
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 mb-5 p-4">
+    <div class="px-2 py-2 border-b border-gray-100 dark:border-slate-700 mb-4">
+        <h3 class="font-bold text-gray-900 dark:text-white">Grafik Penjualan</h3>
+        <p class="text-xs text-gray-400 dark:text-slate-500 mt-0.5">7 hari terakhir / rentang: {{ ucfirst($range) }}</p>
+    </div>
+
+    {{-- KPI-based Chart (uses the four KPI values) --}}
+    @php
+        $kpiChart = [
+            ['label' => 'Total Item Terjual', 'value' => $totalItems, 'meta' => 'items'],
+            ['label' => 'Est. Pendapatan', 'value' => $totalRevEst, 'meta' => 'currency'],
+            ['label' => 'Rating Rata-rata', 'value' => $avgRating, 'meta' => 'rating'],
+            ['label' => 'Menu Stok Habis', 'value' => $menuHabis, 'meta' => 'count'],
+        ];
+        $kpiMax = max(array_map(fn($x) => is_numeric($x['value']) ? $x['value'] : 0, $kpiChart));
+        if($kpiMax <= 0) $kpiMax = 1;
+    @endphp
+    <div x-data="{ kpis: @json($kpiChart), maxVal: {{ $kpiMax }}, tooltip: null }" class="mb-3">
+        <div class="flex items-end gap-4 h-44">
+            <template x-for="(k, i) in kpis" :key="i">
+                <div class="w-1/4 flex flex-col items-center gap-2 relative">
+                    <div x-show="tooltip === i" x-cloak class="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg whitespace-nowrap z-10 pointer-events-none">
+                        <span x-text="(k.meta === 'currency') ? 'Rp ' + new Intl.NumberFormat('id-ID').format(k.value) : (k.meta === 'rating' ? parseFloat(k.value).toFixed(1) : k.value)"></span>
+                    </div>
+                    <div class="w-full flex justify-center items-end" style="height: 160px;">
+                        <div @mouseenter="tooltip = i" @mouseleave="tooltip = null" class="w-11/12 rounded-t-lg bg-gradient-to-t from-violet-600 to-violet-400 cursor-pointer transition-all duration-300" :style="`height: ${Math.max((k.value / maxVal) * 160, 6)}px`"></div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-semibold text-gray-800 dark:text-white" x-text="k.label"></div>
+                        <div class="text-xs text-gray-500 dark:text-slate-400 mt-1" x-text="(k.meta === 'currency') ? 'Rp ' + new Intl.NumberFormat('id-ID').format(k.value) : (k.meta === 'rating' ? parseFloat(k.value).toFixed(1) : k.value)"></div>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
-    <div class="p-6">
-        @php
-        $salesData = $range === 'mingguan' ? $salesMingguan : ($range === 'bulanan' ? $salesBulanan : $salesHarian);
-        $maxRev = max(array_column($salesData, 'rev') ?: [1]);
-        $maxItems = max(array_column($salesData, 'items') ?: [1]);
-        @endphp
-        <div class="flex items-end gap-3 h-48 mb-4">
-            @foreach($salesData as $d)
-            @php $pct = $maxRev > 0 ? ($d['rev'] / $maxRev) * 100 : 0; @endphp
-            <div class="flex-1 flex flex-col items-center gap-2 group relative">
-                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg whitespace-nowrap z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    {{ 'Rp '.number_format($d['rev'],0,',','.') }}
-                </div>
-                <div class="w-full flex justify-center items-end" style="height:160px">
-                    <div class="w-full rounded-t-lg bg-gradient-to-t from-violet-600 to-violet-400 hover:from-violet-700 hover:to-violet-500 cursor-pointer transition-all duration-300"
-                        style="height: {{ max($pct * 1.6, 4) }}px"></div>
-                </div>
-                <div class="text-center">
-                    <div class="text-xs text-gray-500 dark:text-slate-400 font-medium">{{ $d['short'] }}</div>
-                    <div class="text-[10px] text-gray-400">{{ $d['date'] ?? '' }}</div>
-                </div>
-            </div>
-            @endforeach
+
+    <div class="flex items-center gap-4 mt-2 pt-2 border-t border-gray-100 dark:border-slate-700">
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-violet-500"></div>
+            <span class="text-xs text-gray-500 dark:text-slate-400">Estimasi penjualan</span>
         </div>
-        <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-slate-700">
-            <div class="flex items-center gap-2">
-                <div class="w-3 h-3 rounded-full bg-violet-500"></div>
-                <span class="text-xs text-gray-500 dark:text-slate-400">Estimasi pendapatan</span>
-            </div>
-            <div class="text-sm font-bold text-gray-900 dark:text-white">
-                Total: <span class="text-violet-600">Rp {{ number_format(array_sum(array_column($salesData,'rev')),0,',','.') }}</span>
-            </div>
-        </div>
+        <div class="ml-auto text-sm font-bold text-gray-900 dark:text-white">Total: <span class="text-violet-600">Rp {{ number_format(array_sum(array_column($salesData ?? [], 'rev')),0,',','.') }}</span></div>
     </div>
 </div>
 
-{{-- Top Menu Terlaris --}}
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-    <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-700">
-        <h3 class="font-bold text-gray-900 dark:text-white">Top 10 Menu Terlaris</h3>
-        <p class="text-xs text-gray-400 dark:text-slate-500 mt-0.5">Berdasarkan total sold_count</p>
-    </div>
-    @if($topMenus->isEmpty())
-    <div class="py-10 text-center text-gray-400 text-sm">Belum ada data menu</div>
-    @else
-    <div class="overflow-x-auto">
-        <table class="w-full">
-            <thead><tr class="bg-gray-50 dark:bg-slate-700/50">
-                <th class="text-left text-xs font-semibold text-gray-500 dark:text-slate-400 px-6 py-3 uppercase">#</th>
-                <th class="text-left text-xs font-semibold text-gray-500 dark:text-slate-400 px-4 py-3 uppercase">Menu</th>
-                <th class="text-left text-xs font-semibold text-gray-500 dark:text-slate-400 px-4 py-3 uppercase">Kategori</th>
-                <th class="text-right text-xs font-semibold text-gray-500 dark:text-slate-400 px-4 py-3 uppercase">Terjual</th>
-                <th class="text-right text-xs font-semibold text-gray-500 dark:text-slate-400 px-4 py-3 uppercase">Est. Pendapatan</th>
-                <th class="text-right text-xs font-semibold text-gray-500 dark:text-slate-400 px-4 py-3 uppercase">Rating</th>
-            </tr></thead>
-            <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                @foreach($topMenus as $i => $menu)
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors">
-                    <td class="px-6 py-3.5 text-sm font-bold text-gray-400">{{ $i+1 }}</td>
-                    <td class="px-4 py-3.5">
-                        <div class="flex items-center gap-3">
-                            <img src="{{ $menu->image_src }}" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
-                            <span class="text-sm font-semibold text-gray-800 dark:text-slate-200">{{ $menu->name }}</span>
-                        </div>
-                    </td>
-                    <td class="px-4 py-3.5"><span class="text-xs capitalize text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-lg">{{ $menu->category }}</span></td>
-                    <td class="px-4 py-3.5 text-right text-sm font-bold text-violet-600">{{ number_format($menu->sold_count) }}</td>
-                    <td class="px-4 py-3.5 text-right text-sm font-semibold text-emerald-600">Rp {{ number_format($menu->sold_count * $menu->price, 0, ',', '.') }}</td>
-                    <td class="px-4 py-3.5 text-right text-sm text-yellow-500 font-bold">{{ number_format($menu->rating,1) }} ⭐</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    @endif
-</div>
 @endif
 
-{{-- ===== TAB B: RESERVASI ===== --}}
-@if($tab === 'reservasi')
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
-    @foreach([
-        ['label'=>'Total Reservasi',  'value'=>$reservasiStats['total'],      'icon'=>'📅', 'color'=>'from-blue-500 to-cyan-600'],
-        ['label'=>'Terkonfirmasi',    'value'=>$reservasiStats['konfirmasi'],  'icon'=>'✅', 'color'=>'from-emerald-500 to-teal-600'],
-        ['label'=>'Menunggu',         'value'=>$reservasiStats['menunggu'],    'icon'=>'⏳', 'color'=>'from-yellow-500 to-amber-600'],
-        ['label'=>'Dibatalkan',       'value'=>$reservasiStats['batal'],       'icon'=>'❌', 'color'=>'from-red-500 to-rose-600'],
-    ] as $k)
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-slate-700">
-        <div class="w-11 h-11 bg-gradient-to-br {{ $k['color'] }} rounded-xl flex items-center justify-center text-xl shadow-lg mb-3">{{ $k['icon'] }}</div>
-        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $k['value'] }}</div>
-        <div class="text-sm text-gray-500 dark:text-slate-400">{{ $k['label'] }}</div>
-    </div>
-    @endforeach
-</div>
-
-<div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-700 text-center">
-    <div class="text-5xl mb-4">📅</div>
-    <h3 class="font-bold text-gray-700 dark:text-slate-300 text-lg mb-2">Fitur Reservasi Segera Hadir</h3>
-    <p class="text-gray-400 dark:text-slate-500 text-sm max-w-md mx-auto">
-        Laporan reservasi akan tersedia setelah tabel reservasi terhubung ke database.
-        Saat ini sistem reservasi masih menggunakan form frontend tanpa penyimpanan ke DB.
-    </p>
-    <div class="mt-6 inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-xl text-sm font-medium">
-        <span>💡</span> Data reservasi akan otomatis muncul setelah integrasi database selesai
-    </div>
-</div>
-@endif
-
-{{-- ===== TAB C: ABSENSI ===== --}}
-@if($tab === 'absensi')
-
-{{-- KPI Absensi --}}
-<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
-    @foreach([
-        ['label'=>'Hadir',      'val'=>$absensiStats['hadir'],     'color'=>'from-emerald-500 to-teal-600',   'icon'=>'✅'],
-        ['label'=>'Terlambat',  'val'=>$absensiStats['terlambat'], 'color'=>'from-yellow-500 to-amber-600',   'icon'=>'⏰'],
-        ['label'=>'Izin',       'val'=>$absensiStats['izin'],      'color'=>'from-blue-500 to-cyan-600',      'icon'=>'📋'],
-        ['label'=>'Sakit',      'val'=>$absensiStats['sakit'],     'color'=>'from-orange-500 to-red-500',     'icon'=>'🤒'],
-        ['label'=>'Alpha',      'val'=>$absensiStats['alpha'],     'color'=>'from-red-500 to-rose-600',       'icon'=>'⛔'],
-        ['label'=>'Rata Telat', 'val'=>$absensiStats['avg_late'].'m', 'color'=>'from-violet-500 to-purple-600','icon'=>'⏱'],
-    ] as $kpi)
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-slate-700">
-        <div class="w-9 h-9 bg-gradient-to-br {{ $kpi['color'] }} rounded-xl flex items-center justify-center text-base shadow mb-2">{{ $kpi['icon'] }}</div>
-        <div class="text-xl font-bold text-gray-900 dark:text-white">{{ $kpi['val'] }}</div>
-        <div class="text-xs text-gray-500 dark:text-slate-400">{{ $kpi['label'] }}</div>
-    </div>
-    @endforeach
-</div>
-
-{{-- Trend 7 Hari --}}
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 mb-5">
-    <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-700">
-        <h3 class="font-bold text-gray-900 dark:text-white">Trend Kehadiran 7 Hari Terakhir</h3>
-    </div>
-    <div class="p-6">
-        @php $maxTrend = max(array_map(fn($d) => $d['hadir'] + $d['terlambat'] + $d['alpha'], $absensiTrend) ?: [1]); @endphp
-        <div class="flex items-end gap-3 h-36 mb-3">
-            @foreach($absensiTrend as $d)
-            @php
-            $total = $d['hadir'] + $d['terlambat'] + $d['alpha'];
-            $pctH  = $maxTrend > 0 ? ($d['hadir'] / $maxTrend) * 100 : 0;
-            $pctT  = $maxTrend > 0 ? ($d['terlambat'] / $maxTrend) * 100 : 0;
-            $pctA  = $maxTrend > 0 ? ($d['alpha'] / $maxTrend) * 100 : 0;
-            @endphp
-            <div class="flex-1 flex flex-col items-center gap-1">
-                <div class="w-full flex flex-col justify-end rounded-t-lg overflow-hidden" style="height:120px">
-                    <div class="w-full bg-red-400 transition-all" style="height:{{ max($pctA*1.2,0) }}px" title="Alpha: {{ $d['alpha'] }}"></div>
-                    <div class="w-full bg-yellow-400 transition-all" style="height:{{ max($pctT*1.2,0) }}px" title="Terlambat: {{ $d['terlambat'] }}"></div>
-                    <div class="w-full bg-emerald-500 transition-all" style="height:{{ max($pctH*1.2,0) }}px" title="Hadir: {{ $d['hadir'] }}"></div>
-                </div>
-                <div class="text-xs text-gray-500 dark:text-slate-400 font-medium">{{ $d['short'] }}</div>
-                <div class="text-[10px] text-gray-400">{{ $d['date'] }}</div>
-            </div>
-            @endforeach
-        </div>
-        <div class="flex items-center gap-4 pt-3 border-t border-gray-100 dark:border-slate-700">
-            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-emerald-500"></div><span class="text-xs text-gray-500">Hadir</span></div>
-            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-yellow-400"></div><span class="text-xs text-gray-500">Terlambat</span></div>
-            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-red-400"></div><span class="text-xs text-gray-500">Alpha</span></div>
-        </div>
-    </div>
-</div>
-
-{{-- Rekap Per Karyawan --}}
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-    <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-700">
-        <h3 class="font-bold text-gray-900 dark:text-white">Rekap Per Karyawan</h3>
-        <p class="text-xs text-gray-400 dark:text-slate-500 mt-0.5">{{ Carbon::create($year,$month,1)->locale('id')->isoFormat('MMMM YYYY') }}</p>
-    </div>
-    @if($absensiPerKaryawan->isEmpty())
-    <div class="py-10 text-center text-gray-400 text-sm">Belum ada karyawan aktif</div>
-    @else
-    <div class="overflow-x-auto">
-        <table class="w-full">
-            <thead><tr class="bg-gray-50 dark:bg-slate-700/50">
-                <th class="text-left text-xs font-semibold text-gray-500 dark:text-slate-400 px-6 py-3 uppercase">Karyawan</th>
-                <th class="text-center text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-3 uppercase">Hadir</th>
-                <th class="text-center text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-3 uppercase">Terlambat</th>
-                <th class="text-center text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-3 uppercase">Izin</th>
-                <th class="text-center text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-3 uppercase">Sakit</th>
-                <th class="text-center text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-3 uppercase">Alpha</th>
-                <th class="text-center text-xs font-semibold text-gray-500 dark:text-slate-400 px-3 py-3 uppercase">Rata Telat</th>
-            </tr></thead>
-            <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                @foreach($absensiPerKaryawan as $row)
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors">
-                    <td class="px-6 py-3.5">
-                        <div class="flex items-center gap-3">
-                            <img src="{{ $row['employee']->user->avatar_url }}" class="w-9 h-9 rounded-xl object-cover flex-shrink-0">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-800 dark:text-slate-200">{{ $row['employee']->user->name }}</p>
-                                <p class="text-xs text-gray-400">{{ $row['employee']->jabatan }}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-3 py-3.5 text-center"><span class="text-sm font-bold text-emerald-600">{{ $row['hadir'] }}</span></td>
-                    <td class="px-3 py-3.5 text-center"><span class="text-sm font-bold {{ $row['terlambat'] > 0 ? 'text-yellow-600' : 'text-gray-300 dark:text-slate-600' }}">{{ $row['terlambat'] }}</span></td>
-                    <td class="px-3 py-3.5 text-center"><span class="text-sm font-bold {{ $row['izin'] > 0 ? 'text-blue-600' : 'text-gray-300 dark:text-slate-600' }}">{{ $row['izin'] }}</span></td>
-                    <td class="px-3 py-3.5 text-center"><span class="text-sm font-bold {{ $row['sakit'] > 0 ? 'text-orange-600' : 'text-gray-300 dark:text-slate-600' }}">{{ $row['sakit'] }}</span></td>
-                    <td class="px-3 py-3.5 text-center"><span class="text-sm font-bold {{ $row['alpha'] > 0 ? 'text-red-600' : 'text-gray-300 dark:text-slate-600' }}">{{ $row['alpha'] }}</span></td>
-                    <td class="px-3 py-3.5 text-center"><span class="text-xs {{ $row['avg_late'] > 0 ? 'text-yellow-600 font-bold' : 'text-gray-400' }}">{{ $row['avg_late'] > 0 ? $row['avg_late'].' mnt' : '—' }}</span></td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    @endif
-</div>
-@endif
+{{-- Absensi section removed per request --}}
 
 {{-- ===== TAB D: CUTI ===== --}}
 @if($tab === 'cuti')

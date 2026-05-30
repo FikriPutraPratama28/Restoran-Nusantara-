@@ -82,9 +82,8 @@
             // HR System removed
             // Laporan & Pengaturan hanya untuk admin dengan permission view_reports
             ...($user && $user->hasPermission('view_reports') ? [
-                ['label' => 'LAPORAN', 'items' => [
+                    ['label' => 'LAPORAN', 'items' => [
                     ['route' => 'admin.reports', 'icon' => 'chart',    'label' => 'Penjualan',  'query' => ['tab' => 'penjualan']],
-                    ['route' => 'admin.reports', 'icon' => 'calendar', 'label' => 'Kehadiran',  'query' => ['tab' => 'absensi']],
                     ['route' => 'admin.reports', 'icon' => 'orders',   'label' => 'Reservasi',  'query' => ['tab' => 'reservasi']],
                 ]],
                 ['label' => 'SISTEM', 'items' => [

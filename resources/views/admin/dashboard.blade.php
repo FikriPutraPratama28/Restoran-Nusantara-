@@ -21,7 +21,7 @@
             'label'   => 'Laporan',
             'icon'    => '📊',
             'color'   => 'from-emerald-500 to-teal-600',
-            'items'   => ['Penjualan', 'Kehadiran', 'Reservasi'],
+            'items'   => ['Penjualan', 'Reservasi'],
             'href'    => route('admin.reports', ['tab' => 'penjualan']),
         ],
         [
@@ -61,6 +61,7 @@
             <div class="w-9 h-9 bg-gradient-to-br {{ $nav['color'] }} rounded-xl flex items-center justify-center text-lg shadow flex-shrink-0">{{ $nav['icon'] }}</div>
             <span class="font-bold text-gray-800 dark:text-slate-200 text-sm">{{ $nav['label'] }}</span>
         </div>
+        {{-- mini chart removed as requested --}}
         <div class="flex flex-wrap gap-1">
             @foreach($nav['items'] as $sub)
             <span class="text-[10px] bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 px-2 py-0.5 rounded-full">{{ $sub }}</span>
@@ -289,53 +290,13 @@
     {{-- Absensi removed per request --}}
 </div>
 
-{{-- ===== KARYAWAN TERBARU + CUTI PENDING ===== --}}
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-
-    {{-- Karyawan Terbaru --}}
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
-        <div class="flex items-center justify-between mb-5">
-            <div>
-                <h3 class="font-bold text-gray-900 dark:text-white">Karyawan Terbaru</h3>
-                <p class="text-xs text-gray-500 dark:text-slate-400">Baru bergabung</p>
-            </div>
-            <a href="{{ route('admin.employees.index') }}" class="text-violet-600 text-xs font-medium hover:underline">Semua →</a>
-        </div>
-        @if($latestEmployees->isEmpty())
-        <div class="text-center py-8 text-gray-400 dark:text-slate-500">
-            <div class="text-3xl mb-2">👥</div>
-            <p class="text-sm">Belum ada karyawan</p>
-            <a href="{{ route('admin.employees.create') }}" class="text-violet-600 text-xs hover:underline mt-1 inline-block">Tambah sekarang</a>
-        </div>
-        @else
-        <div class="space-y-3">
-            @foreach($latestEmployees as $emp)
-            @php $badge = $emp->status_badge; @endphp
-            <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all">
-                <img src="{{ $emp->user->avatar_url }}" class="w-10 h-10 rounded-xl object-cover flex-shrink-0 border border-gray-100 dark:border-slate-600">
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800 dark:text-slate-200 truncate">{{ $emp->user->name }}</p>
-                    <p class="text-xs text-gray-400 dark:text-slate-500">{{ $emp->jabatan }} · {{ $emp->employee_code }}</p>
-                </div>
-                <div class="text-right flex-shrink-0">
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full {{ $badge['class'] }}">{{ $badge['label'] }}</span>
-                    <p class="text-[10px] text-gray-400 mt-0.5">{{ $emp->join_date->diffForHumans() }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        @endif
-    </div>
-
-    {{-- Pengajuan Cuti removed per request --}}
-</div>
+{{-- Karyawan Terbaru section removed per request --}}
 
 {{-- ===== AKSI CEPAT ===== --}}
 <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
     <h3 class="font-bold text-gray-900 dark:text-white mb-4">Aksi Cepat</h3>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
         @foreach([
-            ['href'=>route('admin.employees.create'),  'icon'=>'➕', 'label'=>'Tambah Karyawan',    'color'=>'bg-violet-50 dark:bg-violet-900/20 hover:bg-violet-100 dark:hover:bg-violet-900/30 text-violet-700 dark:text-violet-400'],
             ['href'=>route('admin.menu'),               'icon'=>'🍽️', 'label'=>'Menu Makanan',       'color'=>'bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 text-orange-700 dark:text-orange-400'],
             // Absensi & Pengajuan Cuti actions removed
             ['href'=>route('admin.reservations'),       'icon'=>'📅', 'label'=>'Reservasi',          'color'=>'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400'],
