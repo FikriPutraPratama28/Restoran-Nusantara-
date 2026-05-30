@@ -123,20 +123,24 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/employees/{employee}',            [EmployeeController::class, 'update'])->name('employees.update')->middleware('permission:edit_employee');
     Route::delete('/employees/{employee}',         [EmployeeController::class, 'destroy'])->name('employees.destroy')->middleware('permission:delete_data');
 
-    // Absensi (Admin view)lanjut 
-    
+    // Absensi (Admin) and Pengajuan Cuti routes removed per request
+    /*
+    // Absensi (Admin view)
     Route::get('/attendance',                      [EmployeeController::class, 'attendanceIndex'])->name('attendance.index');
 
     // Pengajuan Cuti (Admin)
     Route::get('/leaves',                          [EmployeeController::class, 'leaveIndex'])->name('leaves.index');
     Route::post('/leaves/{leave}/approve',         [EmployeeController::class, 'leaveApprove'])->name('leaves.approve')->middleware('permission:manage_leaves');
+    */
 
     // Activity Log
     Route::get('/activity-log',    [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-log')->middleware('permission:view_activity_log');
     Route::delete('/activity-log', [\App\Http\Controllers\Admin\ActivityLogController::class, 'clear'])->name('activity-log.clear')->middleware('permission:clear_activity_log');
 });
 
-// ── Karyawan Dashboard ────────────────────────────────────────────────────
+// Karyawan routes disabled per request.
+// If you want to re-enable the employee dashboard later, restore the routes below.
+/*
 Route::prefix('karyawan')->name('karyawan.')->middleware(['auth', 'role:karyawan'])->group(function () {
 
     Route::get('/',         [KaryawanDashboard::class, 'index'])->name('dashboard');
@@ -156,3 +160,4 @@ Route::prefix('karyawan')->name('karyawan.')->middleware(['auth', 'role:karyawan
     Route::post('/cuti',            [LeaveController::class, 'store'])->name('leave.store');
     Route::delete('/cuti/{leaveRequest}', [LeaveController::class, 'destroy'])->name('leave.destroy');
 });
+*/

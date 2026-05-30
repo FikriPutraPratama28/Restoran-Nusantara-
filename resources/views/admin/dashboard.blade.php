@@ -16,13 +16,7 @@
             'items'   => ['Menu Makanan', 'Reservasi', 'Karyawan', 'Jadwal Kerja'],
             'href'    => route('admin.menu'),
         ],
-        [
-            'label'   => 'HR System',
-            'icon'    => '👥',
-            'color'   => 'from-blue-500 to-cyan-600',
-            'items'   => ['Absensi', 'Pengajuan Cuti'],
-            'href'    => route('admin.attendance.index'),
-        ],
+        // HR System removed
         [
             'label'   => 'Laporan',
             'icon'    => '📊',
@@ -136,9 +130,6 @@
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     @php
     $stats2 = [
-        ['label'=>'Hadir Hari Ini',   'value'=>$stats['hadir_hari_ini'],     'icon'=>'📍', 'color'=>'text-emerald-600', 'bg'=>'bg-emerald-50 dark:bg-emerald-900/20', 'href'=>route('admin.attendance.index')],
-        ['label'=>'Terlambat',        'value'=>$stats['terlambat_hari_ini'], 'icon'=>'⏰', 'color'=>'text-yellow-600',  'bg'=>'bg-yellow-50 dark:bg-yellow-900/20',  'href'=>route('admin.attendance.index')],
-        ['label'=>'Cuti Menunggu',    'value'=>$stats['cuti_menunggu'],      'icon'=>'🏖️', 'color'=>'text-orange-600',  'bg'=>'bg-orange-50 dark:bg-orange-900/20',  'href'=>route('admin.leaves.index')],
         ['label'=>'Promo Aktif',      'value'=>$stats['promo_aktif'],        'icon'=>'🎁', 'color'=>'text-pink-600',    'bg'=>'bg-pink-50 dark:bg-pink-900/20',      'href'=>route('admin.content.promo')],
     ];
     @endphp
@@ -295,69 +286,7 @@
         @endif
     </div>
 
-    {{-- Absensi Hari Ini --}}
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
-        <div class="flex items-center justify-between mb-4">
-            <div>
-                <h3 class="font-bold text-gray-900 dark:text-white">Absensi Hari Ini</h3>
-                <p class="text-xs text-gray-500 dark:text-slate-400">{{ now()->translatedFormat('d F Y') }}</p>
-            </div>
-            <a href="{{ route('admin.attendance.index') }}" class="text-violet-600 text-xs font-medium hover:underline">Detail →</a>
-        </div>
-
-        {{-- Progress kehadiran --}}
-        @php
-        $hadirCount = ($attendanceToday['hadir'] ?? 0) + ($attendanceToday['terlambat'] ?? 0);
-        $pctHadir = $stats['karyawan_aktif'] > 0 ? round(($hadirCount / $stats['karyawan_aktif']) * 100) : 0;
-        @endphp
-        <div class="flex items-center gap-4 mb-5">
-            <div class="relative w-20 h-20 flex-shrink-0">
-                <svg viewBox="0 0 36 36" class="w-full h-full -rotate-90">
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="3.5" class="dark:stroke-slate-700"/>
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#10b981" stroke-width="3.5"
-                        stroke-dasharray="{{ $pctHadir }} {{ 100 - $pctHadir }}" stroke-linecap="round"/>
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="text-lg font-bold text-emerald-600">{{ $pctHadir }}%</span>
-                </div>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500 dark:text-slate-400">
-                    <span class="text-2xl font-bold text-gray-900 dark:text-white">{{ $hadirCount }}</span>
-                    / {{ $stats['karyawan_aktif'] }}
-                </p>
-                <p class="text-xs text-gray-400">karyawan hadir</p>
-            </div>
-        </div>
-
-        {{-- Breakdown status --}}
-        @php
-        $statusList = [
-            'hadir'     => ['label'=>'Hadir',     'color'=>'bg-emerald-500', 'badge'=>'bg-emerald-100 text-emerald-700'],
-            'terlambat' => ['label'=>'Terlambat',  'color'=>'bg-yellow-500',  'badge'=>'bg-yellow-100 text-yellow-700'],
-            'izin'      => ['label'=>'Izin',       'color'=>'bg-blue-500',    'badge'=>'bg-blue-100 text-blue-700'],
-            'sakit'     => ['label'=>'Sakit',      'color'=>'bg-orange-500',  'badge'=>'bg-orange-100 text-orange-700'],
-            'alpha'     => ['label'=>'Alpha',      'color'=>'bg-red-500',     'badge'=>'bg-red-100 text-red-700'],
-        ];
-        @endphp
-        <div class="space-y-2">
-            @foreach($statusList as $key => $s)
-            @php $cnt = $attendanceToday[$key] ?? 0; @endphp
-            @if($cnt > 0)
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full {{ $s['color'] }}"></div>
-                    <span class="text-sm text-gray-600 dark:text-slate-400">{{ $s['label'] }}</span>
-                </div>
-                <span class="text-xs font-bold px-2 py-0.5 rounded-full {{ $s['badge'] }}">{{ $cnt }}</span>
-            </div>
-            @endif
-            @endforeach
-            @if(array_sum($attendanceToday) === 0)
-            <p class="text-sm text-gray-400 dark:text-slate-500 text-center py-2">Belum ada absensi hari ini</p>
-            @endif
-        </div>
-    </div>
+    {{-- Absensi removed per request --}}
 </div>
 
 {{-- ===== KARYAWAN TERBARU + CUTI PENDING ===== --}}
@@ -398,38 +327,7 @@
         @endif
     </div>
 
-    {{-- Cuti Pending --}}
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
-        <div class="flex items-center justify-between mb-5">
-            <div>
-                <h3 class="font-bold text-gray-900 dark:text-white">Pengajuan Cuti Pending</h3>
-                <p class="text-xs text-gray-500 dark:text-slate-400">Perlu persetujuan admin</p>
-            </div>
-            <a href="{{ route('admin.leaves.index') }}" class="text-violet-600 text-xs font-medium hover:underline">Kelola →</a>
-        </div>
-        @if($pendingLeaves->isEmpty())
-        <div class="text-center py-8 text-gray-400 dark:text-slate-500">
-            <div class="text-3xl mb-2">✅</div>
-            <p class="text-sm">Tidak ada pengajuan cuti pending</p>
-        </div>
-        @else
-        <div class="space-y-3">
-            @foreach($pendingLeaves as $leave)
-            <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all">
-                <img src="{{ $leave->employee->user->avatar_url }}" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-800 dark:text-slate-200 truncate">{{ $leave->employee->user->name }}</p>
-                    <p class="text-xs text-gray-400">{{ $leave->type_label }} · {{ $leave->total_days }} hari</p>
-                </div>
-                <div class="text-right flex-shrink-0">
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">Menunggu</span>
-                    <p class="text-[10px] text-gray-400 mt-0.5">{{ $leave->start_date->format('d/m') }} – {{ $leave->end_date->format('d/m') }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        @endif
-    </div>
+    {{-- Pengajuan Cuti removed per request --}}
 </div>
 
 {{-- ===== AKSI CEPAT ===== --}}
@@ -439,8 +337,7 @@
         @foreach([
             ['href'=>route('admin.employees.create'),  'icon'=>'➕', 'label'=>'Tambah Karyawan',    'color'=>'bg-violet-50 dark:bg-violet-900/20 hover:bg-violet-100 dark:hover:bg-violet-900/30 text-violet-700 dark:text-violet-400'],
             ['href'=>route('admin.menu'),               'icon'=>'🍽️', 'label'=>'Menu Makanan',       'color'=>'bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 text-orange-700 dark:text-orange-400'],
-            ['href'=>route('admin.attendance.index'),   'icon'=>'📍', 'label'=>'Absensi',            'color'=>'bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'],
-            ['href'=>route('admin.leaves.index'),       'icon'=>'⏳', 'label'=>'Pengajuan Cuti',     'color'=>'bg-yellow-50 dark:bg-yellow-900/20 hover:bg-yellow-100 dark:hover:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'],
+            // Absensi & Pengajuan Cuti actions removed
             ['href'=>route('admin.reservations'),       'icon'=>'📅', 'label'=>'Reservasi',          'color'=>'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400'],
             ['href'=>route('admin.content.promo'),      'icon'=>'🎁', 'label'=>'Kelola Promo',       'color'=>'bg-pink-50 dark:bg-pink-900/20 hover:bg-pink-100 dark:hover:bg-pink-900/30 text-pink-700 dark:text-pink-400'],
             ['href'=>route('admin.customers'),          'icon'=>'👥', 'label'=>'Data Pelanggan',     'color'=>'bg-cyan-50 dark:bg-cyan-900/20 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400'],

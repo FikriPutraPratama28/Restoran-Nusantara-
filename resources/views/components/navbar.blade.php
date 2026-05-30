@@ -205,16 +205,7 @@
                                 <span class="text-base">📊</span> Dashboard Admin
                             </a>
                             @endif
-                            @if(auth()->user()->isKaryawan())
-                            <a href="{{ route('karyawan.dashboard') }}"
-                                class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
-                                <span class="text-base">🏠</span> Dashboard Karyawan
-                            </a>
-                            <a href="{{ route('karyawan.attendance') }}"
-                                class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
-                                <span class="text-base">📍</span> Absensi
-                            </a>
-                            @endif
+                            {{-- Karyawan links removed per request --}}
                             <a href="{{ route('profile') }}"
                                 class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                                 <span class="text-base">👤</span> Profil Saya
@@ -299,11 +290,7 @@
                         📊 Dashboard Admin
                     </a>
                     @endif
-                    @if(auth()->user()->isKaryawan())
-                    <a href="{{ route('karyawan.dashboard') }}" class="flex items-center gap-2 w-full py-2.5 px-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-sm font-medium">
-                        🏠 Dashboard Karyawan
-                    </a>
-                    @endif
+                    {{-- Karyawan mobile link removed per request --}}
                     <a href="{{ route('profile') }}" class="flex items-center gap-2 w-full py-2.5 px-3 rounded-xl border border-gray-200 dark:border-dark-700 text-gray-600 dark:text-gray-400 text-sm font-medium hover:bg-gray-50 dark:hover:bg-dark-700 transition-all">
                         👤 Profil Saya
                     </a>

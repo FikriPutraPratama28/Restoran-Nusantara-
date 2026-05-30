@@ -78,12 +78,8 @@
                 ['route' => 'admin.menu',         'icon' => 'menu',     'label' => 'Menu Makanan'],
                 ['route' => 'admin.reservations', 'icon' => 'calendar', 'label' => 'Reservasi'],
                 ['route' => 'admin.employees.index', 'icon' => 'users', 'label' => 'Karyawan'],
-                ['route' => 'admin.attendance.index','icon' => 'calendar','label' => 'Jadwal Kerja'],
             ]],
-            ['label' => 'HR SYSTEM', 'items' => [
-                ['route' => 'admin.attendance.index', 'icon' => 'orders', 'label' => 'Absensi'],
-                ['route' => 'admin.leaves.index',     'icon' => 'promo',  'label' => 'Pengajuan Cuti'],
-            ]],
+            // HR System removed
             // Laporan & Pengaturan hanya untuk admin dengan permission view_reports
             ...($user && $user->hasPermission('view_reports') ? [
                 ['label' => 'LAPORAN', 'items' => [

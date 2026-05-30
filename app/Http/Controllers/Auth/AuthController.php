@@ -37,6 +37,17 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
+            // Blok login untuk role 'karyawan' karena dashboard karyawan dinonaktifkan
+            if ($user->role === 'karyawan') {
+                ActivityLog::log('login_blocked', 'Auth', "Percobaan login akun karyawan diblokir: {$user->name} ({$user->email})", $user);
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->withErrors([
+                    'email' => 'Login untuk akun karyawan telah dinonaktifkan. Hubungi administrator.',
+                ])->withInput($request->only('email'));
+            }
+
             if (!$user->is_active) {
                 Auth::logout();
                 $request->session()->invalidate();
@@ -152,7 +163,8 @@ class AuthController extends Controller
     {
         return match($user->role) {
             'admin'    => redirect()->intended(route('admin.dashboard')),
-            'karyawan' => redirect()->intended(route('karyawan.dashboard')),
+            // Karyawan tidak punya dashboard lagi — arahkan ke home jika terjadi
+            'karyawan' => redirect()->intended(route('home')),
             default    => redirect()->intended(route('home')),
         };
     }

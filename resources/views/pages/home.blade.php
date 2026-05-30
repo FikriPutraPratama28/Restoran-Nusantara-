@@ -867,30 +867,7 @@
             @endforeach
         </div>
 
-        {{-- Loyalty --}}
-        <div class="card p-8 bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-800 dark:to-dark-700 text-white">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <span class="badge bg-yellow-500/20 text-yellow-400 mb-4">👑 Loyalty Program</span>
-                    <h3 class="font-display text-3xl font-bold mb-4">Kumpulkan Poin, Dapatkan Hadiah!</h3>
-                    <p class="text-gray-400 mb-6">Setiap pembelian Rp 10.000 = 1 poin. Tukarkan poin kamu dengan diskon, menu gratis, dan hadiah menarik lainnya.</p>
-                    <div class="grid grid-cols-3 gap-4 mb-6">
-                        @foreach([['points'=>'100','reward'=>'Diskon 5%'],['points'=>'250','reward'=>'Free Minuman'],['points'=>'500','reward'=>'Free Makanan']] as $tier)
-                        <div class="bg-white/10 rounded-xl p-3 text-center">
-                            <div class="text-yellow-400 font-bold text-lg">{{ $tier['points'] }}</div>
-                            <div class="text-xs text-gray-400">poin</div>
-                            <div class="text-white text-xs font-medium mt-1">{{ $tier['reward'] }}</div>
-                        </div>
-                        @endforeach
-                    </div>
-                    <a href="#menu" class="nav-scroll btn bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold">Mulai Kumpulkan Poin</a>
-                </div>
-                <div class="text-center">
-                    <div class="text-8xl animate-float">🏆</div>
-                    <div class="mt-4 text-gray-400 text-sm">Bergabung dengan 10.000+ member aktif</div>
-                </div>
-            </div>
-        </div>
+        {{-- Loyalty removed as per request --}}
     </div>
 </section>
 
