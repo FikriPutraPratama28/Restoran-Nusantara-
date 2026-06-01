@@ -15,7 +15,10 @@ class ActivityLogController extends Controller
         $search = $request->get('search', '');
         $date   = $request->get('date', '');
 
+        $allowedRoles = ['admin', 'pelanggan'];
+
         $query = ActivityLog::with('user')
+            ->whereIn('role', $allowedRoles)
             ->when($module, fn($q) => $q->where('module', $module))
             ->when($role,   fn($q) => $q->where('role', $role))
             ->when($search, fn($q) => $q->where(function($q2) use ($search) {
@@ -29,14 +32,15 @@ class ActivityLogController extends Controller
 
         // Stats
         $stats = [
-            'total'    => ActivityLog::count(),
-            'today'    => ActivityLog::whereDate('created_at', today())->count(),
-            'modules'  => ActivityLog::selectRaw('module, count(*) as total')
+            'total'    => ActivityLog::whereIn('role', $allowedRoles)->count(),
+            'today'    => ActivityLog::whereIn('role', $allowedRoles)->whereDate('created_at', today())->count(),
+            'modules'  => ActivityLog::whereIn('role', $allowedRoles)
+                            ->selectRaw('module, count(*) as total')
                             ->groupBy('module')->pluck('total', 'module')->toArray(),
         ];
 
-        $modules = ActivityLog::distinct()->pluck('module')->sort()->values();
-        $roles   = ['admin', 'karyawan', 'pelanggan', 'system'];
+        $modules = ActivityLog::whereIn('role', $allowedRoles)->distinct()->pluck('module')->sort()->values();
+        $roles   = $allowedRoles;
 
         return view('admin.activity-log', compact('logs', 'stats', 'modules', 'roles', 'module', 'role', 'search', 'date'));
     }

@@ -220,7 +220,7 @@
         bgPreview: '{{ $s['home_bg_image'] ?? '' }}',
         f1Preview: '{{ $s['home_float_img1'] ?? '' }}',
         f2Preview: '{{ $s['home_float_img2'] ?? '' }}',
-        f3Preview: '{{ $s['home_float_img3'] ?? '' }}',
+        f3Preview: '{{ $s['home_float_img3'] ?? '' }}',        showVideoInput: @json(!empty($s['home_video_url'] ?? '')),
         onImg(field, e) {
             const f = e.target.files[0];
             if (f) this[field+'Preview'] = URL.createObjectURL(f);
@@ -295,6 +295,7 @@
                                 class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-xs text-gray-700 dark:text-slate-300 focus:ring-2 focus:ring-orange-500 outline-none"
                                 placeholder="Atau masukkan URL gambar...">
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -77,7 +77,6 @@
             ['label' => 'MANAJEMEN', 'items' => [
                 ['route' => 'admin.menu',         'icon' => 'menu',     'label' => 'Menu Makanan'],
                 ['route' => 'admin.reservations', 'icon' => 'calendar', 'label' => 'Reservasi'],
-                ['route' => 'admin.employees.index', 'icon' => 'users', 'label' => 'Karyawan'],
             ]],
             // HR System removed
             // Laporan & Pengaturan hanya untuk admin dengan permission view_reports

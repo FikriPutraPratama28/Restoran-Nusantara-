@@ -13,7 +13,7 @@
             'label'   => 'Manajemen',
             'icon'    => '⚙️',
             'color'   => 'from-violet-500 to-purple-600',
-            'items'   => ['Menu Makanan', 'Reservasi', 'Karyawan', 'Jadwal Kerja'],
+            'items'   => ['Menu Makanan', 'Reservasi', 'Jadwal Kerja'],
             'href'    => route('admin.menu'),
         ],
         // HR System removed
@@ -83,15 +83,6 @@
             'icon'   => '👥',
             'color'  => 'from-violet-500 to-purple-600',
             'href'   => route('admin.customers'),
-        ],
-        [
-            'label'  => 'Total Karyawan',
-            'value'  => number_format($stats['total_karyawan']),
-            'sub'    => $stats['karyawan_aktif'] . ' aktif',
-            'up'     => true,
-            'icon'   => '👨‍💼',
-            'color'  => 'from-blue-500 to-cyan-600',
-            'href'   => route('admin.employees.index'),
         ],
         [
             'label'  => 'Total Transaksi',
