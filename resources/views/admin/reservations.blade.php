@@ -9,7 +9,11 @@
     <div class="lg:col-span-2 space-y-4">
         {{-- Stats --}}
         <div class="grid grid-cols-3 gap-4">
-            @foreach([['label'=>'Hari Ini','val'=>'12','icon'=>'📅','color'=>'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400'],['label'=>'Besok','val'=>'8','icon'=>'📆','color'=>'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'],['label'=>'Minggu Ini','val'=>'47','icon'=>'🗓️','color'=>'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400']] as $s)
+            @foreach([
+                ['label' => 'Hari Ini',  'val' => $stats['today'] ?? 0,   'icon' => '📅', 'color' => 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400'],
+                ['label' => 'Besok',     'val' => $stats['tomorrow'] ?? 0,'icon' => '📆', 'color' => 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'],
+                ['label' => 'Minggu Ini','val' => $stats['week'] ?? 0,    'icon' => '🗓️', 'color' => 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'],
+            ] as $s)
             <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-slate-700 text-center">
                 <div class="text-2xl mb-1">{{ $s['icon'] }}</div>
                 <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $s['val'] }}</div>
@@ -21,49 +25,74 @@
         {{-- Reservations List --}}
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-700">
-                <h3 class="font-bold text-gray-900 dark:text-white">Reservasi Hari Ini</h3>
-                <span class="text-xs bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 px-3 py-1 rounded-full font-semibold">12 reservasi</span>
-            </div>
-            <div class="divide-y divide-gray-100 dark:divide-slate-700">
+                <h3 class="font-bold text-gray-900 dark:text-white">Daftar Reservasi</h3>
                 @php
-                $reservations = [
-                    ['code'=>'#RES-A1B2','name'=>'Budi Santoso',  'time'=>'12:00','guests'=>4,'area'=>'Indoor', 'phone'=>'0812-3456','status'=>'konfirmasi','notes'=>'Anniversary'],
-                    ['code'=>'#RES-C3D4','name'=>'Siti Rahayu',   'time'=>'13:30','guests'=>2,'area'=>'Outdoor','phone'=>'0813-2345','status'=>'menunggu', 'notes'=>''],
-                    ['code'=>'#RES-E5F6','name'=>'Ahmad Fauzi',   'time'=>'18:00','guests'=>6,'area'=>'VIP',    'phone'=>'0814-3456','status'=>'konfirmasi','notes'=>'Ulang tahun'],
-                    ['code'=>'#RES-G7H8','name'=>'Rina Marlina',  'time'=>'19:30','guests'=>3,'area'=>'Indoor', 'phone'=>'0815-4567','status'=>'konfirmasi','notes'=>''],
-                    ['code'=>'#RES-I9J0','name'=>'Doni Kusuma',   'time'=>'20:00','guests'=>8,'area'=>'Outdoor','phone'=>'0816-5678','status'=>'batal',    'notes'=>''],
-                ];
+                    $reservationsCount = method_exists($reservations, 'total') ? $reservations->total() : $reservations->count();
                 @endphp
-                @foreach($reservations as $r)
+                <span class="text-xs bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 px-3 py-1 rounded-full font-semibold">
+                    {{ $reservationsCount }} reservasi
+                </span>
+            </div>
+            @php
+                $statusMap = [
+                    'pending' => ['label' => 'Menunggu', 'class' => 'bg-yellow-100 text-yellow-700'],
+                    'confirmed' => ['label' => 'Konfirmasi', 'class' => 'bg-emerald-100 text-emerald-700'],
+                    'completed' => ['label' => 'Selesai', 'class' => 'bg-blue-100 text-blue-700'],
+                    'cancelled' => ['label' => 'Batal', 'class' => 'bg-red-100 text-red-600'],
+                ];
+                $areaMap = [
+                    'indoor' => 'Indoor',
+                    'outdoor' => 'Outdoor',
+                ];
+            @endphp
+            <div class="divide-y divide-gray-100 dark:divide-slate-700">
+                @forelse($reservations as $r)
+                @php
+                    $status = $statusMap[$r->status] ?? ['label' => ucfirst($r->status), 'class' => 'bg-gray-100 text-gray-600'];
+                    $areaLabel = $areaMap[$r->table_area] ?? ucfirst($r->table_area ?? '-');
+                    $code = '#RES-' . str_pad((string) $r->id, 4, '0', STR_PAD_LEFT);
+                @endphp
                 <div class="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-all">
                     <div class="w-14 h-14 bg-violet-100 dark:bg-violet-900/30 rounded-2xl flex flex-col items-center justify-center flex-shrink-0">
-                        <span class="text-violet-700 dark:text-violet-400 font-bold text-sm">{{ $r['time'] }}</span>
-                        <span class="text-violet-400 text-xs">WIB</span>
+                        <span class="text-violet-700 dark:text-violet-400 font-bold text-sm">
+                            {{ optional($r->reservation_time)->format('H:i') ?? $r->reservation_time }}
+                        </span>
+                        <span class="text-violet-400 text-xs">
+                            {{ optional($r->reservation_date)->format('d M') ?? $r->reservation_date }}
+                        </span>
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-0.5">
-                            <p class="font-semibold text-gray-800 dark:text-slate-200 text-sm">{{ $r['name'] }}</p>
-                            <span class="font-mono text-xs text-gray-400">{{ $r['code'] }}</span>
+                            <p class="font-semibold text-gray-800 dark:text-slate-200 text-sm">{{ $r->customer_name }}</p>
+                            <span class="font-mono text-xs text-gray-400">{{ $code }}</span>
                         </div>
                         <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-slate-400">
-                            <span>👥 {{ $r['guests'] }} orang</span>
-                            <span>🪑 {{ $r['area'] }}</span>
-                            <span>📞 {{ $r['phone'] }}</span>
-                            @if($r['notes'])<span class="text-violet-500">🎉 {{ $r['notes'] }}</span>@endif
+                            <span>👥 {{ $r->number_of_guests }} orang</span>
+                            <span>🪑 {{ $areaLabel }}</span>
+                            <span>📞 {{ $r->customer_phone }}</span>
+                            @if($r->notes)<span class="text-violet-500">🎉 {{ $r->notes }}</span>@endif
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-semibold px-2.5 py-1 rounded-full
-                            {{ $r['status']==='konfirmasi' ? 'bg-emerald-100 text-emerald-700' : ($r['status']==='menunggu' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-600') }}">
-                            {{ ucfirst($r['status']) }}
+                        <span class="text-xs font-semibold px-2.5 py-1 rounded-full {{ $status['class'] }}">
+                            {{ $status['label'] }}
                         </span>
-                        <button class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 hover:bg-violet-100 hover:text-violet-600 transition-all">
+                        <button type="button" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 hover:bg-violet-100 hover:text-violet-600 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         </button>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="px-6 py-10 text-center text-sm text-gray-500 dark:text-slate-400">
+                    Belum ada data reservasi.
+                </div>
+                @endforelse
             </div>
+            @if(method_exists($reservations, 'links'))
+            <div class="px-6 py-4 border-t border-gray-100 dark:border-slate-700">
+                {{ $reservations->links() }}
+            </div>
+            @endif
         </div>
     </div>
 

@@ -16,12 +16,12 @@ use App\Http\Controllers\Karyawan\LeaveController;
 // ── Frontend (Publik) ─────────────────────────────────────────────────────
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/menu', [PageController::class, 'menu'])->name('menu');
-Route::get('/reservasi', fn() => redirect('/#reservasi'))->name('reservation');
-Route::get('/promo',     fn() => redirect('/#promo'))->name('promo');
+Route::get('/reservasi', [PageController::class, 'reservation'])->name('reservation');
+Route::get('/promo',     [PageController::class, 'promo'])->name('promo');
 Route::get('/galeri',    fn() => redirect('/#galeri'))->name('gallery');
 Route::get('/fasilitas', fn() => redirect('/#fasilitas'))->name('facilities');
-Route::get('/tentang',   fn() => redirect('/#tentang'))->name('about');
-Route::get('/kontak',    fn() => redirect('/#kontak'))->name('contact');
+Route::get('/tentang',   [PageController::class, 'about'])->name('about');
+Route::get('/kontak',    [PageController::class, 'contact'])->name('contact');
 Route::get('/checkout',  [PageController::class, 'checkout'])->name('checkout');
 
 // ── Auth Multi-Role ───────────────────────────────────────────────────────
