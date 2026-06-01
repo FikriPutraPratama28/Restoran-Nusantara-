@@ -36,13 +36,31 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with('_site', $siteSettings);
 
+            $userId = null;
             if (Auth::check()) {
                 $userId = Auth::id();
-                $unreadCount = Notification::forUser($userId)->unread()->count();
-                $latestNotifs = Notification::forUser($userId)
-                    ->latest()
-                    ->take(8)
-                    ->get();
+            } elseif (session('admin_logged_in') && session('admin_email')) {
+                try {
+                    $adminUser = \App\Models\User::where('email', session('admin_email'))->first();
+                    if ($adminUser) {
+                        $userId = $adminUser->id;
+                    }
+                } catch (\Throwable $e) {
+                    $userId = null;
+                }
+            }
+
+            if ($userId !== null) {
+                try {
+                    $unreadCount = Notification::forUser($userId)->unread()->count();
+                    $latestNotifs = Notification::forUser($userId)
+                        ->latest()
+                        ->take(8)
+                        ->get();
+                } catch (\Throwable $e) {
+                    $unreadCount = 0;
+                    $latestNotifs = collect();
+                }
                 $view->with('_unreadCount', $unreadCount);
                 $view->with('_latestNotifs', $latestNotifs);
             } else {

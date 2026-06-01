@@ -21,11 +21,18 @@
     <div x-show="previewUrl" class="relative mb-3 rounded-xl overflow-hidden group h-40">
         <img :src="previewUrl" id="{{ $p }}_preview" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-            <button type="button" @click="$refs.fi.click()" class="bg-white text-gray-900 text-xs font-semibold px-4 py-2 rounded-xl hover:bg-gray-100 transition-all shadow-lg">
-                📷 Ganti
+            <button type="button" @click="$refs.fi.click()" class="bg-white text-gray-900 text-xs font-semibold px-4 py-2 rounded-xl hover:bg-gray-100 transition-all shadow-lg flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-gray-900" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                    <circle cx="12" cy="13" r="3"/>
+                </svg>
+                <span>Ganti</span>
             </button>
-            <button type="button" @click="remove()" class="bg-red-500 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-red-600 transition-all shadow-lg">
-                🗑️ Hapus
+            <button type="button" @click="remove()" class="bg-red-500 text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-red-650 transition-all shadow-lg flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                <span>Hapus</span>
             </button>
         </div>
     </div>
@@ -44,8 +51,11 @@
             </div>
             <p class="text-sm font-medium text-gray-600 dark:text-slate-400">Klik atau drag & drop gambar</p>
             <p class="text-xs text-gray-400">PNG, JPG, WEBP — Maks. 5MB</p>
-            <button type="button" class="mt-1 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">
-                📁 Pilih Gambar
+            <button type="button" class="mt-1 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 mx-auto">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                <span>Pilih Gambar</span>
             </button>
         </div>
     </div>
@@ -74,11 +84,11 @@
         <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Kategori <span class="text-red-500">*</span></label>
         <select id="{{ $p }}_category" name="category" required
             class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none">
-            <option value="makanan">🍔 Makanan</option>
-            <option value="minuman">🥤 Minuman</option>
-            <option value="dessert">🍰 Dessert</option>
-            <option value="snack">🍟 Snack</option>
-            <option value="paket">📦 Paket</option>
+            <option value="makanan">Makanan</option>
+            <option value="minuman">Minuman</option>
+            <option value="dessert">Dessert</option>
+            <option value="snack">Snack</option>
+            <option value="paket">Paket</option>
         </select>
     </div>
     <div>
@@ -106,9 +116,9 @@
         <select id="{{ $p }}_label" name="label"
             class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none">
             <option value="">Tidak ada</option>
-            <option value="best-seller">🔥 Best Seller</option>
-            <option value="new">✨ Baru</option>
-            <option value="popular">⭐ Popular</option>
+            <option value="best-seller">Best Seller</option>
+            <option value="new">Baru</option>
+            <option value="popular">Populer</option>
         </select>
     </div>
 </div>

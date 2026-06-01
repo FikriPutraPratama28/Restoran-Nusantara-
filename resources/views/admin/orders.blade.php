@@ -28,7 +28,7 @@
         return {selesai:'bg-emerald-100 text-emerald-700',dimasak:'bg-orange-100 text-orange-700',diproses:'bg-blue-100 text-blue-700',dikirim:'bg-cyan-100 text-cyan-700',menunggu:'bg-yellow-100 text-yellow-700'}[s] || 'bg-gray-100 text-gray-600';
     },
     statusLabel(s) {
-        return {selesai:'✅ Selesai',dimasak:'👨‍🍳 Dimasak',diproses:'⚙️ Diproses',dikirim:'🛵 Dikirim',menunggu:'⏳ Menunggu'}[s] || s;
+        return {selesai:'Selesai',dimasak:'Dimasak',diproses:'Diproses',dikirim:'Dikirim',menunggu:'Menunggu'}[s] || s;
     },
     formatPrice(p) { return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',minimumFractionDigits:0}).format(p); }
 }">

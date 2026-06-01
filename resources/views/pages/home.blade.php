@@ -934,11 +934,17 @@
             <h3 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-2">Tim <span class="gradient-text">Kami</span></h3>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach([['name'=>'Pak Budi','role'=>'Head Chef','emoji'=>'👨‍🍳','color'=>'from-orange-400 to-red-500'],['name'=>'Bu Sari','role'=>'Pastry Chef','emoji'=>'👩‍🍳','color'=>'from-pink-400 to-purple-500'],['name'=>'Mas Andi','role'=>'Barista','emoji'=>'☕','color'=>'from-amber-400 to-orange-500'],['name'=>'Mbak Rina','role'=>'Manager','emoji'=>'👩‍💼','color'=>'from-blue-400 to-cyan-500']] as $m)
+            @foreach($team as $m)
             <div class="card p-6 text-center card-hover" x-data x-intersect="$el.classList.add('animate-slide-up')">
-                <div class="w-20 h-20 bg-gradient-to-br {{ $m['color'] }} rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">{{ $m['emoji'] }}</div>
-                <h4 class="font-bold text-gray-900 dark:text-white">{{ $m['name'] }}</h4>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $m['role'] }}</p>
+                @if($m->image_src)
+                    <img src="{{ $m->image_src }}" alt="{{ $m->name }}" class="w-20 h-20 rounded-2xl object-cover mx-auto mb-4 shadow-lg">
+                @else
+                    <div class="w-20 h-20 bg-gradient-to-br {{ $m->gradient }} rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-4 shadow-lg">
+                        {{ $m->emoji ?: strtoupper(substr($m->name, 0, 2)) }}
+                    </div>
+                @endif
+                <h4 class="font-bold text-gray-900 dark:text-white">{{ $m->name }}</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $m->role }}</p>
             </div>
             @endforeach
         </div>
@@ -1169,37 +1175,27 @@
 
         {{-- Facility Cards --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            @php
-            $facilities = [
-                ['icon'=>'❄️','title'=>'Ruang Ber-AC','desc'=>'Ruangan indoor nyaman dengan pendingin udara modern untuk kenyamanan maksimal','img'=>'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&h=300&fit=crop','tag'=>'Indoor'],
-                ['icon'=>'🌿','title'=>'Taman Outdoor','desc'=>'Area outdoor asri dengan taman hijau, cocok untuk bersantai sambil menikmati udara segar','img'=>'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&h=300&fit=crop','tag'=>'Outdoor'],
-                ['icon'=>'📶','title'=>'Free WiFi','desc'=>'Koneksi internet cepat tersedia di seluruh area restoran, kecepatan hingga 100 Mbps','img'=>'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=500&h=300&fit=crop','tag'=>'Teknologi'],
-                ['icon'=>'🅿️','title'=>'Parkir Luas','desc'=>'Area parkir luas dan aman untuk kendaraan roda dua maupun roda empat','img'=>'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=500&h=300&fit=crop','tag'=>'Parkir'],
-                ['icon'=>'🎵','title'=>'Live Music','desc'=>'Hiburan live music setiap Jumat & Sabtu malam untuk menemani makan malam kamu','img'=>'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=300&fit=crop','tag'=>'Hiburan'],
-                ['icon'=>'👶','title'=>'Area Anak','desc'=>'Playground khusus anak-anak agar si kecil bisa bermain dengan aman dan menyenangkan','img'=>'https://images.unsplash.com/photo-1526634332515-d56c5fd16991?w=500&h=300&fit=crop','tag'=>'Keluarga'],
-                ['icon'=>'🎂','title'=>'Private Room','desc'=>'Ruang privat eksklusif untuk acara ulang tahun, anniversary, atau pertemuan bisnis','img'=>'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=500&h=300&fit=crop','tag'=>'VIP'],
-                ['icon'=>'♿','title'=>'Akses Difabel','desc'=>'Fasilitas ramah difabel dengan ramp, toilet khusus, dan area parkir prioritas','img'=>'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=500&h=300&fit=crop','tag'=>'Inklusif'],
-                ['icon'=>'🔒','title'=>'CCTV 24 Jam','desc'=>'Keamanan terjamin dengan sistem CCTV 24 jam dan petugas keamanan berpengalaman','img'=>'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=500&h=300&fit=crop','tag'=>'Keamanan'],
-            ];
-            @endphp
-
             @foreach($facilities as $f)
             <div class="card card-hover group overflow-hidden" x-data="{expanded: false}" x-intersect="$el.classList.add('animate-slide-up')">
                 {{-- Image --}}
                 <div class="relative h-44 overflow-hidden">
-                    <img src="{{ $f['img'] }}" alt="{{ $f['title'] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+                    <img src="{{ $f->image_src }}" alt="{{ $f->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    @if($f->tag)
                     <div class="absolute top-3 right-3">
-                        <span class="badge bg-white/20 backdrop-blur-sm text-white text-xs border border-white/30">{{ $f['tag'] }}</span>
+                        <span class="badge bg-white/20 backdrop-blur-sm text-white text-xs border border-white/30">{{ $f->tag }}</span>
                     </div>
+                    @endif
                     <div class="absolute bottom-3 left-3 flex items-center gap-2">
-                        <span class="text-2xl">{{ $f['icon'] }}</span>
-                        <h3 class="text-white font-bold">{{ $f['title'] }}</h3>
+                        <span class="text-white flex items-center justify-center">
+                            @include('components.facility-icon', ['icon' => $f->icon])
+                        </span>
+                        <h3 class="text-white font-bold">{{ $f->title }}</h3>
                     </div>
                 </div>
                 {{-- Content --}}
                 <div class="p-4">
-                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $f['desc'] }}</p>
+                    <p class="text-gray-650 dark:text-gray-400 text-sm leading-relaxed">{{ $f->description }}</p>
                 </div>
             </div>
             @endforeach

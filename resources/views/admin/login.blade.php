@@ -61,17 +61,38 @@
                     Dashboard lengkap untuk memantau pesanan, reservasi, menu, dan laporan bisnis restoran kamu secara real-time.
                 </p>
                 <div class="space-y-3">
-                    @foreach([
-                        ['icon'=>'📊','text'=>'Laporan & analitik real-time'],
-                        ['icon'=>'🛒','text'=>'Manajemen pesanan otomatis'],
-                        ['icon'=>'📅','text'=>'Sistem reservasi meja digital'],
-                        ['icon'=>'🍽️','text'=>'Kelola menu dengan mudah'],
-                    ] as $f)
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center text-base">{{ $f['icon'] }}</div>
-                        <span class="text-white/80 text-sm">{{ $f['text'] }}</span>
+                        <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/80 text-sm">Laporan & analitik real-time</span>
                     </div>
-                    @endforeach
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/80 text-sm">Manajemen pesanan otomatis</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/80 text-sm">Sistem reservasi meja digital</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <span class="text-white/80 text-sm">Kelola menu dengan mudah</span>
+                    </div>
                 </div>
             </div>
 
@@ -79,7 +100,7 @@
             <div class="grid grid-cols-3 gap-4">
                 @foreach([['val'=>'2.8K+','label'=>'Pesanan/bulan'],['val'=>'98%','label'=>'Kepuasan'],['val'=>'4.9★','label'=>'Rating']] as $s)
                 <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
-                    <div class="text-white font-bold text-xl">{{ $s['val'] }}</div>
+                    <div class="text-white font-bold text-xl font-jakarta">{{ $s['val'] }}</div>
                     <div class="text-white/50 text-xs mt-0.5">{{ $s['label'] }}</div>
                 </div>
                 @endforeach
@@ -108,28 +129,33 @@
                     </svg>
                 </div>
                 <div class="leading-none">
-                    <div class="text-white font-bold leading-tight">Restoran</div>
-                    <div class="font-bold tracking-widest text-[10px] uppercase leading-tight" style="color:#f97316; font-family:'Playfair Display',serif;">NUSANTARA</div>
+                    <div class="text-white font-bold leading-tight font-jakarta">Restoran</div>
+                    <div class="font-bold tracking-widest text-[10px] uppercase leading-tight font-jakarta" style="color:#f97316;">NUSANTARA</div>
                 </div>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-white text-3xl font-bold mb-2">Selamat Datang 👋</h2>
-                <p class="text-slate-400">Masuk ke dashboard admin restoran</p>
+                <h2 class="text-white text-3xl font-bold mb-2 font-jakarta">Selamat Datang</h2>
+                <p class="text-slate-400 font-medium text-sm">Masuk ke dashboard admin restoran</p>
             </div>
 
             {{-- Demo Credentials --}}
-            <div class="bg-violet-900/40 border border-violet-700/50 rounded-2xl p-4 mb-6">
-                <p class="text-violet-300 text-xs font-semibold mb-2">🔑 Demo Credentials</p>
+            <div class="bg-violet-950/40 border border-violet-800/40 rounded-2xl p-4 mb-6">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-3.5 h-3.5 text-violet-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                    </svg>
+                    <p class="text-violet-300 text-xs font-bold uppercase tracking-wider font-jakarta">Demo Credentials</p>
+                </div>
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-slate-300 text-sm">Email: <span class="text-violet-300 font-mono">admin@warung.id</span></p>
-                        <p class="text-slate-300 text-sm">Password: <span class="text-violet-300 font-mono">admin123</span></p>
+                        <p class="text-slate-300 text-sm font-medium">Email: <span class="text-violet-300 font-mono">admin@warung.id</span></p>
+                        <p class="text-slate-300 text-sm font-medium">Password: <span class="text-violet-300 font-mono">admin123</span></p>
                     </div>
                     {{-- Auto-fill button --}}
                     <button type="button"
                         onclick="document.getElementById('email').value='admin@warung.id'; document.getElementById('password').value='admin123';"
-                        class="text-xs bg-violet-600 hover:bg-violet-700 text-white px-3 py-1.5 rounded-lg transition-all">
+                        class="text-xs bg-violet-600 hover:bg-violet-700 text-white font-bold px-3 py-1.5 rounded-lg transition-all font-jakarta uppercase tracking-wider">
                         Isi Otomatis
                     </button>
                 </div>
@@ -137,11 +163,15 @@
 
             {{-- Error dari Laravel --}}
             @if ($errors->any())
-            <div class="bg-red-900/40 border border-red-700/50 rounded-2xl p-4 mb-5 flex items-start gap-3">
-                <span class="text-red-400 text-lg flex-shrink-0">⚠️</span>
+            <div class="bg-red-950/40 border border-red-800/40 rounded-2xl p-4 mb-5 flex items-start gap-3">
+                <div class="w-5 h-5 rounded-md bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
                 <div>
                     @foreach ($errors->all() as $error)
-                    <p class="text-red-300 text-sm">{{ $error }}</p>
+                    <p class="text-red-400 text-sm font-medium">{{ $error }}</p>
                     @endforeach
                 </div>
             </div>

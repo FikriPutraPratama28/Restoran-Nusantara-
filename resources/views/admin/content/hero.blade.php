@@ -63,8 +63,12 @@
         </div>
     </div>
     @empty
-    <div class="col-span-2 text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700">
-        <div class="text-5xl mb-3">🖼️</div>
+    <div class="col-span-2 text-center py-16 bg-admin-card rounded-2xl border border-slate-700/50">
+        <div class="w-16 h-16 bg-slate-800/50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-700/30 text-slate-500">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+        </div>
         <p class="text-gray-500 dark:text-slate-400">Belum ada slide. Tambahkan slide pertama!</p>
     </div>
     @endforelse
@@ -110,7 +114,11 @@
     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showDeleteModal=false"></div>
     <div class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm z-10 p-6 text-center">
-        <div class="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">🗑️</div>
+        <div class="w-14 h-14 bg-red-500/10 dark:bg-red-900/20 text-red-500 dark:text-red-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-500/10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+        </div>
         <h3 class="font-bold text-gray-900 dark:text-white text-lg mb-2">Hapus Slide?</h3>
         <p class="text-gray-500 dark:text-slate-400 text-sm mb-6">Slide ini akan dihapus permanen.</p>
         <div class="flex gap-3">

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\JadwalKerja;
 
 class User extends Authenticatable
 {
@@ -32,18 +31,6 @@ class User extends Authenticatable
         'is_active'         => 'boolean',
     ];
 
-    // ── Relasi ──────────────────────────────────────────────────────────
-
-    public function employee()
-    {
-        return $this->hasOne(Employee::class);
-    }
-
-    public function jadwalKerja()
-    {
-        return $this->hasMany(JadwalKerja::class);
-    }
-
     // ── Helper Role ──────────────────────────────────────────────────────
 
     public function isAdmin(): bool
@@ -51,23 +38,11 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public function isKaryawan(): bool
-    {
-        return $this->role === 'karyawan';
-    }
-
-    public function isPelanggan(): bool
-    {
-        return $this->role === 'pelanggan';
-    }
-
     // ── Permission ───────────────────────────────────────────────────────
 
     /**
      * Daftar permission per role.
      * Admin  : akses penuh ke semua fitur.
-     * Karyawan: hanya bisa lihat data, absen, dan ajukan cuti.
-     *           Tidak bisa: hapus data, edit konten admin, lihat laporan.
      */
     public function hasPermission(string $permission): bool
     {
@@ -75,16 +50,11 @@ class User extends Authenticatable
             'admin' => [
                 'delete_data',
                 'edit_menu',
-                'edit_employee',
                 'edit_content',
                 'view_reports',
                 'view_dashboard',
-                'manage_leaves',
                 'view_activity_log',
                 'clear_activity_log',
-            ],
-            'karyawan' => [
-                // karyawan tidak punya permission admin apapun
             ],
             'pelanggan' => [],
         ];
@@ -97,11 +67,6 @@ class User extends Authenticatable
     public function scopeAdmins($query)
     {
         return $query->where('role', 'admin');
-    }
-
-    public function scopeKaryawan($query)
-    {
-        return $query->where('role', 'karyawan');
     }
 
     public function scopePelanggan($query)

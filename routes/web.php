@@ -7,16 +7,15 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ContentController;
-use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
-use App\Http\Controllers\Karyawan\AttendanceController;
-use App\Http\Controllers\Karyawan\LeaveController;
+use App\Http\Controllers\ReservationController;
 
 // ── Frontend (Publik) ─────────────────────────────────────────────────────
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/menu', [PageController::class, 'menu'])->name('menu');
 Route::get('/reservasi', [PageController::class, 'reservation'])->name('reservation');
+Route::post('/reservasi', [ReservationController::class, 'store'])->name('reservation.store');
+Route::get('/reservasi/{code}', [ReservationController::class, 'receipt'])->name('reservation.receipt');
 Route::get('/promo',     [PageController::class, 'promo'])->name('promo');
 Route::get('/galeri',    fn() => redirect('/#galeri'))->name('gallery');
 Route::get('/fasilitas', fn() => redirect('/#fasilitas'))->name('facilities');
@@ -24,24 +23,11 @@ Route::get('/tentang',   [PageController::class, 'about'])->name('about');
 Route::get('/kontak',    [PageController::class, 'contact'])->name('contact');
 Route::get('/checkout',  [PageController::class, 'checkout'])->name('checkout');
 
-// ── Auth Multi-Role ───────────────────────────────────────────────────────
-Route::middleware('guest')->group(function () {
-    Route::get('/login',    [AuthController::class, 'loginPage'])->name('login');
-    Route::post('/login',   [AuthController::class, 'loginPost'])
-        ->name('login.post')
-        ->middleware('throttle.login');
-    Route::get('/register', [AuthController::class, 'registerPage'])->name('register');
-    Route::post('/register',[AuthController::class, 'registerPost'])
-        ->name('register.post')
-        ->middleware('throttle:10,1'); // maks 10 register per menit per IP
-});
+// ── Auth & Redirects ─────────────────────────────────────────────────────
+Route::redirect('/login', '/admin/login')->name('login');
 
-Route::middleware('auth')->group(function () {
-    Route::post('/logout',          [AuthController::class, 'logout'])->name('logout');
-    Route::get('/profile',          [AuthController::class, 'profile'])->name('profile');
-    Route::post('/profile/update',  [AuthController::class, 'profileUpdate'])->name('profile.update');
-
-    // ── Notifikasi (shared admin & karyawan) ─────────────────────────────
+// ── Notifikasi (Admin Only) ──────────────────────────────────────────────
+Route::middleware('admin')->group(function () {
     Route::get('/notifications',                        [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{notification}/read',   [NotificationController::class, 'markRead'])->name('notifications.read');
     Route::post('/notifications/read-all',              [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
@@ -64,6 +50,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/orders',       [DashboardController::class, 'orders'])->name('orders');
     Route::get('/customers',    [DashboardController::class, 'customers'])->name('customers');
     Route::get('/reservations', [DashboardController::class, 'reservations'])->name('reservations');
+    Route::patch('/reservations/{reservation}/status', [DashboardController::class, 'updateReservationStatus'])->name('reservations.status');
     Route::get('/reports',      [DashboardController::class, 'reports'])->name('reports')->middleware('permission:view_reports');
     Route::get('/settings',     [SettingsController::class, 'index'])->name('settings')->middleware('permission:view_reports');
     Route::post('/settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding')->middleware('permission:view_reports');
@@ -114,14 +101,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/content/gallery/{galleryImage}', [ContentController::class, 'galleryUpdate'])->name('content.gallery.update')->middleware('permission:edit_content');
     Route::delete('/content/gallery/{galleryImage}', [ContentController::class, 'galleryDestroy'])->name('content.gallery.destroy')->middleware('permission:delete_data');
 
-    // ── MANAJEMEN KARYAWAN ────────────────────────────────────────────────
-    Route::get('/employees',                       [EmployeeController::class, 'index'])->name('employees.index');
-    Route::get('/employees/create',                [EmployeeController::class, 'create'])->name('employees.create')->middleware('permission:edit_employee');
-    Route::post('/employees',                      [EmployeeController::class, 'store'])->name('employees.store')->middleware('permission:edit_employee');
-    Route::get('/employees/{employee}',            [EmployeeController::class, 'show'])->name('employees.show');
-    Route::get('/employees/{employee}/edit',       [EmployeeController::class, 'edit'])->name('employees.edit')->middleware('permission:edit_employee');
-    Route::put('/employees/{employee}',            [EmployeeController::class, 'update'])->name('employees.update')->middleware('permission:edit_employee');
-    Route::delete('/employees/{employee}',         [EmployeeController::class, 'destroy'])->name('employees.destroy')->middleware('permission:delete_data');
+    // Manajemen karyawan dinonaktifkan
 
     // Absensi (Admin) and Pengajuan Cuti routes removed per request
 

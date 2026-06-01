@@ -8,15 +8,27 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    private function getUserId()
+    {
+        if (Auth::check()) {
+            return Auth::id();
+        }
+        if (session('admin_logged_in') && session('admin_email')) {
+            $admin = \App\Models\User::where('email', session('admin_email'))->first();
+            return $admin ? $admin->id : null;
+        }
+        return null;
+    }
+
     /** Halaman semua notifikasi */
     public function index()
     {
-        $notifications = Notification::forUser(Auth::id())
+        $notifications = Notification::forUser($this->getUserId())
             ->latest()
             ->paginate(20);
 
         // Tandai semua sebagai dibaca saat halaman dibuka
-        Notification::forUser(Auth::id())->unread()->update(['read_at' => now()]);
+        Notification::forUser($this->getUserId())->unread()->update(['read_at' => now()]);
 
         return view('notifications.index', compact('notifications'));
     }
@@ -24,7 +36,7 @@ class NotificationController extends Controller
     /** Mark satu notifikasi sebagai dibaca (AJAX) */
     public function markRead(Notification $notification)
     {
-        abort_if($notification->user_id !== Auth::id(), 403);
+        abort_if($notification->user_id !== $this->getUserId(), 403);
         $notification->markAsRead();
 
         return response()->json(['success' => true]);
@@ -33,7 +45,7 @@ class NotificationController extends Controller
     /** Mark semua sebagai dibaca (AJAX) */
     public function markAllRead()
     {
-        Notification::forUser(Auth::id())->unread()->update(['read_at' => now()]);
+        Notification::forUser($this->getUserId())->unread()->update(['read_at' => now()]);
 
         return response()->json(['success' => true, 'message' => 'Semua notifikasi ditandai dibaca.']);
     }
@@ -41,7 +53,7 @@ class NotificationController extends Controller
     /** Hapus satu notifikasi */
     public function destroy(Notification $notification)
     {
-        abort_if($notification->user_id !== Auth::id(), 403);
+        abort_if($notification->user_id !== $this->getUserId(), 403);
         $notification->delete();
 
         return back()->with('success', 'Notifikasi dihapus.');
@@ -50,8 +62,8 @@ class NotificationController extends Controller
     /** API: ambil jumlah unread (untuk polling) */
     public function unreadCount()
     {
-        $count = Notification::forUser(Auth::id())->unread()->count();
-        $latest = Notification::forUser(Auth::id())->unread()->latest()->take(5)->get();
+        $count = Notification::forUser($this->getUserId())->unread()->count();
+        $latest = Notification::forUser($this->getUserId())->unread()->latest()->take(5)->get();
 
         return response()->json([
             'count'    => $count,

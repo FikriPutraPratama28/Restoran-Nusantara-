@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Employee;
-use App\Models\Attendance;
-use App\Models\LeaveRequest;
 use App\Models\Menu;
 use App\Models\Promo;
 use App\Models\Reservation;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -71,57 +69,73 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $activeReservations = Reservation::where('status', '!=', 'cancelled')->get();
+        $totalRevenue = $activeReservations->sum(function($r) { return $r->total_price; });
+
         // ── KPI Stats ────────────────────────────────────────────────────
         $stats = [
             'total_pelanggan'       => User::where('role', 'pelanggan')->count(),
             'pelanggan_bulan_ini'   => User::where('role', 'pelanggan')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
-            'total_karyawan'        => Employee::count(),
-            'karyawan_aktif'        => Employee::where('status', 'aktif')->count(),
-            'hadir_hari_ini'        => Attendance::whereDate('date', today())->whereIn('status', ['hadir', 'terlambat'])->count(),
-            'terlambat_hari_ini'    => Attendance::whereDate('date', today())->where('status', 'terlambat')->count(),
-            'cuti_menunggu'         => LeaveRequest::where('status', 'menunggu')->count(),
             'total_menu_aktif'      => Menu::where('is_active', true)->count(),
             'menu_habis'            => Menu::where('is_stock', false)->where('is_active', true)->count(),
-            'total_transaksi'       => Menu::sum('sold_count'),
+            'total_transaksi'       => $activeReservations->count(),
+            'total_pendapatan'      => $totalRevenue,
             'promo_aktif'           => Promo::where('is_active', true)->count(),
         ];
 
-        // ── Grafik Penjualan 7 Hari (berdasarkan sold_count per kategori) ─
-        // Karena tidak ada tabel orders, kita simulasikan dari sold_count menu
-        // dengan distribusi per hari menggunakan seed dari data nyata
-        $totalSold = max($stats['total_transaksi'], 1);
+        // ── Grafik Penjualan 7 Hari berdasarkan riil data ────────────────
         $chartData = [];
         for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i);
-            // Distribusi realistis: weekend lebih tinggi
-            $dayOfWeek = $date->dayOfWeek; // 0=Sun, 6=Sat
-            $multiplier = in_array($dayOfWeek, [0, 5, 6]) ? 1.4 : 1.0;
-            $base = round(($totalSold / 30) * $multiplier);
+            $dateObj = Carbon::now()->subDays($i);
+            $dateStr = $dateObj->toDateString();
+            
+            $dayReservations = Reservation::whereDate('reservation_date', $dateStr)
+                ->where('status', '!=', 'cancelled')
+                ->get();
+            
+            $itemsCount = 0;
+            $revenue = 0;
+            foreach ($dayReservations as $r) {
+                if (is_array($r->ordered_items)) {
+                    foreach ($r->ordered_items as $item) {
+                        $itemsCount += $item['qty'] ?? 0;
+                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
+                    }
+                }
+            }
+            
             $chartData[] = [
-                'day'   => $date->translatedFormat('D'),
-                'date'  => $date->format('d/m'),
-                'value' => max($base, 0),
-                'rev'   => 'Rp ' . number_format($base * 35000, 0, ',', '.'), // estimasi avg Rp35k/item
+                'day'   => $dateObj->translatedFormat('D'),
+                'date'  => $dateObj->format('d/m'),
+                'value' => $itemsCount,
+                'rev_num'=> $revenue,
+                'rev'   => 'Rp ' . number_format($revenue, 0, ',', '.'),
             ];
         }
         $maxChart = (int) max(max(array_column($chartData, 'value')), 1);
 
-        // ── Top Menu (real dari sold_count) ──────────────────────────────
-        $topMenus = Menu::where('is_active', true)
-            ->orderBy('sold_count', 'desc')
-            ->take(5)
-            ->get();
+        // ── Top Menu (dinamis berdasarkan order) ─────────────────────────
+        $menuCounts = [];
+        foreach ($activeReservations as $res) {
+            if (is_array($res->ordered_items)) {
+                foreach ($res->ordered_items as $item) {
+                    $menuId = $item['id'];
+                    $qty = $item['qty'] ?? 0;
+                    $menuCounts[$menuId] = ($menuCounts[$menuId] ?? 0) + $qty;
+                }
+            }
+        }
+        arsort($menuCounts);
+        $topMenuIds = array_keys(array_slice($menuCounts, 0, 5, true));
+        $topMenus = Menu::whereIn('id', $topMenuIds)->get();
+        foreach ($topMenus as $menu) {
+            $menu->sold_count = $menuCounts[$menu->id] ?? 0;
+        }
+        $topMenus = $topMenus->sortByDesc('sold_count');
+        if ($topMenus->isEmpty()) {
+            $topMenus = Menu::where('is_active', true)->orderBy('sold_count', 'desc')->take(5)->get();
+        }
         $maxSold = $topMenus->max('sold_count') ?: 1;
-
-        // ── Absensi breakdown hari ini ────────────────────────────────────
-        $attendanceToday = Attendance::whereDate('date', today())
-            ->selectRaw('status, count(*) as total')
-            ->groupBy('status')
-            ->pluck('total', 'status')
-            ->toArray();
-
-        // ── Karyawan terbaru ──────────────────────────────────────────────
-        $latestEmployees = Employee::with('user')->latest()->take(4)->get();
 
         // ── Distribusi menu per kategori ──────────────────────────────────
         $menuByCategory = Menu::where('is_active', true)
@@ -130,18 +144,13 @@ class DashboardController extends Controller
             ->pluck('total', 'category')
             ->toArray();
 
-        // ── Cuti pending terbaru ──────────────────────────────────────────
-        $pendingLeaves = LeaveRequest::with('employee.user')
-            ->where('status', 'menunggu')
-            ->latest()
-            ->take(5)
-            ->get();
+        // ── 5 Reservasi Terbaru ──────────────────────────────────────────
+        $recentReservations = Reservation::orderBy('created_at', 'desc')->take(5)->get();
 
         return view('admin.dashboard', compact(
             'stats', 'chartData', 'maxChart',
             'topMenus', 'maxSold',
-            'attendanceToday', 'latestEmployees',
-            'menuByCategory', 'pendingLeaves'
+            'menuByCategory', 'recentReservations'
         ));
     }
 
@@ -180,6 +189,30 @@ class DashboardController extends Controller
         
         return view('admin.reservations', compact('reservations', 'stats'));
     }
+
+    /**
+     * Update reservation status from admin area
+     */
+    public function updateReservationStatus(Request $request, Reservation $reservation)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,confirmed,completed,cancelled',
+        ]);
+
+        $oldStatus = $reservation->status;
+        $reservation->update(['status' => $validated['status']]);
+
+        // Log activity
+        ActivityLog::log(
+            'update_reservation_status',
+            'Reservation',
+            "Mengubah status reservasi " . ($reservation->reservation_code ?? '#RES-' . $reservation->id) . " dari {$oldStatus} menjadi {$validated['status']}",
+            $reservation
+        );
+
+        return redirect()->back()->with('success', 'Status reservasi berhasil diperbarui menjadi ' . ucfirst($validated['status']));
+    }
+
     public function reports(Request $request)
     {
         $tab   = $request->get('tab', 'penjualan');
@@ -187,60 +220,120 @@ class DashboardController extends Controller
         $year  = (int) $request->get('year', now()->year);
         $range = $request->get('range', 'bulanan'); // harian|mingguan|bulanan
 
-        // ── A. LAPORAN PENJUALAN ──────────────────────────────────────────
+        // ── A. LAPORAN PENJUALAN (Real Data) ──────────────────────────────
         // Harian: 7 hari terakhir
         $salesHarian = [];
         for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i);
-            $dow  = $date->dayOfWeek;
-            $mult = in_array($dow, [0, 5, 6]) ? 1.4 : 1.0;
-            $base = (int) round((Menu::sum('sold_count') / 30) * $mult);
+            $dateObj = Carbon::now()->subDays($i);
+            $dateStr = $dateObj->toDateString();
+            $dayReservations = Reservation::whereDate('reservation_date', $dateStr)
+                ->where('status', '!=', 'cancelled')
+                ->get();
+            $itemsCount = 0;
+            $revenue = 0;
+            foreach ($dayReservations as $r) {
+                if (is_array($r->ordered_items)) {
+                    foreach ($r->ordered_items as $item) {
+                        $itemsCount += $item['qty'] ?? 0;
+                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
+                    }
+                }
+            }
             $salesHarian[] = [
-                'label' => $date->translatedFormat('D, d M'),
-                'short' => $date->translatedFormat('D'),
-                'date'  => $date->format('d/m'),
-                'items' => $base,
-                'rev'   => $base * 35000,
+                'label' => $dateObj->translatedFormat('D, d M'),
+                'short' => $dateObj->translatedFormat('D'),
+                'date'  => $dateObj->format('d/m'),
+                'items' => $itemsCount,
+                'rev'   => $revenue,
             ];
         }
 
         // Mingguan: 4 minggu terakhir
         $salesMingguan = [];
         for ($i = 3; $i >= 0; $i--) {
-            $start = Carbon::now()->startOfWeek()->subWeeks($i);
-            $end   = $start->copy()->endOfWeek();
-            $days  = 7;
-            $base  = (int) round((Menu::sum('sold_count') / 4) * (1 + ($i === 0 ? 0.1 : 0)));
+            $startObj = Carbon::now()->startOfWeek()->subWeeks($i);
+            $endObj   = $startObj->copy()->endOfWeek();
+            $weekReservations = Reservation::whereBetween('reservation_date', [$startObj->toDateString(), $endObj->toDateString()])
+                ->where('status', '!=', 'cancelled')
+                ->get();
+            $itemsCount = 0;
+            $revenue = 0;
+            foreach ($weekReservations as $r) {
+                if (is_array($r->ordered_items)) {
+                    foreach ($r->ordered_items as $item) {
+                        $itemsCount += $item['qty'] ?? 0;
+                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
+                    }
+                }
+            }
             $salesMingguan[] = [
-                'label' => $start->format('d M') . ' – ' . $end->format('d M'),
+                'label' => $startObj->format('d M') . ' – ' . $endObj->format('d M'),
                 'short' => 'Minggu ' . (4 - $i),
-                'items' => $base,
-                'rev'   => $base * 35000,
+                'items' => $itemsCount,
+                'rev'   => $revenue,
             ];
         }
 
         // Bulanan: 6 bulan terakhir
         $salesBulanan = [];
         for ($i = 5; $i >= 0; $i--) {
-            $date  = Carbon::now()->subMonths($i);
-            $base  = (int) round(Menu::sum('sold_count') / 6);
+            $dateObj = Carbon::now()->subMonths($i);
+            $monthReservations = Reservation::whereMonth('reservation_date', $dateObj->month)
+                ->whereYear('reservation_date', $dateObj->year)
+                ->where('status', '!=', 'cancelled')
+                ->get();
+            $itemsCount = 0;
+            $revenue = 0;
+            foreach ($monthReservations as $r) {
+                if (is_array($r->ordered_items)) {
+                    foreach ($r->ordered_items as $item) {
+                        $itemsCount += $item['qty'] ?? 0;
+                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
+                    }
+                }
+            }
             $salesBulanan[] = [
-                'label' => $date->translatedFormat('F Y'),
-                'short' => $date->translatedFormat('M'),
-                'items' => $base,
-                'rev'   => $base * 35000,
+                'label' => $dateObj->translatedFormat('F Y'),
+                'short' => $dateObj->translatedFormat('M'),
+                'items' => $itemsCount,
+                'rev'   => $revenue,
             ];
         }
 
-        // Top menu terlaris
-        $topMenus = Menu::where('is_active', true)
-            ->orderBy('sold_count', 'desc')
-            ->take(10)
-            ->get();
+        // Top menu terlaris (dinamis berdasarkan order)
+        $allReservations = Reservation::where('status', '!=', 'cancelled')->get();
+        $menuCounts = [];
+        foreach ($allReservations as $res) {
+            if (is_array($res->ordered_items)) {
+                foreach ($res->ordered_items as $item) {
+                    $menuId = $item['id'];
+                    $qty = $item['qty'] ?? 0;
+                    $menuCounts[$menuId] = ($menuCounts[$menuId] ?? 0) + $qty;
+                }
+            }
+        }
+        arsort($menuCounts);
+        $topMenuIds = array_keys(array_slice($menuCounts, 0, 10, true));
+        $topMenus = Menu::whereIn('id', $topMenuIds)->get();
+        foreach ($topMenus as $menu) {
+            $menu->sold_count = $menuCounts[$menu->id] ?? 0;
+        }
+        $topMenus = $topMenus->sortByDesc('sold_count');
+        if ($topMenus->isEmpty()) {
+            $topMenus = Menu::where('is_active', true)->orderBy('sold_count', 'desc')->take(10)->get();
+        }
 
-        // Ringkasan penjualan
-        $totalItems   = Menu::sum('sold_count');
-        $totalRevEst  = $totalItems * 35000;
+        // Ringkasan penjualan riil
+        $totalItems   = 0;
+        $totalRevEst  = 0;
+        foreach ($allReservations as $res) {
+            if (is_array($res->ordered_items)) {
+                foreach ($res->ordered_items as $item) {
+                    $totalItems += $item['qty'] ?? 0;
+                    $totalRevEst += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
+                }
+            }
+        }
         $avgRating    = Menu::where('is_active', true)->avg('rating') ?? 0;
         $menuHabis    = Menu::where('is_stock', false)->where('is_active', true)->count();
 
@@ -270,82 +363,16 @@ class DashboardController extends Controller
 
         $reservasiHarian = [];
         for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i);
+            $dateObj = Carbon::now()->subDays($i);
             $count = Schema::hasTable('reservations')
-                ? Reservation::whereDate('reservation_date', $date)->count()
+                ? Reservation::whereDate('reservation_date', $dateObj->toDateString())->count()
                 : 0;
             $reservasiHarian[] = [
-                'short' => $date->translatedFormat('D'),
-                'date'  => $date->format('d/m'),
+                'short' => $dateObj->translatedFormat('D'),
+                'date'  => $dateObj->format('d/m'),
                 'total' => $count,
             ];
         }
-
-        // ── C. LAPORAN ABSENSI ────────────────────────────────────────────
-        $attendances = Attendance::with('employee.user')
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->get();
-
-        $absensiStats = [
-            'hadir'     => $attendances->whereIn('status', ['hadir','terlambat'])->count(),
-            'terlambat' => $attendances->where('status', 'terlambat')->count(),
-            'izin'      => $attendances->where('status', 'izin')->count(),
-            'sakit'     => $attendances->where('status', 'sakit')->count(),
-            'alpha'     => $attendances->where('status', 'alpha')->count(),
-            'avg_late'  => round($attendances->where('status', 'terlambat')->avg('late_minutes') ?? 0),
-        ];
-
-        $employees = Employee::with('user')->where('status', 'aktif')->get();
-
-        // Per karyawan
-        $absensiPerKaryawan = $employees->map(function ($emp) use ($attendances) {
-            $empAtt = $attendances->where('employee_id', $emp->id);
-            return [
-                'employee' => $emp,
-                'hadir'    => $empAtt->whereIn('status', ['hadir','terlambat'])->count(),
-                'terlambat'=> $empAtt->where('status', 'terlambat')->count(),
-                'izin'     => $empAtt->where('status', 'izin')->count(),
-                'sakit'    => $empAtt->where('status', 'sakit')->count(),
-                'alpha'    => $empAtt->where('status', 'alpha')->count(),
-                'avg_late' => round($empAtt->where('status', 'terlambat')->avg('late_minutes') ?? 0),
-            ];
-        })->sortByDesc('hadir')->values();
-
-        // Trend absensi 7 hari terakhir
-        $absensiTrend = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date  = Carbon::now()->subDays($i);
-            $dayAtt = Attendance::whereDate('date', $date)->get();
-            $absensiTrend[] = [
-                'short'     => $date->translatedFormat('D'),
-                'date'      => $date->format('d/m'),
-                'hadir'     => $dayAtt->whereIn('status', ['hadir','terlambat'])->count(),
-                'terlambat' => $dayAtt->where('status', 'terlambat')->count(),
-                'alpha'     => Employee::where('status','aktif')->count() - $dayAtt->count(),
-            ];
-        }
-
-        // ── D. LAPORAN CUTI ───────────────────────────────────────────────
-        $leaves = LeaveRequest::with('employee.user')
-            ->whereMonth('start_date', $month)
-            ->whereYear('start_date', $year)
-            ->get();
-
-        $cutiStats = [
-            'total'     => $leaves->count(),
-            'disetujui' => $leaves->where('status', 'disetujui')->count(),
-            'menunggu'  => $leaves->where('status', 'menunggu')->count(),
-            'ditolak'   => $leaves->where('status', 'ditolak')->count(),
-            'total_hari'=> $leaves->where('status', 'disetujui')->sum('total_days'),
-        ];
-
-        $cutiByType = [
-            'cuti_tahunan' => $leaves->where('type', 'cuti_tahunan')->count(),
-            'sakit'        => $leaves->where('type', 'sakit')->count(),
-            'izin'         => $leaves->where('type', 'izin')->count(),
-            'cuti_khusus'  => $leaves->where('type', 'cuti_khusus')->count(),
-        ];
 
         return view('admin.reports', compact(
             'tab', 'month', 'year', 'range',
@@ -353,11 +380,7 @@ class DashboardController extends Controller
             'salesHarian', 'salesMingguan', 'salesBulanan',
             'topMenus', 'totalItems', 'totalRevEst', 'avgRating', 'menuHabis',
             // Reservasi
-            'reservasiStats', 'reservasiHarian',
-            // Absensi
-            'attendances', 'absensiStats', 'absensiPerKaryawan', 'absensiTrend', 'employees',
-            // Cuti
-            'leaves', 'cutiStats', 'cutiByType'
+            'reservasiStats', 'reservasiHarian'
         ));
     }
     public function settings()     { return view('admin.settings'); }

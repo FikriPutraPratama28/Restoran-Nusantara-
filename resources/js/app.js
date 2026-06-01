@@ -1,4 +1,4 @@
-﻿import './bootstrap';
+import './bootstrap';
 import Alpine from 'alpinejs';
 import intersect from '@alpinejs/intersect';
 import persist from '@alpinejs/persist';
@@ -376,15 +376,11 @@ Alpine.data('reservation', (dbMenus = []) => ({
     prevStep() { if (this.step > 1) this.step--; },
 
     async submit() {
-        if (!this.isAuthenticated) {
-            window.location.href = '/login?redirect=/#reservasi';
-            return;
-        }
         this.loading = true;
         this.message = '';
         try {
             const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            const response = await fetch('/api/reservations', {
+            const response = await fetch('/reservasi', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -401,6 +397,8 @@ Alpine.data('reservation', (dbMenus = []) => ({
                     notes: this.form.notes,
                     tableArea: this.form.tableArea,
                     tableNumber: this.form.tableNumber,
+                    paymentMethod: this.paymentMethod,
+                    items: this.selectedItems.map(item => ({ id: item.id, qty: item.qty })),
                 })
             });
             const data = await response.json();
@@ -408,7 +406,11 @@ Alpine.data('reservation', (dbMenus = []) => ({
                 this.message = data.message || 'Reservasi berhasil dibuat!';
                 this.messageType = 'success';
                 this.submitted = true;
-                setTimeout(() => window.location.href = '/', 2000);
+                if (data.redirect) {
+                    setTimeout(() => window.location.href = data.redirect, 1500);
+                } else {
+                    setTimeout(() => window.location.href = '/', 2000);
+                }
             } else {
                 this.message = data.message || 'Gagal membuat reservasi';
                 this.messageType = 'error';

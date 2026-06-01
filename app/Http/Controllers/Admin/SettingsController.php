@@ -19,7 +19,7 @@ class SettingsController extends Controller
             ['label' => 'Laravel Version', 'value' => app()->version()],
             ['label' => 'PHP Version',     'value' => PHP_VERSION],
             ['label' => 'Environment',     'value' => app()->environment()],
-            ['label' => 'Debug Mode',      'value' => config('app.debug') ? 'Aktif ⚠️' : 'Nonaktif ✅'],
+            ['label' => 'Debug Mode',      'value' => config('app.debug') ? 'Aktif' : 'Nonaktif'],
             ['label' => 'Timezone',        'value' => config('app.timezone')],
             ['label' => 'Database',        'value' => config('database.default') . ' — ' . config('database.connections.mysql.database')],
             ['label' => 'Cache Driver',    'value' => config('cache.default')],
@@ -28,12 +28,9 @@ class SettingsController extends Controller
         $admins = \App\Models\User::where('role', 'admin')->get();
 
         $dbStats = [
-            ['label' => 'Total Users',    'value' => \App\Models\User::count(),         'icon' => '👤'],
-            ['label' => 'Total Karyawan', 'value' => \App\Models\Employee::count(),      'icon' => '👨‍💼'],
-            ['label' => 'Total Absensi',  'value' => \App\Models\Attendance::count(),    'icon' => '📍'],
-            ['label' => 'Total Cuti',     'value' => \App\Models\LeaveRequest::count(),  'icon' => '🏖️'],
-            ['label' => 'Total Menu',     'value' => \App\Models\Menu::count(),          'icon' => '🍽️'],
-            ['label' => 'Total Promo',    'value' => \App\Models\Promo::count(),         'icon' => '🎁'],
+            ['label' => 'Total Users',    'value' => \App\Models\User::count(),         'icon' => 'users'],
+            ['label' => 'Total Menu',     'value' => \App\Models\Menu::count(),          'icon' => 'menu'],
+            ['label' => 'Total Promo',    'value' => \App\Models\Promo::count(),         'icon' => 'promo'],
         ];
 
         return view('admin.settings', compact('settings', 'sysInfo', 'admins', 'dbStats'));

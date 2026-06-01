@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
@@ -18,14 +19,38 @@ class ReservationController extends Controller
             'guests' => 'required|integer|min:1|max:50',
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'notes' => 'nullable|string|max:1000',
             'tableArea' => 'required|in:indoor,outdoor',
+            'tableNumber' => 'required|string|max:20',
+            'paymentMethod' => 'required|in:cash,qris,va',
+            'items' => 'required|array|min:1',
+            'items.*.id' => 'required|integer|exists:menus,id',
+            'items.*.qty' => 'required|integer|min:1',
         ]);
 
         try {
+            // Resolve menus from DB
+            $menuIds = collect($validated['items'])->pluck('id')->toArray();
+            $menus = \App\Models\Menu::whereIn('id', $menuIds)->get()->keyBy('id');
+
+            $orderedItems = [];
+            foreach ($validated['items'] as $item) {
+                $menu = $menus->get($item['id']);
+                if ($menu) {
+                    $orderedItems[] = [
+                        'id' => $menu->id,
+                        'name' => $menu->name,
+                        'price' => (int) $menu->price,
+                        'qty' => (int) $item['qty'],
+                        'image' => $menu->image,
+                    ];
+                }
+            }
+
             $reservation = Reservation::create([
                 'user_id' => auth()->id(),
+                'reservation_code' => Reservation::generateCode(),
                 'reservation_date' => $validated['date'],
                 'reservation_time' => $validated['time'],
                 'number_of_guests' => $validated['guests'],
@@ -34,18 +59,24 @@ class ReservationController extends Controller
                 'customer_email' => $validated['email'],
                 'notes' => $validated['notes'],
                 'table_area' => $validated['tableArea'],
+                'table_number' => $validated['tableNumber'],
+                'payment_method' => $validated['paymentMethod'],
+                'ordered_items' => $orderedItems,
                 'status' => 'pending',
             ]);
 
             // Log activity
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['reservation_id' => $reservation->id])
-                ->log('Reservasi baru dibuat');
+            ActivityLog::log(
+                'create_reservation',
+                'Reservation',
+                "Reservasi baru dibuat oleh " . ($reservation->user_id ? $reservation->customer_name : 'Guest') . " untuk tanggal {$validated['date']} jam {$validated['time']}",
+                $reservation
+            );
 
             return response()->json([
                 'success' => true,
                 'message' => 'Reservasi berhasil dibuat! Admin akan mengkonfirmasi reservasi Anda dalam waktu singkat.',
+                'redirect' => route('reservation.receipt', ['code' => $reservation->reservation_code]),
                 'reservation' => $reservation,
             ], 201);
         } catch (\Exception $e) {
@@ -54,6 +85,15 @@ class ReservationController extends Controller
                 'message' => 'Gagal membuat reservasi: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Show reservation receipt/struk
+     */
+    public function receipt($code)
+    {
+        $reservation = Reservation::where('reservation_code', $code)->firstOrFail();
+        return view('pages.receipt', compact('reservation'));
     }
 
     /**
@@ -87,10 +127,12 @@ class ReservationController extends Controller
         try {
             $reservation->update(['status' => 'cancelled']);
 
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['reservation_id' => $reservation->id])
-                ->log('Reservasi dibatalkan');
+            ActivityLog::log(
+                'cancel_reservation',
+                'Reservation',
+                "Reservasi {$reservation->reservation_code} dibatalkan oleh " . (auth()->user() ? auth()->user()->name : 'Guest'),
+                $reservation
+            );
 
             return response()->json([
                 'success' => true,

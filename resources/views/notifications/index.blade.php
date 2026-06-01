@@ -1,8 +1,5 @@
 @php
-// Deteksi layout berdasarkan role user
-$isAdmin    = session('admin_logged_in') || (auth()->check() && auth()->user()->isAdmin());
-$isKaryawan = auth()->check() && auth()->user()->isKaryawan();
-$layout     = $isAdmin ? 'admin.layouts.app' : 'karyawan.layouts.app';
+$layout = 'admin.layouts.app';
 @endphp
 
 @extends($layout)

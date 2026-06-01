@@ -44,7 +44,15 @@
 <div class="grid grid-cols-3 gap-4">
     <div>
         <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Icon Emoji</label>
-        <input type="text" name="icon" :value="editPromo?.icon||'🎁'" placeholder="🎁" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none text-center text-xl">
+        <select name="icon" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none">
+            <option value="food" :selected="editPromo?.icon==='food' || editPromo?.icon==='🍔'">Makanan (Food)</option>
+            <option value="drink" :selected="editPromo?.icon==='drink' || editPromo?.icon==='🥤'">Minuman (Drink)</option>
+            <option value="dessert" :selected="editPromo?.icon==='dessert' || editPromo?.icon==='🎂'">Dessert</option>
+            <option value="user" :selected="editPromo?.icon==='user' || editPromo?.icon==='👤'">Pengguna Baru</option>
+            <option value="cashback" :selected="editPromo?.icon==='cashback' || editPromo?.icon==='🎉'">Cashback</option>
+            <option value="star" :selected="editPromo?.icon==='star' || editPromo?.icon==='⭐'">Member / Bintang</option>
+            <option value="promo" :selected="!editPromo || editPromo?.icon==='promo' || editPromo?.icon==='🎁'">Default Promo</option>
+        </select>
     </div>
     <div>
         <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Badge</label>
@@ -60,13 +68,13 @@
     <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Warna Gradient</label>
     <select name="gradient" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none">
         @foreach([
-            'from-primary-600 to-orange-500' => '🟠 Orange',
-            'from-purple-600 to-pink-500'    => '🟣 Purple-Pink',
-            'from-green-600 to-teal-500'     => '🟢 Green-Teal',
-            'from-blue-600 to-cyan-500'      => '🔵 Blue-Cyan',
-            'from-red-600 to-rose-500'       => '🔴 Red-Rose',
-            'from-yellow-500 to-amber-500'   => '🟡 Yellow-Amber',
-            'from-violet-600 to-purple-500'  => '💜 Violet',
+            'from-primary-600 to-orange-500' => 'Orange',
+            'from-purple-600 to-pink-500'    => 'Purple-Pink',
+            'from-green-600 to-teal-500'     => 'Green-Teal',
+            'from-blue-600 to-cyan-500'      => 'Blue-Cyan',
+            'from-red-600 to-rose-500'       => 'Red-Rose',
+            'from-yellow-500 to-amber-500'   => 'Yellow-Amber',
+            'from-violet-600 to-purple-500'  => 'Violet',
         ] as $val => $label)
         <option value="{{ $val }}" :selected="editPromo?.gradient==='{{ $val }}'">{{ $label }}</option>
         @endforeach
