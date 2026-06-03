@@ -90,19 +90,18 @@
                 Tim <span class="gradient-text">Kami</span>
             </h2>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach([
-                ['name' => 'Pak Budi', 'role' => 'Head Chef', 'emoji' => '👨‍🍳', 'color' => 'from-orange-400 to-red-500'],
-                ['name' => 'Bu Sari', 'role' => 'Pastry Chef', 'emoji' => '👩‍🍳', 'color' => 'from-pink-400 to-purple-500'],
-                ['name' => 'Mas Andi', 'role' => 'Barista', 'emoji' => '☕', 'color' => 'from-amber-400 to-orange-500'],
-                ['name' => 'Mbak Rina', 'role' => 'Manager', 'emoji' => '👩‍💼', 'color' => 'from-blue-400 to-cyan-500'],
-            ] as $member)
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($team as $m)
             <div class="card p-6 text-center card-hover" x-data x-intersect="$el.classList.add('animate-slide-up')">
-                <div class="w-20 h-20 bg-gradient-to-br {{ $member['color'] }} rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
-                    {{ $member['emoji'] }}
-                </div>
-                <h3 class="font-bold text-gray-900 dark:text-white">{{ $member['name'] }}</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $member['role'] }}</p>
+                @if($m->image_src)
+                    <img src="{{ $m->image_src }}" alt="{{ $m->name }}" class="w-20 h-20 rounded-2xl object-cover mx-auto mb-4 shadow-lg">
+                @else
+                    <div class="w-20 h-20 bg-gradient-to-br {{ $m->gradient }} rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-4 shadow-lg">
+                        {{ $m->emoji ?: strtoupper(substr($m->name, 0, 2)) }}
+                    </div>
+                @endif
+                <h3 class="font-bold text-gray-900 dark:text-white">{{ $m->name }}</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $m->role }}</p>
             </div>
             @endforeach
         </div>

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full" x-data x-bind:class="$store.theme.dark ? 'dark' : ''">
+<html lang="id" class="h-full">
 <head>
     <script>
-        if (localStorage.getItem('restaurant_dark_mode') === 'true' || (!('restaurant_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('_x_restaurant_dark_mode') === 'true' || 
+            localStorage.getItem('restaurant_dark_mode') === 'true' || 
+            (!('_x_restaurant_dark_mode' in localStorage) && !('restaurant_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');

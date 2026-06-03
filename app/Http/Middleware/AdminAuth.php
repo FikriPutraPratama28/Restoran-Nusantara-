@@ -15,6 +15,15 @@ class AdminAuth
     public function handle(Request $request, Closure $next): Response
     {
         $isAdminSession = session('admin_logged_in') === true;
+
+        if ($isAdminSession && !auth()->check()) {
+            $email = session('admin_email', 'admin@warung.id');
+            $user = \App\Models\User::where('email', $email)->first();
+            if ($user) {
+                auth()->login($user);
+            }
+        }
+
         $isAdminAuth    = auth()->check() && auth()->user()->role === 'admin';
 
         if (!$isAdminSession && !$isAdminAuth) {
