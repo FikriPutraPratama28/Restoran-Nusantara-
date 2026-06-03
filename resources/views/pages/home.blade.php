@@ -400,7 +400,7 @@
 {{-- ============================================================ --}}
 <section id="reservasi" class="section bg-white dark:bg-dark-800">
     <div class="container-custom">
-        <div class="max-w-3xl mx-auto" x-data='reservation(@json($menus ?? []))'>
+        <div class="max-w-3xl mx-auto scroll-mt-24" x-data='reservation(@json($menus ?? []))' x-ref="stepTop">
             <div class="text-center mb-10">
                 <span class="badge badge-primary mb-3">Reservasi Meja</span>
                 <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">Pesan Meja Sekarang</h2>
@@ -647,21 +647,23 @@
                                 </div>
                                 <span class="text-sm text-primary-600 font-semibold" x-text="selectedItems.length + ' item dipilih'"></span>
                             </div>
-                            <template x-for="menu in menus" :key="menu.id">
-                                <div class="border border-gray-200 dark:border-dark-700 rounded-2xl p-4 flex items-center gap-4">
-                                    <img :src="menu.image" alt="" class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="font-semibold text-gray-900 dark:text-white" x-text="menu.name"></div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 truncate" x-text="menu.description || 'Tanpa deskripsi tambahan'"></div>
-                                        <div class="text-sm font-bold text-primary-600 mt-2" x-text="formatPrice(menu.price)"></div>
+                            <div class="space-y-3 max-h-[420px] overflow-y-auto pr-2">
+                                <template x-for="menu in menus" :key="menu.id">
+                                    <div class="border border-gray-200 dark:border-dark-700 rounded-xl p-3 flex items-center gap-3">
+                                        <img :src="menu.image" alt="" class="w-14 h-14 rounded-lg object-cover flex-shrink-0">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="font-semibold text-gray-900 dark:text-white" x-text="menu.name"></div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 truncate" x-text="menu.description || 'Tanpa deskripsi tambahan'"></div>
+                                            <div class="text-sm font-bold text-primary-600 mt-1.5" x-text="formatPrice(menu.price)"></div>
+                                        </div>
+                                        <button @click="toggleMenu(menu)"
+                                            :class="selectedItems.find(i => i.id === menu.id) ? 'bg-primary-600 text-white hover:bg-primary-700' : 'bg-white dark:bg-dark-700 border border-gray-200 dark:border-dark-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50'"
+                                            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                                            <span x-text="selectedItems.find(i => i.id === menu.id) ? 'Tambah +1' : 'Pilih'"></span>
+                                        </button>
                                     </div>
-                                    <button @click="toggleMenu(menu)"
-                                        :class="selectedItems.find(i => i.id === menu.id) ? 'bg-primary-600 text-white hover:bg-primary-700' : 'bg-white dark:bg-dark-700 border border-gray-200 dark:border-dark-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50'"
-                                        class="px-4 py-2 rounded-xl text-sm font-semibold transition-all">
-                                        <span x-text="selectedItems.find(i => i.id === menu.id) ? 'Tambah +1' : 'Pilih'"></span>
-                                    </button>
-                                </div>
-                            </template>
+                                </template>
+                            </div>
                         </div>
 
                         <div class="space-y-4">

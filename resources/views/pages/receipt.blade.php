@@ -134,7 +134,7 @@
                     <div class="space-y-4 border-b border-gray-100 dark:border-dark-700 pb-6 mb-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <span class="text-gray-500 dark:text-gray-400 block text-xs">👤 Nama Lengkap</span>
+                                <span class="text-gray-500 dark:text-gray-400 block text-xs">Nama Lengkap</span>
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $reservation->customer_name }}</span>
                             </div>
                             <div>
@@ -152,7 +152,7 @@
 
                         @if($reservation->notes)
                         <div>
-                            <span class="text-gray-500 dark:text-gray-400 block text-xs">📝 Catatan Khusus</span>
+                            <span class="text-gray-500 dark:text-gray-400 block text-xs">Catatan Khusus</span>
                             <span class="text-sm text-gray-700 dark:text-gray-300 italic">"{{ $reservation->notes }}"</span>
                         </div>
                         @endif
@@ -218,7 +218,8 @@
             {{-- Action Buttons --}}
             <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center no-print">
                 <button onclick="window.print()" class="btn btn-primary flex-1 flex items-center justify-center gap-2 py-3">
-                    🖨️ Cetak Struk
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9V2h12v7M6 18h12v4H6v-4zm0-7h12a2 2 0 012 2v4H4v-4a2 2 0 012-2z"/></svg>
+                    Cetak Struk
                 </button>
                 <a href="{{ route('reservation') }}" class="btn btn-secondary flex-1 flex items-center justify-center gap-2 py-3">
                     Buat Reservasi Baru

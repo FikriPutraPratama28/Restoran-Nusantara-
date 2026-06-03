@@ -6,7 +6,7 @@
 
 <div class="pt-24 pb-10 bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-900 dark:to-dark-800">
     <div class="container-custom text-center">
-        <span class="badge badge-primary mb-3">🛒 Checkout</span>
+        <span class="badge badge-primary mb-3">Checkout</span>
         <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">
             Selesaikan <span class="gradient-text">Pesanan</span>
         </h1>
@@ -74,9 +74,9 @@
                     <h3 class="font-bold text-gray-900 dark:text-white mb-4 text-lg">Tipe Pesanan</h3>
                     <div class="grid grid-cols-3 gap-3">
                         @foreach([
-                            ['value' => 'dine-in', 'icon' => '🍽️', 'label' => 'Dine In'],
-                            ['value' => 'takeaway', 'icon' => '🥡', 'label' => 'Take Away'],
-                            ['value' => 'delivery', 'icon' => '🛵', 'label' => 'Delivery'],
+                            ['value' => 'dine-in', 'icon' => '<svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>', 'label' => 'Dine In'],
+                            ['value' => 'takeaway', 'icon' => '<svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18l-1.5 12.5a2 2 0 01-2 1.5H6.5a2 2 0 01-2-1.5L3 7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7V5a3 3 0 016 0v2"/></svg>', 'label' => 'Take Away'],
+                            ['value' => 'delivery', 'icon' => '<svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h11v10H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 9h4l3 3v5h-7V9z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="17.5" cy="17.5" r="1.5"/></svg>', 'label' => 'Delivery'],
                         ] as $type)
                         <button
                             @click="orderType = '{{ $type['value'] }}'"
@@ -85,7 +85,7 @@
                                 : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'"
                             class="p-4 rounded-xl border-2 text-center transition-all duration-200"
                         >
-                            <div class="text-2xl mb-1">{{ $type['icon'] }}</div>
+                            <div class="w-10 h-10 bg-primary-50 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mx-auto mb-2">{!! $type['icon'] !!}</div>
                             <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $type['label'] }}</div>
                         </button>
                         @endforeach
@@ -141,7 +141,9 @@
                                     :class="paymentMethod === 'qris-dana' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30' : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'">
                                     <input type="radio" x-model="paymentMethod" value="qris-dana" class="hidden">
                                     <div class="flex items-center gap-3">
-                                        <span class="text-2xl">💙</span>
+                                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M5 11h14M7 15h6"/></svg>
+                                        </div>
                                         <div>
                                             <div class="font-semibold text-gray-900 dark:text-white">DANA</div>
                                             <div class="text-xs text-gray-500 dark:text-gray-400">Bayar lewat DANA</div>
@@ -152,7 +154,9 @@
                                     :class="paymentMethod === 'qris-ovo' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30' : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'">
                                     <input type="radio" x-model="paymentMethod" value="qris-ovo" class="hidden">
                                     <div class="flex items-center gap-3">
-                                        <span class="text-2xl">💜</span>
+                                        <div class="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-600 flex items-center justify-center">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M5 11h14M7 15h6"/></svg>
+                                        </div>
                                         <div>
                                             <div class="font-semibold text-gray-900 dark:text-white">OVO</div>
                                             <div class="text-xs text-gray-500 dark:text-gray-400">Bayar lewat OVO</div>
@@ -163,7 +167,9 @@
                                     :class="paymentMethod === 'qris-gopay' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30' : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'">
                                     <input type="radio" x-model="paymentMethod" value="qris-gopay" class="hidden">
                                     <div class="flex items-center gap-3">
-                                        <span class="text-2xl">💚</span>
+                                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M5 11h14M7 15h6"/></svg>
+                                        </div>
                                         <div>
                                             <div class="font-semibold text-gray-900 dark:text-white">GoPay</div>
                                             <div class="text-xs text-gray-500 dark:text-gray-400">Bayar lewat GoPay</div>

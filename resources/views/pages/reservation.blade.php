@@ -5,7 +5,7 @@
 {{-- Header --}}
 <div class="pt-24 pb-10 bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-900 dark:to-dark-800">
     <div class="container-custom text-center">
-        <span class="badge badge-primary mb-3">📅 Reservasi</span>
+        <span class="badge badge-primary mb-3">Reservasi</span>
         <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-4">
             Booking <span class="gradient-text">Meja</span>
         </h1>
@@ -17,7 +17,7 @@
 
 <section class="section bg-gray-50 dark:bg-dark-900">
     <div class="container-custom">
-        <div class="max-w-3xl mx-auto" x-data='reservation(@json($menus ?? []))'>
+        <div class="max-w-3xl mx-auto scroll-mt-24" x-data='reservation(@json($menus ?? []))' x-ref="stepTop">
 
             {{-- Success State --}}
             <div x-show="submitted" class="text-center py-16 animate-fade-in">
@@ -39,7 +39,7 @@
                         #RES-{{ strtoupper(substr(md5(time()), 0, 8)) }}
                     </div>
                     <div class="mt-3 text-sm text-gray-600 dark:text-gray-400">
-                        🪑 <span x-text="getTableLabel(form.tableNumber)"></span>
+                        Meja <span x-text="getTableLabel(form.tableNumber)"></span>
                         &nbsp;·&nbsp; <span class="capitalize" x-text="form.tableArea"></span>
                     </div>
                 </div>
@@ -79,11 +79,11 @@
                     {{-- Date & Guests --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">📅 Tanggal Reservasi</label>
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Tanggal Reservasi</label>
                             <input x-model="form.date" type="date" :min="minDate" class="input">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">👥 Jumlah Tamu</label>
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Jumlah Tamu</label>
                             <div class="flex items-center gap-3">
                                 <button @click="form.guests = Math.max(1, form.guests - 1); form.tableNumber = null"
                                     class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-dark-700 flex items-center justify-center font-bold hover:bg-primary-100 dark:hover:bg-primary-900 transition-all">−</button>
@@ -97,7 +97,7 @@
 
                     {{-- Time Slots --}}
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">🕐 Pilih Jam</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Pilih Jam</label>
                         <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
                             <template x-for="time in timeSlots" :key="time">
                                 <button @click="form.time = time"
@@ -110,20 +110,20 @@
 
                     {{-- Area Duduk + Pilih Meja --}}
                     <div class="mb-8">
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">🪑 Area Duduk</label>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Area Duduk</label>
 
                         {{-- Pilih Area --}}
                         <div class="grid grid-cols-2 gap-3 mb-4">
                             @foreach([
-                                ['value' => 'indoor',  'icon' => '🏠', 'label' => 'Indoor',  'desc' => 'Ruangan ber-AC'],
-                                ['value' => 'outdoor', 'icon' => '🌿', 'label' => 'Outdoor', 'desc' => 'Taman terbuka'],
+                                ['value' => 'indoor',  'icon' => '<svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>', 'label' => 'Indoor',  'desc' => 'Ruangan ber-AC'],
+                                ['value' => 'outdoor', 'icon' => '<svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>', 'label' => 'Outdoor', 'desc' => 'Taman terbuka'],
                             ] as $area)
                             <button @click="selectArea('{{ $area['value'] }}')"
                                 :class="form.tableArea === '{{ $area['value'] }}'
                                     ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30'
                                     : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'"
                                 class="p-4 rounded-xl border-2 text-left transition-all duration-200">
-                                <div class="text-2xl mb-1">{{ $area['icon'] }}</div>
+                                <div class="w-8 h-8 bg-primary-50 dark:bg-primary-900/30 rounded-lg flex items-center justify-center mb-2">{!! $area['icon'] !!}</div>
                                 <div class="font-bold text-gray-900 dark:text-white text-sm">{{ $area['label'] }}</div>
                                 <div class="text-gray-500 dark:text-gray-400 text-xs">{{ $area['desc'] }}</div>
                             </button>
@@ -167,7 +167,7 @@
                                         <div class="text-base mb-0.5 font-bold text-gray-800 dark:text-white" x-text="table.label"></div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400" x-text="table.position"></div>
                                         <div class="flex items-center gap-1 mt-1">
-                                            <span class="text-[10px] text-gray-400">👥</span>
+                                            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                             <span class="text-[10px] text-gray-500 dark:text-gray-400" x-text="table.capacity + ' orang'"></span>
                                         </div>
                                         <div class="mt-1.5">
@@ -189,7 +189,7 @@
                             {{-- Info meja terpilih --}}
                             <div x-show="form.tableNumber" x-transition
                                 class="mt-3 flex items-center gap-2 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-xl px-4 py-2.5">
-                                <span class="text-primary-600 text-lg">🪑</span>
+                                <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16M6 10v8m12-8v8M8 6h8a2 2 0 012 2v2H6V8a2 2 0 012-2z"/></svg>
                                 <p class="text-sm text-primary-700 dark:text-primary-300 font-medium">
                                     Meja dipilih: <strong x-text="getTableLabel(form.tableNumber)"></strong>
                                 </p>
@@ -198,7 +198,7 @@
                             {{-- Peringatan tidak ada meja --}}
                             <div x-show="form.tableArea && currentTables.filter(t => isTableSelectable(t)).length === 0" x-transition
                                 class="mt-3 flex items-center gap-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl px-4 py-2.5">
-                                <span class="text-red-500 text-lg">⚠️</span>
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                                 <p class="text-sm text-red-700 dark:text-red-300">
                                     Tidak ada meja tersedia untuk <strong x-text="form.guests + ' orang'"></strong> di area ini.
                                     Coba kurangi jumlah tamu atau pilih area lain.
@@ -355,33 +355,33 @@
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Konfirmasi Reservasi</h2>
                     <div class="bg-gray-50 dark:bg-dark-700 rounded-xl p-6 mb-6 space-y-3">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">📅 Tanggal</span>
+                            <span class="text-gray-500 dark:text-gray-400">Tanggal</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.date"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">🕐 Jam</span>
+                            <span class="text-gray-500 dark:text-gray-400">Jam</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.time"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">👥 Jumlah Tamu</span>
+                            <span class="text-gray-500 dark:text-gray-400">Jumlah Tamu</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.guests + ' orang'"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">🏠 Area</span>
+                            <span class="text-gray-500 dark:text-gray-400">Area</span>
                             <span class="font-semibold text-gray-900 dark:text-white capitalize" x-text="form.tableArea"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">🪑 Meja</span>
+                            <span class="text-gray-500 dark:text-gray-400">Meja</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="getTableLabel(form.tableNumber)"></span>
                         </div>
                         <div class="border-t border-gray-200 dark:border-dark-600 pt-3">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500 dark:text-gray-400">👤 Nama</span>
+                                <span class="text-gray-500 dark:text-gray-400">Nama</span>
                                 <span class="font-semibold text-gray-900 dark:text-white" x-text="form.name"></span>
                             </div>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">📞 Telepon</span>
+                            <span class="text-gray-500 dark:text-gray-400">Telepon</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.phone"></span>
                         </div>
                     </div>
@@ -393,7 +393,8 @@
                             : 'bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-700/50 text-green-700 dark:text-green-300'"
                         class="mb-6 p-4 rounded-lg border">
                         <div class="flex items-start gap-3">
-                            <span class="text-xl" x-text="messageType === 'error' ? '❌' : '✅'"></span>
+                            <svg x-show="messageType === 'error'" class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <svg x-show="messageType !== 'error'" class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                             <span x-text="message"></span>
                         </div>
                     </div>
