@@ -61,22 +61,22 @@
         <template x-for="cat in categories" :key="cat">
             <button @click="activeCategory=cat"
                 :class="activeCategory===cat ? 'bg-violet-600 text-white shadow-md' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-gray-55 dark:hover:bg-slate-700/50'"
-                class="px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap border border-gray-150/10 transition-all capitalize"
+                class="px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap border border-gray-200/50 dark:border-white/10 transition-all capitalize"
                 x-text="cat==='all' ? 'Semua ('+menus.length+')' : cat">
             </button>
         </template>
     </div>
-    
+
     <div class="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
         <div class="relative flex-1 sm:flex-initial">
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
-            <input x-model="search" type="text" placeholder="Cari menu..." class="pl-9 pr-4 py-2.5 text-xs bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl text-gray-700 dark:text-slate-300 placeholder-slate-450 focus:ring-2 focus:ring-violet-500 outline-none w-full sm:w-48 font-semibold">
+            <input x-model="search" type="text" placeholder="Cari menu..." class="pl-9 pr-4 py-2.5 text-xs bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl text-gray-700 dark:text-slate-300 placeholder-gray-400 focus:ring-2 focus:ring-violet-500 outline-none w-full sm:w-48 font-semibold">
         </div>
         <div class="flex bg-gray-100 dark:bg-slate-700 rounded-2xl p-1">
-            <button @click="activeTab='grid'" :class="activeTab==='grid'?'bg-white dark:bg-slate-600 shadow-sm text-violet-600 dark:text-white':''" class="p-2 rounded-xl text-slate-400 hover:text-slate-655 transition-all">
+            <button @click="activeTab='grid'" :class="activeTab==='grid'?'bg-white dark:bg-slate-600 shadow-sm text-violet-600 dark:text-white':''" class="p-2 rounded-xl text-slate-400 hover:text-gray-600 transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
             </button>
-            <button @click="activeTab='list'" :class="activeTab==='list'?'bg-white dark:bg-slate-600 shadow-sm text-violet-600 dark:text-white':''" class="p-2 rounded-xl text-slate-400 hover:text-slate-655 transition-all">
+            <button @click="activeTab='list'" :class="activeTab==='list'?'bg-white dark:bg-slate-600 shadow-sm text-violet-600 dark:text-white':''" class="p-2 rounded-xl text-slate-400 hover:text-gray-600 transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             </button>
         </div>
@@ -110,7 +110,7 @@
                     <p class="text-xs text-gray-500 dark:text-slate-400 line-clamp-2 mb-4" x-text="m.description || 'Tidak ada deskripsi'"></p>
                 </div>
             </div>
-            
+
             <div class="p-4 pt-0">
                 <div class="flex items-center justify-between mb-4 border-t border-gray-100 dark:border-slate-700/50 pt-3">
                     <span class="text-violet-600 dark:text-violet-400 font-extrabold text-sm" x-text="formatPrice(m.price)"></span>
@@ -118,7 +118,7 @@
                 </div>
                 <div class="flex gap-2">
                     <button @click="canEdit && openEdit(m)" :disabled="!canEdit"
-                        :class="canEdit ? 'bg-violet-500/10 text-violet-650 hover:bg-violet-500/20 cursor-pointer' : 'bg-gray-100 dark:bg-slate-750 text-gray-400 cursor-not-allowed'"
+                        :class="canEdit ? 'bg-violet-500/10 text-violet-600 hover:bg-violet-500/20 cursor-pointer' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'"
                         class="flex-1 text-[10px] font-bold uppercase tracking-wider py-2 rounded-xl transition-all flex items-center justify-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         <span>Edit</span>
@@ -133,7 +133,7 @@
             </div>
         </div>
     </template>
-    
+
     <div x-show="filtered.length===0" class="col-span-full text-center py-20 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-3xl">
         <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
         <p class="text-sm font-semibold text-gray-500 dark:text-slate-400">Tidak ada menu ditemukan</p>
@@ -167,17 +167,17 @@
                     </td>
                     <td class="px-4 py-3.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider capitalize" x-text="m.category"></td>
                     <td class="px-4 py-3.5">
-                        <div class="text-sm font-extrabold text-violet-650 dark:text-violet-400" x-text="formatPrice(m.price)"></div>
+                        <div class="text-sm font-extrabold text-violet-600 dark:text-violet-400" x-text="formatPrice(m.price)"></div>
                         <div x-show="m.originalPrice" class="text-xs text-gray-400 dark:text-slate-500 line-through" x-text="m.originalPrice ? formatPrice(m.originalPrice) : ''"></div>
                     </td>
-                    <td class="px-4 py-3.5 text-xs font-bold text-gray-650 dark:text-slate-350" x-text="m.reviews + ' porsi'"></td>
+                    <td class="px-4 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400" x-text="m.reviews + ' porsi'"></td>
                     <td class="px-4 py-3.5">
-                        <span :class="m.isStock ? 'bg-emerald-100/70 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-red-100/70 text-red-650 dark:bg-red-900/20 dark:text-red-400'" class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" x-text="m.isStock ? 'Tersedia' : 'Habis'"></span>
+                        <span :class="m.isStock ? 'bg-emerald-100/70 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-red-100/70 text-red-600 dark:bg-red-900/20 dark:text-red-400'" class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" x-text="m.isStock ? 'Tersedia' : 'Habis'"></span>
                     </td>
                     <td class="px-6 py-3.5 text-right">
                         <div class="flex gap-1.5 justify-end">
                             <button @click="canEdit && openEdit(m)" :disabled="!canEdit"
-                                :class="canEdit ? 'bg-violet-500/10 text-violet-650 hover:bg-violet-500/20 cursor-pointer' : 'bg-gray-100 dark:bg-slate-750 text-gray-450 cursor-not-allowed'"
+                                :class="canEdit ? 'bg-violet-500/10 text-violet-600 hover:bg-violet-500/20 cursor-pointer' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'"
                                 class="w-8 h-8 rounded-xl flex items-center justify-center transition-all" title="Edit">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </button>
@@ -251,13 +251,13 @@
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showDeleteModal=false"></div>
     <div class="relative bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-sm z-10 p-6 text-center"
         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
-        
-        <div class="w-14 h-14 bg-red-500/10 dark:bg-red-900/20 text-red-650 dark:text-red-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
+
+        <div class="w-14 h-14 bg-red-500/10 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
         </div>
-        
+
         <h3 class="font-bold text-gray-900 dark:text-white text-lg mb-2">Hapus Menu?</h3>
-        <p class="text-gray-500 dark:text-slate-450 text-sm mb-6">
+        <p class="text-gray-500 dark:text-slate-400 text-sm mb-6">
             Menu "<strong x-text="deleteName" class="text-gray-900 dark:text-white"></strong>" akan dihapus secara permanen dari sistem.
         </p>
         <div class="flex gap-3">

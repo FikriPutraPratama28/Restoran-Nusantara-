@@ -2,8 +2,8 @@
 <html lang="id" class="h-full">
 <head>
     <script>
-        if (localStorage.getItem('_x_restaurant_dark_mode') === 'true' || 
-            localStorage.getItem('restaurant_dark_mode') === 'true' || 
+        if (localStorage.getItem('_x_restaurant_dark_mode') === 'true' ||
+            localStorage.getItem('restaurant_dark_mode') === 'true' ||
             (!('_x_restaurant_dark_mode' in localStorage) && !('restaurant_dark_mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
@@ -57,7 +57,7 @@
         </div>
         @endif
         <div class="leading-none">
-            <div class="font-bold text-slate-100 text-sm leading-tight font-jakarta">{{ $_site['restaurant_name'] ?? 'Restoran' }}</div>
+            <div class="font-bold text-gray-900 dark:text-slate-100 text-sm leading-tight font-jakarta">{{ $_site['restaurant_name'] ?? 'Restoran' }}</div>
             <div class="font-extrabold text-[10px] uppercase tracking-widest mt-0.5 font-jakarta" style="color: #f97316;">{{ $_site['restaurant_tagline'] ?? 'NUSANTARA' }}</div>
         </div>
         {{-- Close on mobile --}}
@@ -98,7 +98,7 @@
 
         @foreach($navGroups as $group)
         <div class="mb-5">
-            <p class="text-[9.5px] font-bold tracking-widest uppercase px-2 mb-2 text-slate-600">{{ $group['label'] }}</p>
+            <p class="text-[9.5px] font-bold tracking-widest uppercase px-2 mb-2 text-gray-400 dark:text-slate-600">{{ $group['label'] }}</p>
             @foreach($group['items'] as $item)
             @php
                 $isActive = request()->routeIs($item['route'])

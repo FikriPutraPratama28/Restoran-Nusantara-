@@ -50,7 +50,7 @@
                 @php
                     $reservationsCount = method_exists($reservations, 'total') ? $reservations->total() : $reservations->count();
                 @endphp
-                <span class="text-xs bg-violet-100 dark:bg-violet-900/30 text-violet-750 dark:text-violet-400 px-3 py-1 rounded-full font-bold">
+                <span class="text-xs bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 px-3 py-1 rounded-full font-bold">
                     {{ $reservationsCount }} reservasi
                 </span>
             </div>
@@ -110,7 +110,7 @@
                         @if(!empty($r->ordered_items))
                         <div class="mt-2 flex flex-wrap gap-1">
                             @foreach($r->ordered_items as $item)
-                                <span class="inline-flex items-center bg-gray-55 dark:bg-slate-750 text-gray-700 dark:text-slate-300 px-2.5 py-0.5 rounded-xl text-[10px] font-bold border border-gray-150/10">
+                                <span class="inline-flex items-center bg-gray-100 dark:bg-slate-700/50 text-gray-700 dark:text-slate-300 px-2.5 py-0.5 rounded-xl text-[10px] font-bold border border-gray-200 dark:border-slate-600/50">
                                     <svg class="w-2.5 h-2.5 text-slate-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                     {{ $item['name'] }} (x{{ $item['qty'] }})
                                 </span>
@@ -122,7 +122,7 @@
                         <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider {{ $status['class'] }}">
                             {{ $status['label'] }}
                         </span>
-                        
+
                         @if($r->status === 'pending')
                             <form action="{{ route('admin.reservations.status', $r->id) }}" method="POST" class="inline">
                                 @csrf
@@ -196,7 +196,7 @@
                 </div>
                 @endforeach
             </div>
-            
+
             <div class="space-y-2.5 text-xs">
                 @foreach([
                     ['color'=>'bg-emerald-500','label'=>'Tersedia','count'=>5],

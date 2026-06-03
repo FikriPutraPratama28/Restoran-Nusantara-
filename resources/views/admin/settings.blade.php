@@ -14,24 +14,24 @@
 {{-- Flash --}}
 @if(session('success_branding'))
 <div x-data="{show:true}" x-show="show" x-init="setTimeout(()=>show=false,4000)"
-    class="bg-emerald-950/20 border border-emerald-500/20 rounded-2xl p-4 flex items-center gap-3">
-    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+    class="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/20 rounded-2xl p-4 flex items-center gap-3">
+    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
         </svg>
     </div>
-    <p class="text-emerald-400 text-sm font-medium font-jakarta">{{ session('success_branding') }}</p>
+    <p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium font-jakarta">{{ session('success_branding') }}</p>
 </div>
 @endif
 @if(session('success_home'))
 <div x-data="{show:true}" x-show="show" x-init="setTimeout(()=>show=false,4000)"
-    class="bg-emerald-950/20 border border-emerald-500/20 rounded-2xl p-4 flex items-center gap-3">
-    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+    class="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/20 rounded-2xl p-4 flex items-center gap-3">
+    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
         </svg>
     </div>
-    <p class="text-emerald-400 text-sm font-medium font-jakarta">{{ session('success_home') }}</p>
+    <p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium font-jakarta">{{ session('success_home') }}</p>
 </div>
 @endif
 
@@ -40,7 +40,7 @@
     <button @click="tab = 'branding'"
         :class="tab === 'branding'
             ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/30 border-violet-600'
-            : 'bg-admin-card text-slate-400 border-slate-700 hover:border-violet-500/50'"
+            : 'bg-white dark:bg-admin-card text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:border-violet-500/50'"
         class="flex items-center gap-3 p-5 rounded-2xl border transition-all duration-200 text-left">
         <div :class="tab==='branding' ? 'bg-white/20 text-white' : 'bg-violet-950/30 text-violet-400'"
             class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -49,7 +49,7 @@
             </svg>
         </div>
         <div>
-            <p class="font-bold text-sm font-jakarta text-slate-100">Logo & Judul Restoran</p>
+            <p class="font-bold text-sm font-jakarta text-gray-900 dark:text-slate-100">Logo & Judul Restoran</p>
             <p :class="tab==='branding' ? 'text-violet-200' : 'text-slate-500'"
                 class="text-xs mt-0.5 font-medium">Nama, tagline, logo, warna</p>
         </div>
@@ -58,7 +58,7 @@
     <button @click="tab = 'home'"
         :class="tab === 'home'
             ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30 border-orange-500'
-            : 'bg-admin-card text-slate-400 border-slate-700 hover:border-orange-500/50'"
+            : 'bg-white dark:bg-admin-card text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700 hover:border-orange-500/50'"
         class="flex items-center gap-3 p-5 rounded-2xl border transition-all duration-200 text-left">
         <div :class="tab==='home' ? 'bg-white/20 text-white' : 'bg-orange-950/30 text-orange-400'"
             class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -67,7 +67,7 @@
             </svg>
         </div>
         <div>
-            <p class="font-bold text-sm font-jakarta text-slate-100">Tampilan Halaman Home</p>
+            <p class="font-bold text-sm font-jakarta text-gray-900 dark:text-slate-100">Tampilan Halaman Home</p>
             <p :class="tab==='home' ? 'text-orange-200' : 'text-slate-500'"
                 class="text-xs mt-0.5 font-medium">Gambar hero, judul, teks</p>
         </div>
@@ -86,16 +86,16 @@
         onFaviconChange(e) { const f=e.target.files[0]; if(f){this.faviconPreview=URL.createObjectURL(f);this.removeFavicon=false;} }
     }">
     @csrf
-    <div class="bg-admin-card rounded-2xl shadow-sm overflow-hidden" style="border: 1px solid rgba(255,255,255,0.07);">
-        <div class="flex items-center gap-3 px-6 py-4 border-b bg-gradient-to-r from-violet-900/20 to-purple-900/20" style="border-bottom-color: rgba(255,255,255,0.06);">
+    <div class="bg-white dark:bg-admin-card rounded-2xl shadow-sm overflow-hidden border border-gray-200 dark:border-white/[0.07]">
+        <div class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 dark:border-white/[0.06] bg-gradient-to-r from-violet-50 dark:from-violet-900/20 to-purple-50 dark:to-purple-900/20">
             <div class="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                 </svg>
             </div>
             <div>
-                <h3 class="font-bold text-slate-100 font-jakarta text-sm">Branding Restoran</h3>
-                <p class="text-xs text-slate-500 font-medium">Logo, nama, dan identitas visual</p>
+                <h3 class="font-bold text-gray-900 dark:text-slate-100 font-jakarta text-sm">Branding Restoran</h3>
+                    <p class="text-xs text-gray-500 dark:text-slate-500 font-medium">Logo, nama, dan identitas visual</p>
             </div>
         </div>
         <div class="p-6 space-y-5">
@@ -126,12 +126,12 @@
                 {{-- Logo --}}
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-jakarta">Logo <span class="text-[10px] font-normal text-slate-500">PNG/JPG/SVG, maks 2MB</span></label>
-                    <div class="border-2 border-dashed border-slate-700 hover:border-violet-500/50 rounded-2xl p-4 text-center transition-colors bg-slate-950/20">
-                        <template x-if="logoPreview && !removeLogo">
+                    <div class="border-2 border-dashed border-gray-200 dark:border-slate-700 hover:border-violet-500/50 rounded-2xl p-4 text-center transition-colors bg-gray-50/50 dark:bg-slate-950/20">
+                            <template x-if="logoPreview && !removeLogo">
                             <img :src="logoPreview" class="w-16 h-16 rounded-xl object-cover mx-auto mb-2 shadow-lg border border-slate-700">
                         </template>
                         <template x-if="!logoPreview || removeLogo">
-                            <div class="w-16 h-16 bg-slate-800 rounded-xl flex items-center justify-center text-slate-500 mx-auto mb-2">
+                            <div class="w-16 h-16 bg-gray-100 dark:bg-slate-800 rounded-xl flex items-center justify-center text-gray-400 dark:text-slate-500 mx-auto mb-2">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
@@ -155,12 +155,12 @@
                 {{-- Favicon --}}
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-jakarta">Favicon <span class="text-[10px] font-normal text-slate-500">ICO/PNG, maks 512KB</span></label>
-                    <div class="border-2 border-dashed border-slate-700 hover:border-violet-500/50 rounded-2xl p-4 text-center transition-colors bg-slate-950/20">
+                    <div class="border-2 border-dashed border-gray-200 dark:border-slate-700 hover:border-violet-500/50 rounded-2xl p-4 text-center transition-colors bg-gray-50/50 dark:bg-slate-950/20">
                         <template x-if="faviconPreview && !removeFavicon">
                             <img :src="faviconPreview" class="w-10 h-10 rounded-lg object-cover mx-auto mb-2 shadow border border-slate-700">
                         </template>
                         <template x-if="!faviconPreview || removeFavicon">
-                            <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 mx-auto mb-2">
+                            <div class="w-10 h-10 bg-gray-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-gray-400 dark:text-slate-500 mx-auto mb-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
                                 </svg>
@@ -189,21 +189,21 @@
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta">Nama Restoran <span class="text-red-500">*</span></label>
                     <input type="text" name="restaurant_name" value="{{ $s['restaurant_name'] ?? 'Restoran' }}"
                         @input="document.getElementById('prev-name').textContent=$event.target.value"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" required>
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta">Tagline <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 font-jakarta">Tagline <span class="text-red-500">*</span></label>
                     <input type="text" name="restaurant_tagline" value="{{ $s['restaurant_tagline'] ?? 'NUSANTARA' }}"
                         @input="document.getElementById('prev-tag').textContent=$event.target.value"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" required>
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" required>
                 </div>
             </div>
 
             {{-- Deskripsi --}}
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta">Deskripsi Singkat</label>
-                <textarea name="description" rows="2"
-                    class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none resize-none"
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 font-jakarta">Deskripsi Singkat</label>
+                    <textarea name="description" rows="2"
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none resize-none"
                     placeholder="Deskripsi untuk SEO dan footer">{{ $s['description'] ?? '' }}</textarea>
             </div>
 
@@ -215,23 +215,23 @@
                         Alamat
                     </label>
                     <input type="text" name="address" value="{{ $s['address'] ?? '' }}"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" placeholder="Jl. Kuliner No. 1">
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" placeholder="Jl. Kuliner No. 1">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta inline-flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 font-jakarta inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                         Telepon
                     </label>
                     <input type="text" name="phone" value="{{ $s['phone'] ?? '' }}"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" placeholder="+62 812-xxxx-xxxx">
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" placeholder="+62 812-xxxx-xxxx">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta inline-flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 font-jakarta inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-gray-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         Email
                     </label>
                     <input type="email" name="email" value="{{ $s['email'] ?? '' }}"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" placeholder="info@restoran.id">
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-violet-500 outline-none" placeholder="info@restoran.id">
                 </div>
             </div>
 
@@ -243,15 +243,15 @@
                 </label>
                 <div class="flex items-center gap-3">
                     <input type="color" name="primary_color" value="{{ $s['primary_color'] ?? '#f97316' }}"
-                        id="colorPicker" class="w-12 h-10 rounded-lg border bg-slate-900 border-slate-700 cursor-pointer p-1">
+                        id="colorPicker" class="w-12 h-10 rounded-lg border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 cursor-pointer p-1">
                     <input type="text" id="colorText" value="{{ $s['primary_color'] ?? '#f97316' }}"
-                        class="w-28 px-3 py-2 rounded-xl border bg-slate-900 border-slate-700 text-xs font-mono text-slate-300 focus:ring-2 focus:ring-violet-500 outline-none" readonly>
+                        class="w-28 px-3 py-2 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-xs font-mono text-gray-700 dark:text-slate-300 focus:ring-2 focus:ring-violet-500 outline-none" readonly>
                     <p class="text-[11px] text-slate-500 font-medium">Warna aksen di seluruh tampilan frontend</p>
                 </div>
             </div>
 
             {{-- Submit --}}
-            <div class="flex justify-end pt-4 border-t" style="border-top-color: rgba(255,255,255,0.06);">
+            <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-white/[0.06]">
                 <button type="submit" class="flex items-center gap-2 px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-violet-600/30 uppercase tracking-wider font-jakarta">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                     Simpan Branding
@@ -278,16 +278,16 @@
         }
     }">
     @csrf
-    <div class="bg-admin-card rounded-2xl shadow-sm overflow-hidden" style="border: 1px solid rgba(255,255,255,0.07);">
-        <div class="flex items-center gap-3 px-6 py-4 border-b bg-gradient-to-r from-orange-950/20 to-amber-950/20" style="border-bottom-color: rgba(255,255,255,0.06);">
+    <div class="bg-white dark:bg-admin-card rounded-2xl shadow-sm overflow-hidden border border-gray-200 dark:border-white/[0.07]">
+        <div class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 dark:border-white/[0.06] bg-gradient-to-r from-orange-50 dark:from-orange-950/20 to-amber-50 dark:to-amber-950/20">
             <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center text-white shadow">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
             </div>
             <div>
-                <h3 class="font-bold text-slate-100 font-jakarta text-sm">Tampilan Halaman Home</h3>
-                <p class="text-xs text-slate-500 font-medium">Gambar latar, judul hero, teks, dan foto dekorasi</p>
+                <h3 class="font-bold text-gray-900 dark:text-slate-100 font-jakarta text-sm">Tampilan Halaman Home</h3>
+                <p class="text-xs text-gray-500 dark:text-slate-500 font-medium">Gambar latar, judul hero, teks, dan foto dekorasi</p>
             </div>
         </div>
         <div class="p-6 space-y-6">
@@ -299,23 +299,23 @@
                         Teks Badge <span class="text-[10px] font-normal text-slate-500 font-sans">(strip kecil di atas judul)</span>
                     </label>
                     <input type="text" name="home_badge_text" value="{{ $s['home_badge_text'] ?? 'Buka Sekarang · Estimasi 15-30 menit' }}"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none"
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none"
                         placeholder="Buka Sekarang · Estimasi 15-30 menit">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 font-jakarta">
                         Judul Hero <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="home_hero_title" value="{{ $s['home_hero_title'] ?? 'Cita Rasa Nusantara di Ujung Jari' }}"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none"
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none"
                         placeholder="Judul besar di halaman utama" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 font-jakarta">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 font-jakarta">
                         Sub-judul / Deskripsi Hero <span class="text-red-500">*</span>
                     </label>
                     <textarea name="home_hero_subtitle" rows="3"
-                        class="w-full px-4 py-2.5 rounded-xl border bg-slate-900 border-slate-700 text-sm text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none resize-none"
+                        class="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-slate-200 focus:ring-2 focus:ring-orange-500 outline-none resize-none"
                         placeholder="Teks deskripsi di bawah judul hero" required>{{ $s['home_hero_subtitle'] ?? '' }}</textarea>
                 </div>
             </div>
@@ -347,10 +347,10 @@
                         </label>
                         <div>
                             <input type="url" name="home_bg_image_url"
-                                value="{{ str_starts_with($s['home_bg_image'] ?? '', 'http') ? $s['home_bg_image'] : '' }}"
-                                @input="bgPreview = $event.target.value"
-                                class="w-full px-3 py-2 rounded-xl border bg-slate-900 border-slate-700 text-xs text-slate-300 focus:ring-2 focus:ring-orange-500 outline-none"
-                                placeholder="Atau masukkan URL gambar...">
+                                    value="{{ str_starts_with($s['home_bg_image'] ?? '', 'http') ? $s['home_bg_image'] : '' }}"
+                                    @input="bgPreview = $event.target.value"
+                                    class="w-full px-3 py-2 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-xs text-gray-700 dark:text-slate-300 focus:ring-2 focus:ring-orange-500 outline-none"
+                                    placeholder="Atau masukkan URL gambar...">
                         </div>
                     </div>
                 </div>
@@ -383,17 +383,17 @@
                                 @change="onImg('{{ $img['xvar'] }}', $event)">
                         </label>
                         <input type="url" name="{{ $img['key'] }}_url"
-                            value="{{ str_starts_with($s[$img['key']] ?? '', 'http') ? $s[$img['key']] : '' }}"
-                            @input="{{ $img['xvar'] }}Preview = $event.target.value"
-                            class="w-full px-3 py-1.5 rounded-xl border bg-slate-900 border-slate-700 text-xs text-slate-300 focus:ring-2 focus:ring-orange-500 outline-none"
-                            placeholder="URL gambar...">
+                        value="{{ str_starts_with($s[$img['key']] ?? '', 'http') ? $s[$img['key']] : '' }}"
+                        @input="{{ $img['xvar'] }}Preview = $event.target.value"
+                        class="w-full px-3 py-1.5 rounded-xl border bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 text-xs text-gray-700 dark:text-slate-300 focus:ring-2 focus:ring-orange-500 outline-none"
+                        placeholder="URL gambar...">
                     </div>
                     @endforeach
                 </div>
             </div>
 
             {{-- Submit --}}
-            <div class="flex justify-end pt-4 border-t" style="border-top-color: rgba(255,255,255,0.06);">
+            <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-white/[0.06]">
                 <button type="submit" class="flex items-center gap-2 px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-orange-500/30 uppercase tracking-wider font-jakarta">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                     Simpan Tampilan Home
@@ -405,9 +405,9 @@
 </div>
 
 {{-- ===== INFO SISTEM ===== --}}
-<div class="bg-admin-card rounded-2xl p-5" style="border: 1px solid rgba(255,255,255,0.07);">
-    <h3 class="font-bold text-slate-100 mb-4 flex items-center gap-2 text-xs uppercase tracking-wider font-jakarta">
-        <span class="w-6 h-6 bg-violet-950/30 rounded-lg flex items-center justify-center border border-violet-500/10 text-violet-400">
+<div class="bg-white dark:bg-admin-card rounded-2xl p-5 border border-gray-200 dark:border-white/[0.07]">
+    <h3 class="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2 text-xs uppercase tracking-wider font-jakarta">
+        <span class="w-6 h-6 bg-violet-100 dark:bg-violet-950/30 rounded-lg flex items-center justify-center border border-violet-200 dark:border-violet-500/10 text-violet-600 dark:text-violet-400">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
@@ -416,18 +416,18 @@
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         @foreach($sysInfo as $info)
-        <div class="flex items-center justify-between p-3 bg-slate-950/40 border border-slate-800/80 rounded-xl">
-            <span class="text-xs text-slate-500 font-medium">{{ $info['label'] }}</span>
-            <span class="text-xs font-bold text-slate-300 font-mono">{{ $info['value'] }}</span>
+        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-950/40 border border-gray-200 dark:border-slate-800/80 rounded-xl">
+            <span class="text-xs text-gray-500 dark:text-slate-500 font-medium">{{ $info['label'] }}</span>
+            <span class="text-xs font-bold text-gray-700 dark:text-slate-300 font-mono">{{ $info['value'] }}</span>
         </div>
         @endforeach
     </div>
 </div>
 
 {{-- ===== STATISTIK DB ===== --}}
-<div class="bg-admin-card rounded-2xl p-5" style="border: 1px solid rgba(255,255,255,0.07);">
-    <h3 class="font-bold text-slate-100 mb-4 flex items-center gap-2 text-xs uppercase tracking-wider font-jakarta">
-        <span class="w-6 h-6 bg-emerald-950/30 rounded-lg flex items-center justify-center border border-emerald-500/10 text-emerald-400">
+<div class="bg-white dark:bg-admin-card rounded-2xl p-5 border border-gray-200 dark:border-white/[0.07]">
+    <h3 class="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2 text-xs uppercase tracking-wider font-jakarta">
+        <span class="w-6 h-6 bg-emerald-100 dark:bg-emerald-950/30 rounded-lg flex items-center justify-center border border-emerald-200 dark:border-emerald-500/10 text-emerald-600 dark:text-emerald-400">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
             </svg>
@@ -436,12 +436,12 @@
     </h3>
     <div class="grid grid-cols-3 sm:grid-cols-3 gap-4">
         @foreach($dbStats as $stat)
-        <div class="p-4 bg-slate-950/40 border border-slate-800/80 rounded-xl text-center flex flex-col items-center justify-center relative overflow-hidden">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-white/5 text-slate-400 mb-2 border border-slate-800">
+        <div class="p-4 bg-gray-50 dark:bg-slate-950/40 border border-gray-200 dark:border-slate-800/80 rounded-xl text-center flex flex-col items-center justify-center relative overflow-hidden">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-slate-400 mb-2 border border-gray-200 dark:border-slate-800">
                 @include('admin.partials.icon', ['name' => $stat['icon'], 'active' => false])
             </div>
-            <div class="text-xl font-bold text-slate-100 font-jakarta">{{ $stat['value'] }}</div>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-1 font-jakarta">{{ $stat['label'] }}</div>
+            <div class="text-xl font-bold text-gray-900 dark:text-slate-100 font-jakarta">{{ $stat['value'] }}</div>
+            <div class="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider mt-1 font-jakarta">{{ $stat['label'] }}</div>
         </div>
         @endforeach
     </div>
