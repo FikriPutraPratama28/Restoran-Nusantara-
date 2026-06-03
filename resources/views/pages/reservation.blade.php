@@ -21,7 +21,9 @@
 
             {{-- Success State --}}
             <div x-show="submitted" class="text-center py-16 animate-fade-in">
-                <div class="text-8xl mb-6 animate-bounce">🎉</div>
+                <div class="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
                 <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4">Reservasi Berhasil!</h2>
                 <p class="text-gray-600 dark:text-gray-400 mb-2">
                     Terima kasih, <strong x-text="form.name"></strong>!

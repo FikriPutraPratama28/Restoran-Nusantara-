@@ -69,18 +69,33 @@
 </section>
 
 {{-- Features Strip --}}
-<div class="bg-primary-600 py-6">
+<div class="bg-primary-600 py-5">
     <div class="container-custom">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            @foreach([['icon'=>'🚀','title'=>'Order Cepat','desc'=>'Proses 15-30 menit'],['icon'=>'🎁','title'=>'Promo Harian','desc'=>'Diskon hingga 50%'],['icon'=>'⭐','title'=>'Kualitas Premium','desc'=>'Bahan pilihan terbaik'],['icon'=>'📱','title'=>'Order Online','desc'=>'Mudah & praktis']] as $f)
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div class="flex items-center gap-3 text-white">
-                <span class="text-2xl">{{ $f['icon'] }}</span>
-                <div>
-                    <div class="font-bold text-sm">{{ $f['title'] }}</div>
-                    <div class="text-primary-200 text-xs">{{ $f['desc'] }}</div>
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
+                <div><div class="font-bold text-sm">Order Cepat</div><div class="text-primary-200 text-xs">Proses 15–30 menit</div></div>
             </div>
-            @endforeach
+            <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                </div>
+                <div><div class="font-bold text-sm">Promo Harian</div><div class="text-primary-200 text-xs">Diskon hingga 50%</div></div>
+            </div>
+            <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                </div>
+                <div><div class="font-bold text-sm">Kualitas Premium</div><div class="text-primary-200 text-xs">Bahan pilihan terbaik</div></div>
+            </div>
+            <div class="flex items-center gap-3 text-white">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <div><div class="font-bold text-sm">Order Online</div><div class="text-primary-200 text-xs">Mudah & praktis</div></div>
+            </div>
         </div>
     </div>
 </div>
@@ -93,7 +108,7 @@
 
         {{-- Header --}}
         <div class="text-center mb-10">
-            <span class="badge badge-primary mb-3">🍽️ Menu Kami</span>
+            <span class="badge badge-primary mb-3">Menu Kami</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Pilih Menu <span class="gradient-text">Favoritmu</span>
             </h2>
@@ -104,7 +119,7 @@
         <div x-show="!search && activeCategory === 'all' && priceRange === 'all' && !showOnlyPromo" class="mb-10">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
-                    <span class="text-xl">🔥</span>
+                    <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2c0 0-3 3.5-3 7a3 3 0 006 0c0-3.5-3-7-3-7zm-5 9c0 0-2 2-2 4a2 2 0 004 0c0-2-2-4-2-4zm10 0c0 0-2 2-2 4a2 2 0 004 0c0-2-2-4-2-4z"/></svg>
                     <h3 class="font-bold text-gray-900 dark:text-white text-lg">Menu Populer</h3>
                     <span class="text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 px-2 py-0.5 rounded-full font-semibold">Best Seller</span>
                 </div>
@@ -125,8 +140,8 @@
                                 </button>
                             </div>
                             <div class="absolute bottom-2 left-2">
-                                <span x-show="menu.label==='best-seller'" class="text-[10px] bg-primary-600 text-white px-1.5 py-0.5 rounded-full font-bold">🔥</span>
-                                <span x-show="menu.label==='popular'" class="text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded-full font-bold">⭐</span>
+                                <span x-show="menu.label==='best-seller'" class="text-[10px] bg-primary-600 text-white px-1.5 py-0.5 rounded-full font-bold">Hot</span>
+                                <span x-show="menu.label==='popular'" class="text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded-full font-bold">Top</span>
                             </div>
                             <div x-show="menu.isPromo" class="absolute top-2 right-2">
                                 <span class="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full font-bold">PROMO</span>
@@ -156,7 +171,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
                     </svg>
                     <input x-model="search" type="text"
-                        placeholder="🔍 Cari menu... contoh: ayam, pedas, kopi"
+                        placeholder="Cari menu... contoh: ayam, pedas, kopi"
                         class="input pl-12 pr-10 text-sm w-full">
                     <button x-show="search" @click="search=''"
                         class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-gray-200 dark:bg-dark-600 hover:bg-gray-300 rounded-full flex items-center justify-center transition-all">
@@ -164,11 +179,11 @@
                     </button>
                 </div>
                 <select x-model="sortBy" class="input sm:w-44 text-sm flex-shrink-0">
-                    <option value="popular">🔥 Terpopuler</option>
-                    <option value="rating">⭐ Rating Tertinggi</option>
-                    <option value="price-low">💰 Harga Terendah</option>
-                    <option value="price-high">💎 Harga Tertinggi</option>
-                    <option value="new">✨ Terbaru</option>
+                    <option value="popular">Terpopuler</option>
+                    <option value="rating">Rating Tertinggi</option>
+                    <option value="price-low">Harga Terendah</option>
+                    <option value="price-high">Harga Tertinggi</option>
+                    <option value="new">Terbaru</option>
                 </select>
             </div>
 
@@ -233,7 +248,7 @@
                     <span x-show="search"> untuk "<span class="text-primary-600 italic" x-text="search"></span>"</span>
                 </p>
                 <button @click="resetFilters()" class="text-xs text-red-500 hover:text-red-700 font-semibold hover:underline">
-                    ✕ Reset semua filter
+                    &times; Reset semua filter
                 </button>
             </div>
         </div>
@@ -253,9 +268,9 @@
                         <img :src="menu.image" :alt="menu.name"
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
                         <div class="absolute top-3 left-3 flex flex-col gap-1">
-                            <span x-show="menu.label==='best-seller'" class="badge bg-primary-600 text-white text-xs">🔥 Best Seller</span>
-                            <span x-show="menu.label==='popular'" class="badge bg-blue-600 text-white text-xs">⭐ Popular</span>
-                            <span x-show="menu.isNew" class="badge bg-green-600 text-white text-xs">✨ Baru</span>
+                            <span x-show="menu.label==='best-seller'" class="badge bg-primary-600 text-white text-xs">Best Seller</span>
+                            <span x-show="menu.label==='popular'" class="badge bg-blue-600 text-white text-xs">Populer</span>
+                            <span x-show="menu.isNew" class="badge bg-green-600 text-white text-xs">Baru</span>
                         </div>
                         <div x-show="menu.isPromo" class="absolute top-3 right-3">
                             <span class="badge bg-red-500 text-white text-xs">PROMO</span>
@@ -299,7 +314,9 @@
 
             {{-- Empty State --}}
             <div x-show="filtered.length === 0" class="col-span-full text-center py-20">
-                <div class="text-6xl mb-4">🔍</div>
+                <div class="w-16 h-16 bg-gray-100 dark:bg-dark-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
+                </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Menu tidak ditemukan</h3>
                 <p class="text-gray-500 dark:text-gray-400 mb-2">
                     Tidak ada menu yang cocok dengan
@@ -336,7 +353,8 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4" x-text="selectedMenu.description"></p>
                             <div class="flex items-center gap-3 mb-5">
                                 <div class="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-gray-100 dark:bg-dark-700 text-sm text-gray-600 dark:text-gray-300">
-                                    ⭐ <span x-text="selectedMenu.rating"></span> • <span x-text="selectedMenu.reviews + ' ulasan'"></span>
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <span x-text="selectedMenu.rating"></span> • <span x-text="selectedMenu.reviews + ' ulasan'"></span>
                                 </div>
                                 <div class="inline-flex items-center gap-2 px-3 py-2 rounded-2xl bg-primary-50 text-sm text-primary-600">
                                     <span x-text="formatPrice(selectedMenu.price)"></span>
@@ -391,7 +409,9 @@
 
             {{-- Success State --}}
             <div x-show="submitted" class="text-center py-16 animate-fade-in">
-                <div class="text-8xl mb-6 animate-bounce">🎉</div>
+                <div class="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
                 <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4">Reservasi Berhasil!</h2>
                 <p class="text-gray-600 dark:text-gray-400 mb-2">
                     Terima kasih, <strong x-text="form.name"></strong>!
@@ -448,7 +468,7 @@
                         {{-- Date --}}
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                📅 Tanggal Reservasi
+                                Tanggal Reservasi
                             </label>
                             <input
                                 x-model="form.date"
@@ -461,7 +481,7 @@
                         {{-- Guests --}}
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                👥 Jumlah Tamu
+                                Jumlah Tamu
                             </label>
                             <div class="flex items-center gap-3">
                                 <button
@@ -481,7 +501,7 @@
                     {{-- Time Slots --}}
                     <div class="mb-6">
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            🕐 Pilih Jam
+                            Pilih Jam
                         </label>
                         <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
                             <template x-for="time in timeSlots" :key="time">
@@ -500,26 +520,32 @@
                     {{-- Table Area --}}
                     <div class="mb-8">
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                            🪑 Area Duduk
+                            Area Duduk
                         </label>
                         {{-- Pilih Area --}}
                         <div class="grid grid-cols-2 gap-3 mb-4">
-                            @foreach([
-                                ['value' => 'indoor', 'icon' => '🏠', 'label' => 'Indoor', 'desc' => 'Ruangan ber-AC'],
-                                ['value' => 'outdoor', 'icon' => '🌿', 'label' => 'Outdoor', 'desc' => 'Taman terbuka'],
-                            ] as $area)
-                            <button
-                                @click="selectArea('{{ $area['value'] }}')"
-                                :class="form.tableArea === '{{ $area['value'] }}'
-                                    ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30'
-                                    : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'"
-                                class="p-4 rounded-xl border-2 text-left transition-all duration-200"
-                            >
-                                <div class="text-2xl mb-1">{{ $area['icon'] }}</div>
-                                <div class="font-bold text-gray-900 dark:text-white text-sm">{{ $area['label'] }}</div>
-                                <div class="text-gray-500 dark:text-gray-400 text-xs">{{ $area['desc'] }}</div>
-                            </button>
-                            @endforeach
+                                <button
+                                    @click="selectArea('indoor')"
+                                    :class="form.tableArea === 'indoor'
+                                        ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30'
+                                        : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'"
+                                    class="p-4 rounded-xl border-2 text-left transition-all duration-200"
+                                >
+                                    <svg class="w-5 h-5 text-primary-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                                    <div class="font-bold text-gray-900 dark:text-white text-sm">Indoor</div>
+                                    <div class="text-gray-500 dark:text-gray-400 text-xs">Ruangan ber-AC</div>
+                                </button>
+                                <button
+                                    @click="selectArea('outdoor')"
+                                    :class="form.tableArea === 'outdoor'
+                                        ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/30'
+                                        : 'border-gray-200 dark:border-dark-600 hover:border-primary-400'"
+                                    class="p-4 rounded-xl border-2 text-left transition-all duration-200"
+                                >
+                                    <svg class="w-5 h-5 text-primary-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                                    <div class="font-bold text-gray-900 dark:text-white text-sm">Outdoor</div>
+                                    <div class="text-gray-500 dark:text-gray-400 text-xs">Taman terbuka</div>
+                                </button>
                         </div>
 
                         {{-- Pilih Meja (muncul setelah area dipilih) --}}
@@ -560,7 +586,7 @@
                                         <div class="text-base mb-0.5 font-bold text-gray-800 dark:text-white" x-text="table.label"></div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400" x-text="table.position"></div>
                                         <div class="flex items-center gap-1 mt-1">
-                                            <span class="text-[10px] text-gray-400">👥</span>
+                                            <svg class="w-2.5 h-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                             <span class="text-[10px] text-gray-500 dark:text-gray-400" x-text="table.capacity + ' orang'"></span>
                                         </div>
                                         <div class="mt-1.5">
@@ -580,14 +606,14 @@
                             </div>
                             <div x-show="form.tableNumber" x-transition
                                 class="mt-3 flex items-center gap-2 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-xl px-4 py-2.5">
-                                <span class="text-primary-600 text-lg">🪑</span>
+                                <svg class="w-4 h-4 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                                 <p class="text-sm text-primary-700 dark:text-primary-300 font-medium">
                                     Meja dipilih: <strong x-text="getTableLabel(form.tableNumber)"></strong>
                                 </p>
                             </div>
                             <div x-show="form.tableArea && currentTables.filter(t => isTableSelectable(t)).length === 0" x-transition
                                 class="mt-3 flex items-center gap-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl px-4 py-2.5">
-                                <span class="text-red-500 text-lg">⚠️</span>
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                                 <p class="text-sm text-red-700 dark:text-red-300">
                                     Tidak ada meja tersedia untuk <strong x-text="form.guests + ' orang'"></strong> di area ini. Coba kurangi jumlah tamu atau pilih area lain.
                                 </p>
@@ -747,33 +773,33 @@
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Konfirmasi Reservasi</h2>
                     <div class="bg-gray-50 dark:bg-dark-700 rounded-xl p-6 mb-6 space-y-3">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">📅 Tanggal</span>
+                            <span class="text-gray-500 dark:text-gray-400">Tanggal</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.date"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">🕐 Jam</span>
+                            <span class="text-gray-500 dark:text-gray-400">Jam</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.time"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">👥 Jumlah Tamu</span>
+                            <span class="text-gray-500 dark:text-gray-400">Jumlah Tamu</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.guests + ' orang'"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">🪑 Area</span>
+                            <span class="text-gray-500 dark:text-gray-400">Area</span>
                             <span class="font-semibold text-gray-900 dark:text-white capitalize" x-text="form.tableArea"></span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">🪑 Meja</span>
+                            <span class="text-gray-500 dark:text-gray-400">Meja</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="getTableLabel(form.tableNumber)"></span>
                         </div>
                         <div class="border-t border-gray-200 dark:border-dark-600 pt-3">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500 dark:text-gray-400">👤 Nama</span>
+                                <span class="text-gray-500 dark:text-gray-400">Nama</span>
                                 <span class="font-semibold text-gray-900 dark:text-white" x-text="form.name"></span>
                             </div>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400">📞 Telepon</span>
+                            <span class="text-gray-500 dark:text-gray-400">Telepon</span>
                             <span class="font-semibold text-gray-900 dark:text-white" x-text="form.phone"></span>
                         </div>
                     </div>
@@ -784,7 +810,8 @@
                             : 'bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-700/50 text-green-700 dark:text-green-300'"
                         class="mb-6 p-4 rounded-lg border">
                         <div class="flex items-start gap-3">
-                            <span class="text-xl" x-text="messageType === 'error' ? '❌' : '✅'"></span>
+                            <svg x-show="messageType === 'error'" class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <svg x-show="messageType !== 'error'" class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <span x-text="message"></span>
                         </div>
                     </div>
@@ -797,7 +824,7 @@
                             Kembali
                         </button>
                         <button @click="submit()" :disabled="loading" :class="loading ? 'opacity-50 cursor-not-allowed' : ''" class="btn btn-primary flex-1 flex items-center justify-center gap-2">
-                            <span x-show="!loading">✅ Konfirmasi Reservasi</span>
+                            <span x-show="!loading">Konfirmasi Reservasi</span>
                             <span x-show="loading" class="flex items-center gap-2">
                                 <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
@@ -819,7 +846,7 @@
 <section id="promo" class="section bg-gray-50 dark:bg-dark-900">
     <div class="container-custom">
         <div class="text-center mb-12">
-            <span class="badge badge-warning mb-3">🎁 Penawaran Spesial</span>
+            <span class="badge badge-warning mb-3">Penawaran Spesial</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Promo & <span class="gradient-text">Diskon</span>
             </h2>
@@ -829,12 +856,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             @php
             $promos = [
-                ['gradient'=>'from-primary-600 to-orange-500','icon'=>'🍔','title'=>'Diskon 30% Makanan','desc'=>'Berlaku setiap hari Senin untuk semua menu makanan','code'=>'SENIN30','expiry'=>'Setiap Senin','badge'=>'Mingguan'],
-                ['gradient'=>'from-purple-600 to-pink-500','icon'=>'🥤','title'=>'Buy 1 Get 1 Minuman','desc'=>'Setiap weekend pukul 14.00-17.00 WIB','code'=>'WEEKEND2X','expiry'=>'Sabtu & Minggu','badge'=>'Weekend'],
-                ['gradient'=>'from-green-600 to-teal-500','icon'=>'🎂','title'=>'Free Dessert','desc'=>'Gratis dessert untuk pembelian min. Rp 100.000','code'=>'FREEDESSERT','expiry'=>'Berlaku terus','badge'=>'Permanen'],
-                ['gradient'=>'from-blue-600 to-cyan-500','icon'=>'👤','title'=>'Diskon 15% New User','desc'=>'Khusus untuk pelanggan baru yang pertama kali order','code'=>'NEWUSER','expiry'=>'Sekali pakai','badge'=>'New User'],
-                ['gradient'=>'from-red-600 to-rose-500','icon'=>'🎉','title'=>'Potongan Rp 20.000','desc'=>'Potongan langsung untuk pembelian min. Rp 75.000','code'=>'GRATIS20','expiry'=>'Berlaku terus','badge'=>'Cashback'],
-                ['gradient'=>'from-yellow-500 to-amber-500','icon'=>'⭐','title'=>'Member Diskon 10%','desc'=>'Diskon 10% untuk semua member terdaftar','code'=>'HEMAT10','expiry'=>'Berlaku terus','badge'=>'Member'],
+                ['gradient'=>'from-primary-600 to-orange-500','title'=>'Diskon 30% Makanan','desc'=>'Berlaku setiap hari Senin untuk semua menu makanan','code'=>'SENIN30','expiry'=>'Setiap Senin','badge'=>'Mingguan','svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>'],
+                ['gradient'=>'from-purple-600 to-pink-500','title'=>'Buy 1 Get 1 Minuman','desc'=>'Setiap weekend pukul 14.00-17.00 WIB','code'=>'WEEKEND2X','expiry'=>'Sabtu & Minggu','badge'=>'Weekend','svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+                ['gradient'=>'from-green-600 to-teal-500','title'=>'Free Dessert','desc'=>'Gratis dessert untuk pembelian min. Rp 100.000','code'=>'FREEDESSERT','expiry'=>'Berlaku terus','badge'=>'Permanen','svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>'],
+                ['gradient'=>'from-blue-600 to-cyan-500','title'=>'Diskon 15% New User','desc'=>'Khusus untuk pelanggan baru yang pertama kali order','code'=>'NEWUSER','expiry'=>'Sekali pakai','badge'=>'New User','svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>'],
+                ['gradient'=>'from-red-600 to-rose-500','title'=>'Potongan Rp 20.000','desc'=>'Potongan langsung untuk pembelian min. Rp 75.000','code'=>'GRATIS20','expiry'=>'Berlaku terus','badge'=>'Cashback','svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'],
+                ['gradient'=>'from-yellow-500 to-amber-500','title'=>'Member Diskon 10%','desc'=>'Diskon 10% untuk semua member terdaftar','code'=>'HEMAT10','expiry'=>'Berlaku terus','badge'=>'Member','svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>'],
             ];
             @endphp
             @foreach($promos as $promo)
@@ -843,7 +870,9 @@
                 <div class="absolute -right-4 bottom-4 w-24 h-24 bg-white/10 rounded-full"></div>
                 <div class="relative z-10">
                     <div class="flex items-start justify-between mb-3">
-                        <span class="text-4xl">{{ $promo['icon'] }}</span>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $promo['svg'] !!}</svg>
+                        </div>
                         <span class="badge bg-white/20 text-white text-xs">{{ $promo['badge'] }}</span>
                     </div>
                     <h3 class="text-lg font-bold mb-2">{{ $promo['title'] }}</h3>
@@ -877,7 +906,7 @@
 <section id="tentang" class="section bg-white dark:bg-dark-800">
     <div class="container-custom">
         <div class="text-center mb-12">
-            <span class="badge badge-primary mb-3">🏠 Tentang Kami</span>
+            <span class="badge badge-primary mb-3">Tentang Kami</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Cerita <span class="gradient-text">Kami</span>
             </h2>
@@ -887,7 +916,7 @@
         {{-- Story --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             <div x-data x-intersect="$el.classList.add('animate-slide-up')">
-                <span class="badge badge-primary mb-4">📖 Kisah Kami</span>
+                <span class="badge badge-primary mb-4">Kisah Kami</span>
                 <h3 class="font-display text-4xl font-bold text-gray-900 dark:text-white mb-6">Berawal dari Cinta<br>terhadap Kuliner</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
                     Restoran NUSANTARA didirikan pada tahun 2019 dengan satu misi sederhana: menyajikan cita rasa autentik masakan Nusantara dengan sentuhan modern yang memudahkan semua orang menikmatinya.
@@ -908,7 +937,9 @@
                 <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=500&fit=crop" alt="Restaurant" class="rounded-2xl shadow-2xl w-full">
                 <div class="absolute -bottom-6 -left-6 bg-white dark:bg-dark-800 rounded-2xl p-4 shadow-xl">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center text-2xl">👨‍🍳</div>
+                        <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                            </div>
                         <div>
                             <div class="font-bold text-gray-900 dark:text-white text-sm">Chef Berpengalaman</div>
                             <div class="text-gray-500 dark:text-gray-400 text-xs">15+ tahun pengalaman</div>
@@ -920,9 +951,15 @@
 
         {{-- Values --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            @foreach([['icon'=>'❤️','title'=>'Passion','desc'=>'Kami memasak dengan penuh cinta dan dedikasi untuk setiap hidangan yang kami sajikan'],['icon'=>'🌿','title'=>'Kualitas','desc'=>'Bahan-bahan segar pilihan terbaik dipilih setiap hari untuk memastikan kualitas terjaga'],['icon'=>'🤝','title'=>'Kepercayaan','desc'=>'Membangun kepercayaan pelanggan adalah prioritas utama kami dalam setiap pelayanan']] as $v)
+            @foreach([
+                ['svgpath'=>'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z','title'=>'Passion','desc'=>'Kami memasak dengan penuh cinta dan dedikasi untuk setiap hidangan yang kami sajikan'],
+                ['svgpath'=>'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z','title'=>'Kualitas','desc'=>'Bahan-bahan segar pilihan terbaik dipilih setiap hari untuk memastikan kualitas terjaga'],
+                ['svgpath'=>'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z','title'=>'Kepercayaan','desc'=>'Membangun kepercayaan pelanggan adalah prioritas utama kami dalam setiap pelayanan'],
+            ] as $v)
             <div class="card p-6 text-center card-hover" x-data x-intersect="$el.classList.add('animate-slide-up')">
-                <div class="text-5xl mb-4">{{ $v['icon'] }}</div>
+                <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $v['svgpath'] }}"/></svg>
+                </div>
                 <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-3">{{ $v['title'] }}</h3>
                 <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $v['desc'] }}</p>
             </div>
@@ -957,7 +994,7 @@
 <section id="kontak" class="section bg-gray-50 dark:bg-dark-900">
     <div class="container-custom">
         <div class="text-center mb-12">
-            <span class="badge badge-primary mb-3">📞 Hubungi Kami</span>
+            <span class="badge badge-primary mb-3">Hubungi Kami</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Ada <span class="gradient-text">Pertanyaan?</span>
             </h2>
@@ -967,9 +1004,19 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {{-- Info --}}
             <div class="space-y-4">
-                @foreach([['icon'=>'📍','title'=>'Alamat','lines'=>['Jl. Kuliner Nusantara No. 88','Jakarta Selatan, 12345']],['icon'=>'📞','title'=>'Telepon','lines'=>['+62 812-3456-7890','+62 21-1234-5678']],['icon'=>'✉️','title'=>'Email','lines'=>['hello@warungnusantara.id','support@warungnusantara.id']],['icon'=>'🕐','title'=>'Jam Operasional','lines'=>['Senin – Jumat: 10.00 – 22.00','Sabtu – Minggu: 09.00 – 23.00']]] as $info)
+                @php
+                $contactInfos = [
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>','title'=>'Alamat','lines'=>['Jl. Kuliner Nusantara No. 88','Jakarta Selatan, 12345']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>','title'=>'Telepon','lines'=>['+62 812-3456-7890','+62 21-1234-5678']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>','title'=>'Email','lines'=>['hello@warungnusantara.id','support@warungnusantara.id']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>','title'=>'Jam Operasional','lines'=>['Senin – Jumat: 10.00 – 22.00','Sabtu – Minggu: 09.00 – 23.00']],
+                ];
+                @endphp
+                @foreach($contactInfos as $info)
                 <div class="card p-5 flex items-start gap-4">
-                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">{{ $info['icon'] }}</div>
+                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $info['svg'] !!}</svg>
+                    </div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white mb-1">{{ $info['title'] }}</h3>
                         @foreach($info['lines'] as $line)
@@ -984,7 +1031,9 @@
             <div class="lg:col-span-2">
                 <div class="card p-8" x-data="{submitted:false,form:{name:'',email:'',subject:'',message:''}}">
                     <div x-show="submitted" class="text-center py-12 animate-fade-in">
-                        <div class="text-6xl mb-4">✅</div>
+                        <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        </div>
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pesan Terkirim!</h3>
                         <p class="text-gray-600 dark:text-gray-400 mb-6">Kami akan membalas dalam 1x24 jam</p>
                         <button @click="submitted=false;form={name:'',email:'',subject:'',message:''}" class="btn btn-primary">Kirim Pesan Lain</button>
@@ -1034,7 +1083,9 @@
         <div class="mt-10 card overflow-hidden">
             <div class="bg-gray-200 dark:bg-dark-700 h-64 flex items-center justify-center">
                 <div class="text-center">
-                    <div class="text-5xl mb-3">🗺️</div>
+                    <div class="w-14 h-14 bg-gray-300 dark:bg-dark-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-7 h-7 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                    </div>
                     <p class="text-gray-600 dark:text-gray-400 font-medium">Google Maps</p>
                     <p class="text-gray-500 dark:text-gray-500 text-sm">Jl. Kuliner Nusantara No. 88, Jakarta Selatan</p>
                 </div>
@@ -1049,7 +1100,7 @@
 <section id="galeri" class="section bg-white dark:bg-dark-800" x-data="galleryLightbox()">
     <div class="container-custom">
         <div class="text-center mb-12">
-            <span class="badge badge-primary mb-3">📸 Galeri</span>
+            <span class="badge badge-primary mb-3">Galeri</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Momen <span class="gradient-text">Bersama</span>
             </h2>
@@ -1128,7 +1179,7 @@
         {{-- Customer Photos --}}
         <div class="mt-16">
             <h3 class="font-display text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
-                📸 Foto Pelanggan Kami
+                Foto Pelanggan Kami
             </h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 @php
@@ -1164,7 +1215,7 @@
 <section id="fasilitas" class="section bg-gray-50 dark:bg-dark-900">
     <div class="container-custom">
         <div class="text-center mb-12">
-            <span class="badge badge-primary mb-3">🏢 Fasilitas</span>
+            <span class="badge badge-primary mb-3">Fasilitas</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Fasilitas <span class="gradient-text">Lengkap</span>
             </h2>
@@ -1204,13 +1255,15 @@
         {{-- Capacity Info --}}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             @foreach([
-                ['icon'=>'🪑','value'=>'200','label'=>'Kapasitas Kursi'],
-                ['icon'=>'🏠','value'=>'3','label'=>'Ruang Privat'],
-                ['icon'=>'🅿️','value'=>'50+','label'=>'Slot Parkir'],
-                ['icon'=>'⏰','value'=>'12 Jam','label'=>'Jam Operasional'],
+                ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>','value'=>'200','label'=>'Kapasitas Kursi'],
+                ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>','value'=>'3','label'=>'Ruang Privat'],
+                ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>','value'=>'50+','label'=>'Slot Parkir'],
+                ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>','value'=>'12 Jam','label'=>'Jam Operasional'],
             ] as $cap)
             <div class="card p-5 text-center" x-data x-intersect="$el.classList.add('animate-slide-up')">
-                <div class="text-3xl mb-2">{{ $cap['icon'] }}</div>
+                <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $cap['svg'] !!}</svg>
+                </div>
                 <div class="text-2xl font-bold text-primary-600 mb-1">{{ $cap['value'] }}</div>
                 <div class="text-gray-500 dark:text-gray-400 text-sm">{{ $cap['label'] }}</div>
             </div>
@@ -1225,7 +1278,7 @@
 <section class="section bg-white dark:bg-dark-800" x-data="menuFilter({{ $menus->toJson() }})">
     <div class="container-custom">
         <div class="text-center mb-10">
-            <span class="badge badge-warning mb-3">💡 Rekomendasi</span>
+            <span class="badge badge-warning mb-3">Rekomendasi</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Menu yang <span class="gradient-text">Cocok Untukmu</span>
             </h2>
@@ -1238,8 +1291,9 @@
             <template x-for="menu in recommendations" :key="menu.id">
                 <div class="card card-hover group relative overflow-hidden" x-intersect="$el.classList.add('animate-slide-up')">
                     {{-- Recommended badge --}}
-                    <div class="absolute top-0 left-0 right-0 z-10 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold text-center py-1">
-                        ⭐ Direkomendasikan Untukmu
+                    <div class="absolute top-0 left-0 right-0 z-10 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold text-center py-1 flex items-center justify-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Direkomendasikan Untukmu
                     </div>
                     <div class="relative overflow-hidden h-48 mt-6">
                         <img :src="menu.image" :alt="menu.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">

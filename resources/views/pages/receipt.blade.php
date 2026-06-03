@@ -48,16 +48,18 @@
 <section class="section bg-gray-50 dark:bg-dark-900 min-h-screen main-content">
     <div class="container-custom">
         <div class="max-w-2xl mx-auto">
-            
+
             {{-- Struk Card --}}
             <div class="bg-white dark:bg-dark-800 rounded-3xl border border-gray-100 dark:border-dark-700 shadow-xl overflow-hidden print-receipt">
                 {{-- Logo and Receipt Header --}}
                 <div class="bg-gradient-to-r from-primary-600 to-orange-500 p-6 text-center text-white no-print">
-                    <span class="text-3xl">🍽️</span>
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
                     <h2 class="text-xl font-bold mt-2">Restoran Nusantara</h2>
                     <p class="text-xs text-white/80">Cita Rasa Otentik Nusantara</p>
                 </div>
-                
+
                 {{-- Print-only Restaurant Info --}}
                 <div class="hidden print:block text-center border-b border-dashed border-gray-300 pb-6 mb-6">
                     <h2 class="text-2xl font-bold">Restoran Nusantara</h2>
@@ -69,8 +71,8 @@
                 <div class="p-8">
                     {{-- Status Banner --}}
                     <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 text-3xl mb-3 animate-bounce">
-                            🎉
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 mb-3">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Reservasi Berhasil Dibuat!</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Simpan halaman ini atau cetak struk sebagai bukti kedatangan.</p>
@@ -104,22 +106,22 @@
                     <div class="space-y-4 border-b border-gray-100 dark:border-dark-700 pb-6 mb-6">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <span class="text-gray-500 dark:text-gray-400 block text-xs">📅 Tanggal</span>
+                                <span class="text-gray-500 dark:text-gray-400 block text-xs">Tanggal</span>
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $reservation->reservation_date->format('d F Y') }}</span>
                             </div>
                             <div>
-                                <span class="text-gray-500 dark:text-gray-400 block text-xs">🕐 Waktu Kedatangan</span>
+                                <span class="text-gray-500 dark:text-gray-400 block text-xs">Waktu Kedatangan</span>
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ date('H:i', strtotime($reservation->reservation_time)) }} WIB</span>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <span class="text-gray-500 dark:text-gray-400 block text-xs">👥 Jumlah Tamu</span>
+                                <span class="text-gray-500 dark:text-gray-400 block text-xs">Jumlah Tamu</span>
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $reservation->number_of_guests }} Orang</span>
                             </div>
                             <div>
-                                <span class="text-gray-500 dark:text-gray-400 block text-xs">🪑 Meja & Area</span>
+                                <span class="text-gray-500 dark:text-gray-400 block text-xs">Meja &amp; Area</span>
                                 <span class="font-semibold text-gray-900 dark:text-white capitalize">
                                     {{ $reservation->table_number ?? '-' }} ({{ $reservation->table_area }})
                                 </span>
@@ -136,14 +138,14 @@
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $reservation->customer_name }}</span>
                             </div>
                             <div>
-                                <span class="text-gray-500 dark:text-gray-400 block text-xs">📞 Nomor Telepon</span>
+                                <span class="text-gray-500 dark:text-gray-400 block text-xs">Nomor Telepon</span>
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $reservation->customer_phone }}</span>
                             </div>
                         </div>
 
                         @if($reservation->customer_email)
                         <div>
-                            <span class="text-gray-500 dark:text-gray-400 block text-xs">✉️ Email</span>
+                            <span class="text-gray-500 dark:text-gray-400 block text-xs">Email</span>
                             <span class="font-semibold text-gray-900 dark:text-white">{{ $reservation->customer_email }}</span>
                         </div>
                         @endif
@@ -162,7 +164,7 @@
                     <div class="space-y-3 border-b border-gray-100 dark:border-dark-700 pb-6 mb-6">
                         @php $grandTotal = 0; @endphp
                         @foreach($reservation->ordered_items as $item)
-                            @php 
+                            @php
                                 $itemPrice = $item['price'] ?? 0;
                                 $itemQty = $item['qty'] ?? 1;
                                 $subtotal = $itemPrice * $itemQty;
@@ -219,10 +221,10 @@
                     🖨️ Cetak Struk
                 </button>
                 <a href="{{ route('reservation') }}" class="btn btn-secondary flex-1 flex items-center justify-center gap-2 py-3">
-                    📅 Buat Reservasi Baru
+                    Buat Reservasi Baru
                 </a>
             </div>
-            
+
             <div class="text-center mt-6 no-print">
                 <a href="{{ route('home') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 transition-colors">
                     ← Kembali ke Halaman Utama

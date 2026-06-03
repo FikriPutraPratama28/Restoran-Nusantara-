@@ -17,7 +17,9 @@
 
     {{-- Order Success --}}
     <div x-show="orderPlaced" class="container-custom max-w-lg mx-auto text-center py-16 animate-fade-in">
-        <div class="text-8xl mb-6 animate-bounce">🎉</div>
+        <div class="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-3xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        </div>
         <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4">Pesanan Berhasil!</h2>
         <p class="text-gray-600 dark:text-gray-400 mb-2">
             Metode pembayaran: <span class="font-semibold text-gray-900 dark:text-white" x-text="paymentLabel()"></span>
@@ -290,7 +292,9 @@
 
                     {{-- Empty Cart --}}
                     <div x-show="$store.cart.items.length === 0" class="text-center py-8">
-                        <div class="text-4xl mb-3">🛒</div>
+                        <div class="w-12 h-12 bg-gray-100 dark:bg-dark-700 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        </div>
                         <p class="text-gray-500 dark:text-gray-400 text-sm">Keranjang kosong</p>
                         <a href="{{ route('menu') }}" class="btn btn-primary mt-4 text-sm py-2">Pilih Menu</a>
                     </div>

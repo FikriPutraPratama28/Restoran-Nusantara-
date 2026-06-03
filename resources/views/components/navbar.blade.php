@@ -120,7 +120,9 @@
                             <button @click="close()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
-                            <div class="text-3xl mb-3">📱</div>
+                            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            </div>
                             <h3 class="font-bold text-gray-900 dark:text-white mb-1">Scan QR Menu</h3>
                             <p class="text-gray-500 dark:text-gray-400 text-xs mb-4">Scan untuk buka menu di HP kamu</p>
                             <div class="bg-white p-3 rounded-xl inline-block shadow-inner mb-4">
@@ -136,8 +138,14 @@
                     class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
                     :class="scrolled ? 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700' : 'text-white/80 hover:text-white hover:bg-white/10'"
                     title="Dark Mode">
-                    <span x-show="!$store.theme.dark" class="text-base">🌙</span>
-                    <span x-show="$store.theme.dark" class="text-base">☀️</span>
+                    {{-- Moon icon (light mode → switch to dark) --}}
+                    <svg x-show="!$store.theme.dark" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    {{-- Sun icon (dark mode → switch to light) --}}
+                    <svg x-show="$store.theme.dark" class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" x-cloak>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+                    </svg>
                 </button>
 
                 {{-- Cart --}}
@@ -180,28 +188,30 @@
             <div class="grid grid-cols-2 gap-1">
                 @php
                 $mobileLinks = [
-                    ['id'=>'home',      'label'=>'Home',      'icon'=>'🏠'],
-                    ['id'=>'menu',      'label'=>'Menu',       'icon'=>'🍽️'],
-                    ['id'=>'reservasi', 'label'=>'Reservasi',  'icon'=>'📅'],
-                    ['id'=>'promo',     'label'=>'Promo',      'icon'=>'🎁'],
-                    ['id'=>'galeri',    'label'=>'Galeri',     'icon'=>'📸'],
-                    ['id'=>'fasilitas', 'label'=>'Fasilitas',  'icon'=>'🏢'],
-                    ['id'=>'tentang',   'label'=>'Tentang',    'icon'=>'ℹ️'],
-                    ['id'=>'kontak',    'label'=>'Kontak',     'icon'=>'📞'],
+                    ['id'=>'home',      'label'=>'Home'],
+                    ['id'=>'menu',      'label'=>'Menu'],
+                    ['id'=>'reservasi', 'label'=>'Reservasi'],
+                    ['id'=>'promo',     'label'=>'Promo'],
+                    ['id'=>'galeri',    'label'=>'Galeri'],
+                    ['id'=>'fasilitas', 'label'=>'Fasilitas'],
+                    ['id'=>'tentang',   'label'=>'Tentang'],
+                    ['id'=>'kontak',    'label'=>'Kontak'],
                 ];
                 @endphp
                 @foreach($mobileLinks as $link)
                 <button @click="scrollTo('{{ $link['id'] }}')"
                     class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-left w-full"
                     :class="activeSection==='{{ $link['id'] }}' ? 'text-primary-500 bg-primary-50 dark:bg-primary-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'">
-                    <span>{{ $link['icon'] }}</span>
                     <span>{{ $link['label'] }}</span>
                     <span x-show="activeSection==='{{ $link['id'] }}'" class="ml-auto w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
                 </button>
                 @endforeach
             </div>
             <div class="pt-3 border-t border-gray-200 dark:border-dark-700 mt-2 space-y-2">
-                <button @click="scrollTo('menu')" class="btn btn-primary w-full text-sm">🛒 Order Sekarang</button>
+                <button @click="scrollTo('menu')" class="btn btn-primary w-full text-sm flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    Order Sekarang
+                </button>
 
             </div>
         </div>

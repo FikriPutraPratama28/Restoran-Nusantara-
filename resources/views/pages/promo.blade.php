@@ -6,7 +6,7 @@
 
 <div class="pt-24 pb-10 bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-900 dark:to-dark-800">
     <div class="container-custom text-center">
-        <span class="badge badge-warning mb-3">🎁 Penawaran Spesial</span>
+        <span class="badge badge-warning mb-3">Penawaran Spesial</span>
         <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-4">
             Promo & <span class="gradient-text">Diskon</span>
         </h1>
@@ -21,16 +21,16 @@
 
         {{-- Active Promos --}}
         <div class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">🔥 Promo Aktif</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Promo Aktif</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @php
                 $promos = [
-                    ['gradient' => 'from-primary-600 to-orange-500', 'icon' => '🍔', 'title' => 'Diskon 30% Makanan', 'desc' => 'Berlaku setiap hari Senin untuk semua menu makanan', 'code' => 'SENIN30', 'expiry' => 'Setiap Senin', 'badge' => 'Mingguan'],
-                    ['gradient' => 'from-purple-600 to-pink-500', 'icon' => '🥤', 'title' => 'Buy 1 Get 1 Minuman', 'desc' => 'Setiap weekend pukul 14.00-17.00 WIB', 'code' => 'WEEKEND2X', 'expiry' => 'Sabtu & Minggu', 'badge' => 'Weekend'],
-                    ['gradient' => 'from-green-600 to-teal-500', 'icon' => '🎂', 'title' => 'Free Dessert', 'desc' => 'Gratis dessert untuk pembelian min. Rp 100.000', 'code' => 'FREEDESSERT', 'expiry' => 'Berlaku terus', 'badge' => 'Permanen'],
-                    ['gradient' => 'from-blue-600 to-cyan-500', 'icon' => '👤', 'title' => 'Diskon 15% New User', 'desc' => 'Khusus untuk pelanggan baru yang pertama kali order', 'code' => 'NEWUSER', 'expiry' => 'Sekali pakai', 'badge' => 'New User'],
-                    ['gradient' => 'from-red-600 to-rose-500', 'icon' => '🎉', 'title' => 'Potongan Rp 20.000', 'desc' => 'Potongan langsung untuk pembelian min. Rp 75.000', 'code' => 'GRATIS20', 'expiry' => 'Berlaku terus', 'badge' => 'Cashback'],
-                    ['gradient' => 'from-yellow-500 to-amber-500', 'icon' => '⭐', 'title' => 'Member Diskon 10%', 'desc' => 'Diskon 10% untuk semua member terdaftar', 'code' => 'HEMAT10', 'expiry' => 'Berlaku terus', 'badge' => 'Member'],
+                    ['gradient' => 'from-primary-600 to-orange-500', 'title' => 'Diskon 30% Makanan', 'desc' => 'Berlaku setiap hari Senin untuk semua menu makanan', 'code' => 'SENIN30', 'expiry' => 'Setiap Senin', 'badge' => 'Mingguan'],
+                    ['gradient' => 'from-purple-600 to-pink-500', 'title' => 'Buy 1 Get 1 Minuman', 'desc' => 'Setiap weekend pukul 14.00-17.00 WIB', 'code' => 'WEEKEND2X', 'expiry' => 'Sabtu & Minggu', 'badge' => 'Weekend'],
+                    ['gradient' => 'from-green-600 to-teal-500', 'title' => 'Free Dessert', 'desc' => 'Gratis dessert untuk pembelian min. Rp 100.000', 'code' => 'FREEDESSERT', 'expiry' => 'Berlaku terus', 'badge' => 'Permanen'],
+                    ['gradient' => 'from-blue-600 to-cyan-500', 'title' => 'Diskon 15% New User', 'desc' => 'Khusus untuk pelanggan baru yang pertama kali order', 'code' => 'NEWUSER', 'expiry' => 'Sekali pakai', 'badge' => 'New User'],
+                    ['gradient' => 'from-red-600 to-rose-500', 'title' => 'Potongan Rp 20.000', 'desc' => 'Potongan langsung untuk pembelian min. Rp 75.000', 'code' => 'GRATIS20', 'expiry' => 'Berlaku terus', 'badge' => 'Cashback'],
+                    ['gradient' => 'from-yellow-500 to-amber-500', 'title' => 'Member Diskon 10%', 'desc' => 'Diskon 10% untuk semua member terdaftar', 'code' => 'HEMAT10', 'expiry' => 'Berlaku terus', 'badge' => 'Member'],
                 ];
                 @endphp
 
@@ -44,7 +44,6 @@
 
                     <div class="relative z-10">
                         <div class="flex items-start justify-between mb-3">
-                            <span class="text-4xl">{{ $promo['icon'] }}</span>
                             <span class="badge bg-white/20 text-white text-xs">{{ $promo['badge'] }}</span>
                         </div>
                         <h3 class="text-lg font-bold mb-2">{{ $promo['title'] }}</h3>
@@ -83,7 +82,7 @@
         <div class="card p-8 bg-gradient-to-br from-gray-900 to-gray-800 dark:from-dark-800 dark:to-dark-700 text-white">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
-                    <span class="badge bg-yellow-500/20 text-yellow-400 mb-4">👑 Loyalty Program</span>
+                    <span class="badge bg-yellow-500/20 text-yellow-400 mb-4">Loyalty Program</span>
                     <h2 class="font-display text-3xl font-bold mb-4">Kumpulkan Poin, Dapatkan Hadiah!</h2>
                     <p class="text-gray-400 mb-6">
                         Setiap pembelian Rp 10.000 = 1 poin. Tukarkan poin kamu dengan diskon, menu gratis, dan hadiah menarik lainnya.
@@ -106,7 +105,9 @@
                     </a>
                 </div>
                 <div class="text-center">
-                    <div class="text-8xl animate-float">🏆</div>
+                    <div class="w-28 h-28 bg-yellow-100 dark:bg-yellow-900/20 rounded-3xl flex items-center justify-center mx-auto">
+                        <svg class="w-14 h-14 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
                     <div class="mt-4 text-gray-400 text-sm">Bergabung dengan 10.000+ member aktif</div>
                 </div>
             </div>
