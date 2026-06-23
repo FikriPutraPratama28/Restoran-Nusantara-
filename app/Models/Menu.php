@@ -15,6 +15,8 @@ class Menu extends Model
         'is_new', 'is_active', 'sold_count', 'rating', 'review_count', 'sort_order',
     ];
 
+    protected $appends = ['image_src'];
+
     protected $casts = [
         'is_stock'  => 'boolean',
         'is_promo'  => 'boolean',

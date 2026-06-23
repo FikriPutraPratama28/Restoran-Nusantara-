@@ -25,7 +25,9 @@
     deleteName: '',
     canEdit: {{ auth()->user()->hasPermission('edit_menu') ? 'true' : 'false' }},
     canDelete: {{ auth()->user()->hasPermission('delete_data') ? 'true' : 'false' }},
-    categories: ['all','makanan','minuman','dessert','snack','paket'],
+    categories: ['all','makanan','minuman','dessert','snack','paket','seafood','aneka-snack','aneka-sayur','nasi-kotak','acara-khusus','iga'],
+    categoryNames: { all:'Semua', makanan:'Makanan', minuman:'Minuman', dessert:'Dessert', snack:'Snack', paket:'Paket Mabar', seafood:'Seafood', 'aneka-snack':'Aneka Snack', 'aneka-sayur':'Aneka Sayur', 'nasi-kotak':'Nasi Kotak', 'acara-khusus':'Acara Khusus', iga:'Iga' },
+    catLabel(slug) { return this.categoryNames[slug] || slug; },
     menus: {{ $menus->toJson() }},
     get filtered() {
         return this.menus.filter(m => {
@@ -38,31 +40,46 @@
     openAdd() { this.isEdit = false; this.showModal = true; },
     openEdit(m) {
         this.isEdit = true;
-        document.getElementById('edit_id').value = m.id;
-        document.getElementById('edit_name').value = m.name;
-        document.getElementById('edit_description').value = m.description || '';
-        document.getElementById('edit_category').value = m.category;
-        document.getElementById('edit_price').value = m.price;
-        document.getElementById('edit_original_price').value = m.originalPrice || '';
-        document.getElementById('edit_label').value = m.label || '';
-        document.getElementById('edit_is_stock').checked = m.isStock;
-        document.getElementById('edit_is_promo').checked = m.isPromo;
-        document.getElementById('edit_is_new').checked = m.isNew;
-        document.getElementById('edit_preview').src = m.image;
-        document.getElementById('edit_preview_wrap').classList.remove('hidden');
         this.showModal = true;
+        this.$nextTick(() => {
+            document.getElementById('edit_id').value = m.id;
+            document.getElementById('edit_name').value = m.name;
+            document.getElementById('edit_description').value = m.description || '';
+            document.getElementById('edit_category').value = m.category;
+            document.getElementById('edit_price').value = m.price;
+            document.getElementById('edit_original_price').value = m.original_price || '';
+            document.getElementById('edit_label').value = m.label || '';
+            const toggleIds = ['is_stock','is_promo','is_new'];
+            const toggleVals = [m.is_stock, m.is_promo, m.is_new];
+            toggleIds.forEach((tid, i) => {
+                const sel = '#editForm input[name=' + tid + ']';
+                const hiddenInput = document.querySelector(sel);
+                if (hiddenInput) {
+                    hiddenInput.value = toggleVals[i] ? '1' : '0';
+                    const alpineEl = hiddenInput.closest('[x-data]');
+                    if (alpineEl && Alpine.$data(alpineEl)) Alpine.$data(alpineEl).on = !!toggleVals[i];
+                }
+            });
+            const previewImg = document.getElementById('edit_preview');
+            if (previewImg) {
+                previewImg.src = m.image_src;
+                const imgAlpine = previewImg.closest('[x-data]');
+                if (imgAlpine && Alpine.$data(imgAlpine)) Alpine.$data(imgAlpine).previewUrl = m.image_src;
+            }
+            document.getElementById('editForm').action = '/admin/menu/' + m.id;
+        });
     },
     confirmDelete(id, name) { this.deleteId = id; this.deleteName = name; this.showDeleteModal = true; }
 }">
 
 {{-- Toolbar --}}
 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-    <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
+    <div class="flex items-center gap-2 overflow-x-auto pb-2">
         <template x-for="cat in categories" :key="cat">
             <button @click="activeCategory=cat"
                 :class="activeCategory===cat ? 'bg-violet-600 text-white shadow-md' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-gray-55 dark:hover:bg-slate-700/50'"
                 class="px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap border border-gray-200/50 dark:border-white/10 transition-all capitalize"
-                x-text="cat==='all' ? 'Semua ('+menus.length+')' : cat">
+                x-text="cat==='all' ? 'Semua ('+menus.length+')' : catLabel(cat)">
             </button>
         </template>
     </div>
@@ -94,19 +111,19 @@
         <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden hover:shadow-md transition-all group flex flex-col justify-between">
             <div>
                 <div class="relative h-40 overflow-hidden">
-                    <img :src="m.image" :alt="m.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                    <img :src="m.image_src" :alt="m.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
                     <div class="absolute top-3 left-3 flex flex-col gap-1.5">
                         <span x-show="m.label==='best-seller'" class="text-[9px] uppercase tracking-wider bg-orange-500 text-white px-2.5 py-1 rounded-full font-extrabold shadow-sm">Best Seller</span>
                         <span x-show="m.label==='new'" class="text-[9px] uppercase tracking-wider bg-emerald-500 text-white px-2.5 py-1 rounded-full font-extrabold shadow-sm">Baru</span>
                         <span x-show="m.label==='popular'" class="text-[9px] uppercase tracking-wider bg-blue-500 text-white px-2.5 py-1 rounded-full font-extrabold shadow-sm">Populer</span>
                     </div>
                     <div class="absolute top-3 right-3">
-                        <span :class="m.isStock ? 'bg-emerald-500/90 text-white' : 'bg-red-500/90 text-white'" class="text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-full font-extrabold shadow-sm" x-text="m.isStock ? 'Tersedia' : 'Habis'"></span>
+                        <span :class="m.is_stock ? 'bg-emerald-500/90 text-white' : 'bg-red-500/90 text-white'" class="text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-full font-extrabold shadow-sm" x-text="m.is_stock ? 'Tersedia' : 'Habis'"></span>
                     </div>
                 </div>
                 <div class="p-4">
                     <h4 class="font-bold text-gray-900 dark:text-white text-sm mb-1 truncate" x-text="m.name"></h4>
-                    <p class="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider mb-3" x-text="m.category"></p>
+                    <p class="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider mb-3" x-text="catLabel(m.category)"></p>
                     <p class="text-xs text-gray-500 dark:text-slate-400 line-clamp-2 mb-4" x-text="m.description || 'Tidak ada deskripsi'"></p>
                 </div>
             </div>
@@ -114,7 +131,7 @@
             <div class="p-4 pt-0">
                 <div class="flex items-center justify-between mb-4 border-t border-gray-100 dark:border-slate-700/50 pt-3">
                     <span class="text-violet-600 dark:text-violet-400 font-extrabold text-sm" x-text="formatPrice(m.price)"></span>
-                    <span class="text-[10px] font-bold text-gray-400 dark:text-slate-500" x-text="`${m.reviews} Terjual`"></span>
+                    <span class="text-[10px] font-bold text-gray-400 dark:text-slate-500" x-text="`${m.sold_count || 0} Terjual`"></span>
                 </div>
                 <div class="flex gap-2">
                     <button @click="canEdit && openEdit(m)" :disabled="!canEdit"
@@ -158,21 +175,21 @@
                 <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-700/30 transition-colors">
                     <td class="px-6 py-3.5">
                         <div class="flex items-center gap-3">
-                            <img :src="m.image" :alt="m.name" class="w-11 h-11 rounded-2xl object-cover flex-shrink-0 border border-gray-100 dark:border-slate-650">
+                            <img :src="m.image_src" :alt="m.name" class="w-11 h-11 rounded-2xl object-cover flex-shrink-0 border border-gray-100 dark:border-slate-650">
                             <div>
                                 <p class="font-bold text-gray-800 dark:text-slate-200 text-sm" x-text="m.name"></p>
                                 <p class="text-xs text-gray-400 dark:text-slate-500 truncate max-w-[200px]" x-text="m.description || 'Tidak ada deskripsi'"></p>
                             </div>
                         </div>
                     </td>
-                    <td class="px-4 py-3.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider capitalize" x-text="m.category"></td>
+                    <td class="px-4 py-3.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider" x-text="catLabel(m.category)"></td>
                     <td class="px-4 py-3.5">
                         <div class="text-sm font-extrabold text-violet-600 dark:text-violet-400" x-text="formatPrice(m.price)"></div>
-                        <div x-show="m.originalPrice" class="text-xs text-gray-400 dark:text-slate-500 line-through" x-text="m.originalPrice ? formatPrice(m.originalPrice) : ''"></div>
+                        <div x-show="m.original_price" class="text-xs text-gray-400 dark:text-slate-500 line-through" x-text="m.original_price ? formatPrice(m.original_price) : ''"></div>
                     </td>
-                    <td class="px-4 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400" x-text="m.reviews + ' porsi'"></td>
+                    <td class="px-4 py-3.5 text-xs font-bold text-gray-500 dark:text-slate-400" x-text="(m.sold_count || 0) + ' porsi'"></td>
                     <td class="px-4 py-3.5">
-                        <span :class="m.isStock ? 'bg-emerald-100/70 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-red-100/70 text-red-600 dark:bg-red-900/20 dark:text-red-400'" class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" x-text="m.isStock ? 'Tersedia' : 'Habis'"></span>
+                        <span :class="m.is_stock ? 'bg-emerald-100/70 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-red-100/70 text-red-600 dark:bg-red-900/20 dark:text-red-400'" class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" x-text="m.is_stock ? 'Tersedia' : 'Habis'"></span>
                     </td>
                     <td class="px-6 py-3.5 text-right">
                         <div class="flex gap-1.5 justify-end">

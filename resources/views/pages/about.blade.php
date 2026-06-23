@@ -101,28 +101,6 @@
             @endforeach
         </div>
 
-        {{-- Team --}}
-        <div class="text-center mb-12">
-            <h2 class="font-display text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                Tim <span class="gradient-text">Kami</span>
-            </h2>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($team as $m)
-            <div class="card p-6 text-center card-hover" x-data x-intersect="$el.classList.add('animate-slide-up')">
-                @if($m->image_src)
-                    <img src="{{ $m->image_src }}" alt="{{ $m->name }}" class="w-20 h-20 rounded-2xl object-cover mx-auto mb-4 shadow-lg">
-                @else
-                    <div class="w-20 h-20 bg-gradient-to-br {{ $m->gradient }} rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto mb-4 shadow-lg">
-                        {{ $m->emoji ?: strtoupper(substr($m->name, 0, 2)) }}
-                    </div>
-                @endif
-                <h3 class="font-bold text-gray-900 dark:text-white">{{ $m->name }}</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ $m->role }}</p>
-            </div>
-            @endforeach
-        </div>
-
     </div>
 </section>
 

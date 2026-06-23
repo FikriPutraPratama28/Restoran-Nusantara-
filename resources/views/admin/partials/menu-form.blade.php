@@ -88,14 +88,21 @@
             <option value="minuman">Minuman</option>
             <option value="dessert">Dessert</option>
             <option value="snack">Snack</option>
-            <option value="paket">Paket</option>
+            <option value="paket">Paket Mabar</option>
+            <option value="seafood">Seafood</option>
+            <option value="aneka-snack">Aneka Snack</option>
+            <option value="aneka-sayur">Aneka Sayur</option>
+            <option value="nasi-kotak">Nasi Kotak</option>
+            <option value="acara-khusus">Acara Khusus</option>
+            <option value="iga">Iga</option>
         </select>
     </div>
     <div>
         <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Harga (Rp) <span class="text-red-500">*</span></label>
         <div class="relative">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">Rp</span>
-            <input id="{{ $p }}_price" name="price" type="number" min="0" placeholder="0" required
+            <input id="{{ $p }}_price" name="price" type="text" inputmode="numeric" placeholder="0" required
+                x-on:input="$event.target.value = $event.target.value.replace(/[^0-9]/g, '')"
                 class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none">
         </div>
     </div>
@@ -107,7 +114,8 @@
         <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Harga Coret</label>
         <div class="relative">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">Rp</span>
-            <input id="{{ $p }}_original_price" name="original_price" type="number" min="0" placeholder="0"
+            <input id="{{ $p }}_original_price" name="original_price" type="text" inputmode="numeric" placeholder="0"
+                x-on:input="$event.target.value = $event.target.value.replace(/[^0-9]/g, '')"
                 class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-violet-500 outline-none">
         </div>
     </div>

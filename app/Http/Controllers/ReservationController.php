@@ -14,19 +14,19 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'date' => 'required|date|after:today',
-            'time' => 'required|date_format:H:i',
-            'guests' => 'required|integer|min:1|max:50',
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'email' => 'nullable|email',
-            'notes' => 'nullable|string|max:1000',
-            'tableArea' => 'required|in:indoor,outdoor',
-            'tableNumber' => 'required|string|max:20',
-            'paymentMethod' => 'required|in:cash,qris,va',
-            'items' => 'required|array|min:1',
-            'items.*.id' => 'required|integer|exists:menus,id',
-            'items.*.qty' => 'required|integer|min:1',
+            'date'          => 'required|date|after:today',
+            'time'          => 'required|date_format:H:i',
+            'guests'        => 'required|integer|min:1|max:50',
+            'name'          => 'required|string|max:255',
+            'phone'         => 'required|string|max:20',
+            'email'         => 'nullable|email',
+            'notes'         => 'nullable|string|max:1000',
+            'tableArea'     => 'required|in:indoor,outdoor',
+            'tableNumber'   => 'required|string|max:20',
+            'paymentMethod' => 'required|string|max:50',
+            'items'         => 'required|array|min:1',
+            'items.*.id'    => 'required|integer|exists:menus,id',
+            'items.*.qty'   => 'required|integer|min:1',
         ]);
 
         try {
@@ -74,10 +74,11 @@ class ReservationController extends Controller
             );
 
             return response()->json([
-                'success' => true,
-                'message' => 'Reservasi berhasil dibuat! Admin akan mengkonfirmasi reservasi Anda dalam waktu singkat.',
-                'redirect' => route('reservation.receipt', ['code' => $reservation->reservation_code]),
-                'reservation' => $reservation,
+                'success'          => true,
+                'message'          => 'Reservasi berhasil dibuat! Admin akan mengkonfirmasi reservasi Anda dalam waktu singkat.',
+                'reservation_code' => $reservation->reservation_code,
+                'redirect'         => route('reservation.receipt', ['code' => $reservation->reservation_code]),
+                'reservation'      => $reservation,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([

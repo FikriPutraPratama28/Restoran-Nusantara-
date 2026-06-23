@@ -28,10 +28,18 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
+        // Sanitize price: strip thousand separators (dots/commas) so '35.000' becomes '35000'
+        if ($request->filled('price')) {
+            $request->merge(['price' => preg_replace('/[^0-9]/', '', $request->input('price'))]);
+        }
+        if ($request->filled('original_price')) {
+            $request->merge(['original_price' => preg_replace('/[^0-9]/', '', $request->input('original_price'))]);
+        }
+
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'category'       => 'required|in:makanan,minuman,dessert,snack,paket',
+            'category'       => 'required|in:makanan,minuman,dessert,snack,paket,seafood,aneka-snack,aneka-sayur,nasi-kotak,acara-khusus,iga',
             'price'          => 'required|integer|min:0',
             'original_price' => 'nullable|integer|min:0',
             'label'          => 'nullable|in:best-seller,popular,new,',
@@ -63,10 +71,18 @@ class MenuController extends Controller
 
     public function update(Request $request, Menu $menu)
     {
+        // Sanitize price: strip thousand separators (dots/commas) so '35.000' becomes '35000'
+        if ($request->filled('price')) {
+            $request->merge(['price' => preg_replace('/[^0-9]/', '', $request->input('price'))]);
+        }
+        if ($request->filled('original_price')) {
+            $request->merge(['original_price' => preg_replace('/[^0-9]/', '', $request->input('original_price'))]);
+        }
+
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'category'       => 'required|in:makanan,minuman,dessert,snack,paket',
+            'category'       => 'required|in:makanan,minuman,dessert,snack,paket,seafood,aneka-snack,aneka-sayur,nasi-kotak,acara-khusus,iga',
             'price'          => 'required|integer|min:0',
             'original_price' => 'nullable|integer|min:0',
             'label'          => 'nullable|in:best-seller,popular,new,',

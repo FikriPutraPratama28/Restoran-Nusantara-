@@ -29,6 +29,30 @@
         html { scroll-behavior: smooth; }
         /* Offset anchor scroll agar tidak tertutup navbar */
         section[id] { scroll-margin-top: 80px; }
+
+        /* ── Print Styles untuk Struk Reservasi ── */
+        @media print {
+            /* Sembunyikan semua elemen kecuali struk */
+            body > * { display: none !important; }
+            section.section { display: none !important; }
+            .no-print-hide { display: none !important; }
+            .print-only { display: block !important; }
+            nav, header, footer { display: none !important; }
+
+            /* Tampilkan hanya area struk */
+            section.section:has(#receipt-wrapper) { display: block !important; }
+            section.section:has(#receipt-wrapper) > * { display: none !important; }
+            section.section:has(#receipt-wrapper) .container-custom { display: block !important; }
+            section.section:has(#receipt-wrapper) .max-w-3xl { display: block !important; }
+            #receipt-wrapper { display: block !important; }
+            #receipt-card {
+                box-shadow: none !important;
+                border: 1px solid #e5e7eb !important;
+                page-break-inside: avoid;
+            }
+            body { background: white !important; font-size: 12px; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
     </style>
 </head>
 <body class="font-sans antialiased">

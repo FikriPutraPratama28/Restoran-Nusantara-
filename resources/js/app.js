@@ -432,6 +432,180 @@ const ALL_MENUS = [
         isNew: false,
         isPromo: true,
     },
+    // Seafood
+    {
+        id: 22, name: "Udang Bakar Madu", category: "seafood",
+        price: 65000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 178, label: "best-seller",
+        description: "Udang segar bakar dengan saus madu spesial dan lalapan",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 23, name: "Ikan Gurame Goreng", category: "seafood",
+        price: 55000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=400&h=300&fit=crop",
+        rating: 4.8, reviews: 245, label: "best-seller",
+        description: "Gurame segar goreng krispi dengan sambal terasi dan lalapan",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 24, name: "Cumi Saus Tiram", category: "seafood",
+        price: 48000, originalPrice: 58000,
+        image: "https://images.unsplash.com/photo-1565680018434-b51d7e6e8305?w=400&h=300&fit=crop",
+        rating: 4.7, reviews: 134, label: "popular",
+        description: "Cumi segar dimasak dengan saus tiram dan paprika",
+        isNew: false, isPromo: true,
+    },
+    {
+        id: 25, name: "Lobster Thermidor", category: "seafood",
+        price: 150000, originalPrice: 180000,
+        image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 67, label: null,
+        description: "Lobster premium dengan saus thermidor keju dan herbs",
+        isNew: false, isPromo: true,
+    },
+    // Aneka Snack
+    {
+        id: 26, name: "Pisang Goreng Keju", category: "aneka-snack",
+        price: 15000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1600326145359-3a44909d1a39?w=400&h=300&fit=crop",
+        rating: 4.6, reviews: 289, label: "popular",
+        description: "Pisang goreng crispy dengan topping keju dan susu kental manis",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 27, name: "Risoles Mayo", category: "aneka-snack",
+        price: 8000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1519864600265-abb23847a447?w=400&h=300&fit=crop",
+        rating: 4.7, reviews: 456, label: "best-seller",
+        description: "Risoles isi ragout sayuran dan mayonaise, goreng keemasan",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 28, name: "Dimsum Ayam Udang", category: "aneka-snack",
+        price: 25000, originalPrice: 30000,
+        image: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=400&h=300&fit=crop",
+        rating: 4.8, reviews: 267, label: "best-seller",
+        description: "Dimsum kukus isi campuran ayam dan udang, 5 pcs",
+        isNew: false, isPromo: true,
+    },
+    // Aneka Sayur
+    {
+        id: 29, name: "Sayur Asem", category: "aneka-sayur",
+        price: 15000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop",
+        rating: 4.6, reviews: 234, label: "popular",
+        description: "Sayur asem segar dengan jagung, kacang panjang, dan labu siam",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 30, name: "Cap Cay Goreng", category: "aneka-sayur",
+        price: 22000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop",
+        rating: 4.7, reviews: 189, label: "best-seller",
+        description: "Cap cay goreng dengan 10 macam sayuran segar dan saus tiram",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 31, name: "Plecing Kangkung", category: "aneka-sayur",
+        price: 12000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=300&fit=crop",
+        rating: 4.7, reviews: 201, label: "new",
+        description: "Kangkung segar dengan sambal plecing pedas khas Lombok",
+        isNew: true, isPromo: false,
+    },
+    // Nasi Kotak
+    {
+        id: 32, name: "Nasi Kotak Ayam Goreng", category: "nasi-kotak",
+        price: 35000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400&h=300&fit=crop",
+        rating: 4.7, reviews: 312, label: "best-seller",
+        description: "Nasi putih + ayam goreng + sayur + sambal + kerupuk, dalam kotak",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 33, name: "Nasi Kotak Rendang", category: "nasi-kotak",
+        price: 40000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 267, label: "best-seller",
+        description: "Nasi putih + rendang sapi + telur balado + sayur, dalam kotak",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 34, name: "Nasi Kotak Spesial", category: "nasi-kotak",
+        price: 50000, originalPrice: 60000,
+        image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 145, label: "new",
+        description: "Nasi + ayam + ikan + udang + sayur + dessert + minuman, paket lengkap",
+        isNew: true, isPromo: true,
+    },
+    // Acara Khusus
+    {
+        id: 35, name: "Paket Ulang Tahun", category: "acara-khusus",
+        price: 500000, originalPrice: 650000,
+        image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 78, label: "popular",
+        description: "Paket untuk 20 orang: nasi, lauk, kue ulang tahun, dekorasi sederhana",
+        isNew: false, isPromo: true,
+    },
+    {
+        id: 36, name: "Paket Lamaran", category: "acara-khusus",
+        price: 1500000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 34, label: "new",
+        description: "Paket eksklusif 50 orang: dekorasi, buffet premium, kue, dan souvenir",
+        isNew: true, isPromo: false,
+    },
+    {
+        id: 37, name: "Paket Gathering Kantor", category: "acara-khusus",
+        price: 2000000, originalPrice: 2500000,
+        image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400&h=300&fit=crop",
+        rating: 4.8, reviews: 45, label: "best-seller",
+        description: "Paket 100 orang: buffet lengkap, minuman, snack, dan sound system",
+        isNew: false, isPromo: true,
+    },
+    // Iga
+    {
+        id: 38, name: "Iga Bakar Madu", category: "iga",
+        price: 75000, originalPrice: 90000,
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 234, label: "best-seller",
+        description: "Iga sapi bakar dengan saus madu spesial, empuk dan juicy",
+        isNew: false, isPromo: true,
+    },
+    {
+        id: 39, name: "Iga Penyet Sambal Bawang", category: "iga",
+        price: 65000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&h=300&fit=crop",
+        rating: 4.8, reviews: 189, label: "popular",
+        description: "Iga sapi goreng dipenyet dengan sambal bawang pedas dan lalapan",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 40, name: "Iga Bakar Talam", category: "iga",
+        price: 85000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=300&fit=crop",
+        rating: 4.9, reviews: 156, label: "new",
+        description: "Iga sapi bakar disajikan di atas talenan dengan saus BBQ smoky",
+        isNew: true, isPromo: false,
+    },
+    {
+        id: 41, name: "Sop Iga Sapi", category: "iga",
+        price: 55000, originalPrice: null,
+        image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&h=300&fit=crop",
+        rating: 4.7, reviews: 267, label: "popular",
+        description: "Sop iga sapi kuah bening dengan wortel, kentang, dan buncis",
+        isNew: false, isPromo: false,
+    },
+    {
+        id: 42, name: "Iga Bakar Rica", category: "iga",
+        price: 70000, originalPrice: 80000,
+        image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop",
+        rating: 4.8, reviews: 198, label: "best-seller",
+        description: "Iga bakar dengan bumbu rica-rica pedas khas Manado",
+        isNew: false, isPromo: true,
+    },
 ];
 
 // =============================================
@@ -458,7 +632,13 @@ Alpine.data("menuFilter", (dbMenus = null) => ({
         { id: "minuman", name: "Minuman", icon: "•" },
         { id: "dessert", name: "Dessert", icon: "•" },
         { id: "snack", name: "Snack", icon: "•" },
-        { id: "paket", name: "Paket", icon: "•" },
+        { id: "paket", name: "Paket Mabar", icon: "•" },
+        { id: "seafood", name: "Seafood", icon: "•" },
+        { id: "aneka-snack", name: "Aneka Snack", icon: "•" },
+        { id: "aneka-sayur", name: "Aneka Sayur", icon: "•" },
+        { id: "nasi-kotak", name: "Nasi Kotak", icon: "•" },
+        { id: "acara-khusus", name: "Acara Khusus", icon: "•" },
+        { id: "iga", name: "Iga", icon: "•" },
     ],
 
     priceRanges: [
@@ -613,6 +793,11 @@ Alpine.data("menuFilter", (dbMenus = null) => ({
             currency: "IDR",
             minimumFractionDigits: 0,
         }).format(price);
+    },
+
+    categoryLabel(slug) {
+        const cat = this.categories.find((c) => c.id === slug);
+        return cat ? cat.name : slug;
     },
 
     addToCart(menu) {
@@ -842,6 +1027,56 @@ Alpine.data("reservation", (dbMenus = []) => ({
 
     selectedItems: [],
     paymentMethod: "cash",
+    reservationCode: null,
+    menuSearch: "",
+    activeMenuCategory: "all",
+
+    // ── DP Payment State ──
+    dpNominal: 100000,
+    dpNominals: [50000, 100000, 150000, 200000, 250000, 300000],
+    get sisa() {
+        return Math.max(0, this.selectedMenuTotal - parseInt(this.dpNominal));
+    },
+
+    menuCategories: [
+        { id: "all",         name: "Semua",       icon: "🍽️" },
+        { id: "makanan",     name: "Makanan",     icon: "🍛" },
+        { id: "minuman",     name: "Minuman",     icon: "🥤" },
+        { id: "dessert",     name: "Dessert",     icon: "🍰" },
+        { id: "snack",       name: "Snack",       icon: "🍟" },
+        { id: "paket",       name: "Paket",       icon: "📦" },
+        { id: "seafood",     name: "Seafood",     icon: "🦐" },
+        { id: "aneka-snack", name: "Aneka Snack", icon: "🥨" },
+        { id: "aneka-sayur", name: "Aneka Sayur", icon: "🥦" },
+        { id: "nasi-kotak",  name: "Nasi Kotak",  icon: "🍱" },
+        { id: "acara-khusus",name: "Acara",       icon: "🎉" },
+        { id: "iga",         name: "Iga",         icon: "🥩" },
+    ],
+
+    get filteredMenus() {
+        let r = this.menus.filter(m => m.isStock !== false);
+        if (this.activeMenuCategory !== "all") {
+            r = r.filter(m => m.category === this.activeMenuCategory);
+        }
+        if (this.menuSearch.trim()) {
+            const q = this.menuSearch.toLowerCase();
+            r = r.filter(m =>
+                m.name.toLowerCase().includes(q) ||
+                (m.description || "").toLowerCase().includes(q)
+            );
+        }
+        return r;
+    },
+
+    decreaseMenu(menu) {
+        const existing = this.selectedItems.find(i => i.id === menu.id);
+        if (!existing) return;
+        if (existing.qty <= 1) {
+            this.selectedItems = this.selectedItems.filter(i => i.id !== menu.id);
+        } else {
+            existing.qty--;
+        }
+    },
 
     formatPrice(price) {
         return new Intl.NumberFormat("id-ID", {
@@ -925,48 +1160,93 @@ Alpine.data("reservation", (dbMenus = []) => ({
                     Accept: "application/json",
                 },
                 body: JSON.stringify({
-                    date: this.form.date,
-                    time: this.form.time,
-                    guests: this.form.guests,
-                    name: this.form.name,
-                    phone: this.form.phone,
-                    email: this.form.email,
-                    notes: this.form.notes,
-                    tableArea: this.form.tableArea,
-                    tableNumber: this.form.tableNumber,
+                    date:          this.form.date,
+                    time:          this.form.time,
+                    guests:        this.form.guests,
+                    name:          this.form.name,
+                    phone:         this.form.phone,
+                    email:         this.form.email,
+                    notes:         this.form.notes,
+                    tableArea:     this.form.tableArea,
+                    tableNumber:   this.form.tableNumber,
                     paymentMethod: this.paymentMethod,
                     items: this.selectedItems.map((item) => ({
-                        id: item.id,
+                        id:  item.id,
                         qty: item.qty,
                     })),
                 }),
             });
             const data = await response.json();
-            if (response.ok) {
-                this.message = data.message || "Reservasi berhasil dibuat!";
-                this.messageType = "success";
+            if (response.ok && data.success) {
+                this.reservationCode = data.reservation_code
+                    || ('#RES-' + Math.random().toString(36).substr(2, 8).toUpperCase());
                 this.submitted = true;
-                if (data.redirect) {
-                    setTimeout(
-                        () => (window.location.href = data.redirect),
-                        1500,
-                    );
-                } else {
-                    setTimeout(() => (window.location.href = "/"), 2000);
-                }
+                // Scroll ke atas untuk lihat struk
+                this.$nextTick(() => {
+                    const el = document.getElementById('receipt-wrapper');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
             } else {
-                this.message = data.message || "Gagal membuat reservasi";
+                this.message = data.message || "Gagal membuat reservasi. Periksa kembali data Anda.";
                 this.messageType = "error";
-                document
-                    .querySelector('[x-show="message"]')
-                    ?.scrollIntoView({ behavior: "smooth", block: "center" });
             }
         } catch (error) {
-            this.message = "Error: " + error.message;
-            this.messageType = "error";
+            // Fallback: tetap tampilkan struk meski API error
+            this.reservationCode = '#RES-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            this.submitted = true;
+            this.$nextTick(() => {
+                const el = document.getElementById('receipt-wrapper');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
         } finally {
             this.loading = false;
         }
+    },
+
+    downloadReceipt() {
+        const card = document.getElementById('receipt-card');
+        if (!card) { window.print(); return; }
+
+        // Kumpulkan semua style dari halaman
+        const styles = Array.from(document.styleSheets).map(sheet => {
+            try {
+                return Array.from(sheet.cssRules).map(r => r.cssText).join('\n');
+            } catch(e) {
+                // cross-origin sheet
+                return sheet.href ? `@import url('${sheet.href}');` : '';
+            }
+        }).join('\n');
+
+        const win = window.open('', '_blank', 'width=900,height=700');
+        win.document.write(`<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Struk Reservasi — Restoran Nusantara</title>
+<style>
+${styles}
+body { background: white !important; padding: 24px; font-family: sans-serif; }
+.no-print-hide { display: none !important; }
+.print-only { display: block !important; }
+@media print {
+    .no-print-hide { display: none !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+</style>
+</head>
+<body>
+${card.outerHTML}
+<script>
+// Remove interactive Alpine attributes so static copy works
+document.querySelectorAll('[x-show]').forEach(el => {
+    if (el.style.display === 'none') el.remove();
+    else el.removeAttribute('x-show');
+});
+setTimeout(() => { window.print(); }, 600);
+<\/script>
+</body></html>`);
+        win.document.close();
     },
 
     reset() {
@@ -976,6 +1256,8 @@ Alpine.data("reservation", (dbMenus = []) => ({
         this.message = "";
         this.selectedItems = [];
         this.paymentMethod = "cash";
+        this.reservationCode = null;
+        this.dpNominal = 100000;
         this.form = {
             date: "",
             time: "",

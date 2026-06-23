@@ -33,14 +33,46 @@ class SecurityHeaders
         $connectSrc = ["'self'"];
 
         if (app()->environment('local')) {
-            $scriptSrc[] = 'http://127.0.0.1:5173';
-            $scriptSrc[] = 'http://localhost:5173';
-            $styleSrc[] = 'http://127.0.0.1:5173';
-            $styleSrc[] = 'http://localhost:5173';
-            $connectSrc[] = 'http://127.0.0.1:5173';
-            $connectSrc[] = 'http://localhost:5173';
-            $connectSrc[] = 'ws://127.0.0.1:5173';
-            $connectSrc[] = 'ws://localhost:5173';
+            // Baca port Vite dari file public/hot (dynamic)
+            $viteHosts = [
+                'http://127.0.0.1:5173',
+                'http://localhost:5173',
+                'http://127.0.0.1:5174',
+                'http://localhost:5174',
+                'http://127.0.0.1:5175',
+                'http://localhost:5175',
+            ];
+            $hotFile = public_path('hot');
+            if (file_exists($hotFile)) {
+                $hotUrl = rtrim(trim(file_get_contents($hotFile)), '/');
+                if (!in_array($hotUrl, $viteHosts)) {
+                    $viteHosts[] = $hotUrl;
+                }
+            }
+            foreach ($viteHosts as $host) {
+                $scriptSrc[] = $host;
+                $styleSrc[] = $host;
+                $connectSrc[] = $host;
+            }
+            // WebSocket for HMR
+            $wsHosts = [
+                'ws://127.0.0.1:5173',
+                'ws://localhost:5173',
+                'ws://127.0.0.1:5174',
+                'ws://localhost:5174',
+                'ws://127.0.0.1:5175',
+                'ws://localhost:5175',
+            ];
+            if (file_exists($hotFile)) {
+                $hotUrl = trim(file_get_contents($hotFile));
+                $wsUrl = str_replace(['http://', 'https://'], 'ws://', rtrim($hotUrl, '/'));
+                if (!in_array($wsUrl, $wsHosts)) {
+                    $wsHosts[] = $wsUrl;
+                }
+            }
+            foreach ($wsHosts as $host) {
+                $connectSrc[] = $host;
+            }
         }
 
         $csp = implode('; ', [

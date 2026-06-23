@@ -81,7 +81,6 @@
             ['label' => 'KONTEN', 'items' => [
                 ['route' => 'admin.content.promo',   'icon' => 'promo',  'label' => 'Promo'],
                 ['route' => 'admin.content.gallery', 'icon' => 'image',  'label' => 'Galeri'],
-                ['route' => 'admin.content.team',    'icon' => 'about',  'label' => 'Tim'],
             ]],
             ...($user && $user->hasPermission('view_reports') ? [
                 ['label' => 'LAPORAN', 'items' => [
