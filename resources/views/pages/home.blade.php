@@ -1,6 +1,6 @@
 
 @extends('layouts.app')
-@section('title', 'Restoran NUSANTARA — Smart Digital Restaurant')
+@section('title', 'Rumah Makan Saung Bambu — Smart Digital Restaurant')
 @section('content')
 
 {{-- ============================================================ --}}
@@ -467,7 +467,7 @@
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Cerita <span class="gradient-text">Kami</span>
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">Dari dapur keluarga ke restoran digital modern</p>
+            <p class="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">Dari dapur keluarga ke rumah makan digital modern</p>
         </div>
 
         {{-- Story --}}
@@ -476,10 +476,10 @@
                 <span class="badge badge-primary mb-4">Kisah Kami</span>
                 <h3 class="font-display text-4xl font-bold text-gray-900 dark:text-white mb-6">Berawal dari Cinta<br>terhadap Kuliner</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                    Restoran NUSANTARA didirikan pada tahun 2019 dengan satu misi sederhana: menyajikan cita rasa autentik masakan Nusantara dengan sentuhan modern yang memudahkan semua orang menikmatinya.
+                    Rumah Makan Saung Bambu didirikan pada tahun 2016 dengan satu misi sederhana: menyajikan cita rasa autentik masakan Nusantara dengan sentuhan modern yang memudahkan semua orang menikmatinya.
                 </p>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                    Dimulai dari warung kecil di sudut kota, kini kami telah berkembang menjadi restoran digital yang melayani ribuan pelanggan setiap harinya.
+                    Dimulai dari warung kecil di sudut kota, kini kami telah berkembang menjadi rumah makan digital yang melayani ribuan pelanggan setiap harinya.
                 </p>
                 <div class="grid grid-cols-2 gap-4">
                     @foreach([['value'=>'2019','label'=>'Tahun Berdiri'],['value'=>'10K+','label'=>'Pelanggan Puas'],['value'=>'500+','label'=>'Menu Tersedia'],['value'=>'4.9★','label'=>'Rating Google']] as $s)
@@ -543,10 +543,10 @@
             <div class="space-y-4">
                 @php
                 $contactInfos = [
-                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>','title'=>'Alamat','lines'=>['Jl. Kuliner Nusantara No. 88','Jakarta Selatan, 12345']],
-                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>','title'=>'Telepon','lines'=>['+62 812-3456-7890','+62 21-1234-5678']],
-                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>','title'=>'Email','lines'=>['hello@warungnusantara.id','support@warungnusantara.id']],
-                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>','title'=>'Jam Operasional','lines'=>['Senin – Jumat: 10.00 – 22.00','Sabtu – Minggu: 09.00 – 23.00']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>','title'=>'Alamat','lines'=>['Jl. Setia Mekar No.3, Setiamekar, Kec. Tambun Sel., Kabupaten Bekasi, Jawa Barat 17510','Kec. Tambun Sel., Kabupaten Bekasi, Jawa Barat 17510']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>','title'=>'Telepon','lines'=>['+62  0813-5000-0861','+62  0813-5000-0861']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>','title'=>'Email','lines'=>['hello@rmsaungbambu.id','support@rmsaungbambu.id']],
+                    ['svg'=>'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>','title'=>'Jam Operasional','lines'=>['Senin – Jumat: 10.00 – 20.00','Sabtu – Minggu: 10.00 – 21.00']],
                 ];
                 @endphp
                 @foreach($contactInfos as $info)

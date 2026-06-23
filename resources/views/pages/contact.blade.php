@@ -28,8 +28,8 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white mb-1">Alamat</h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">Jl. Kuliner Nusantara No. 88</p>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">Jakarta Selatan, 12345</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Jl. Setia Mekar No.3, Setiamekar, Kec. Tambun Sel., Kabupaten Bekasi, Jawa Barat 17510</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Kec. Tambun Sel., Kabupaten Bekasi, Jawa Barat 17510</p>
                     </div>
                 </div>
                 <div class="card p-5 flex items-start gap-4">
@@ -38,8 +38,8 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white mb-1">Telepon</h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">+62 812-3456-7890</p>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">+62 21-1234-5678</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">+62  0813-5000-0861</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">+62  0813-5000-0861</p>
                     </div>
                 </div>
                 <div class="card p-5 flex items-start gap-4">
@@ -48,8 +48,8 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white mb-1">Email</h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">hello@warungnusantara.id</p>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">support@warungnusantara.id</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">hallo@rmsaungbambu.id</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">support@rmsaungbambu.id</p>
                     </div>
                 </div>
                 <div class="card p-5 flex items-start gap-4">
@@ -58,8 +58,8 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-gray-900 dark:text-white mb-1">Jam Operasional</h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">Senin – Jumat: 10.00 – 22.00</p>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm">Sabtu – Minggu: 09.00 – 23.00</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Senin – Jumat: 10.00 – 20.30</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Sabtu – Minggu: 10.00 – 21.00</p>
                     </div>
                 </div>
             </div>

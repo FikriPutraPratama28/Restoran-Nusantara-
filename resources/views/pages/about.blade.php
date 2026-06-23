@@ -11,7 +11,7 @@
             Cerita <span class="gradient-text">Kami</span>
         </h1>
         <p class="text-gray-400 max-w-xl mx-auto">
-            Dari dapur keluarga ke restoran digital modern
+            Dari dapur keluarga ke rumah makan digital modern
         </p>
     </div>
 </div>
@@ -27,14 +27,14 @@
                     Berawal dari Cinta <br>terhadap Kuliner
                 </h2>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                    Restoran NUSANTARA didirikan pada tahun 2019 dengan satu misi sederhana: menyajikan cita rasa autentik masakan Nusantara dengan sentuhan modern yang memudahkan semua orang menikmatinya.
+                    Rumah Makan didirikan pada tahun 2016 dengan satu misi sederhana: menyajikan cita rasa autentik masakan Nusantara dengan sentuhan modern yang memudahkan semua orang menikmatinya.
                 </p>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                    Dimulai dari warung kecil di sudut kota, kini kami telah berkembang menjadi restoran digital yang melayani ribuan pelanggan setiap harinya. Kami percaya bahwa teknologi dan kuliner bisa berjalan beriringan.
+                    Dimulai dari warung kecil di sudut kota, kini kami telah berkembang menjadi rumah makan digital yang melayani ribuan pelanggan setiap harinya. Kami percaya bahwa teknologi dan kuliner bisa berjalan beriringan.
                 </p>
                 <div class="grid grid-cols-2 gap-4">
                     @foreach([
-                        ['value' => '2019', 'label' => 'Tahun Berdiri'],
+                        ['value' => '2016', 'label' => 'Tahun Berdiri'],
                         ['value' => '10K+', 'label' => 'Pelanggan Puas'],
                         ['value' => '500+', 'label' => 'Menu Tersedia'],
                         ['value' => '4.9 / 5.0', 'label' => 'Rating Google'],
@@ -59,7 +59,7 @@
                             </div>
                         <div>
                             <div class="font-bold text-gray-900 dark:text-white text-sm">Chef Berpengalaman</div>
-                            <div class="text-gray-500 dark:text-gray-400 text-xs">15+ tahun pengalaman</div>
+                            <div class="text-gray-500 dark:text-gray-400 text-xs">10+ tahun pengalaman</div>
                         </div>
                     </div>
                 </div>
