@@ -160,27 +160,19 @@ class ContentController extends Controller
         } else {
             $about = AboutSection::first() ?? new AboutSection();
         }
-        if (!Schema::hasTable('team_members')) {
-            $team = collect();
-        } else {
-            $team  = TeamMember::orderBy('sort_order')->get();
-        }
-        return view('admin.content.about', compact('about', 'team'));
-    }
-
-    // Team index (separate page for managing team members)
-    public function teamIndex()
-    {
-        $team = TeamMember::orderBy('sort_order')->get();
-        return view('admin.content.team', compact('team'));
+        return view('admin.content.about', compact('about'));
     }
 
     public function aboutUpdate(Request $request) {
         $data = $request->validate([
             'title'         => 'required|string|max:255',
             'subtitle'      => 'nullable|string|max:255',
+            'badge'         => 'nullable|string|max:100',
+            'tagline'       => 'nullable|string|max:255',
             'description_1' => 'nullable|string',
             'description_2' => 'nullable|string',
+            'chef_label'    => 'nullable|string|max:100',
+            'chef_sub'      => 'nullable|string|max:100',
             'image'         => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'image_url'     => 'nullable|url',
             'stats'         => 'nullable|array',

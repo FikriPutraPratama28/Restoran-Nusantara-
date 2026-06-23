@@ -8,7 +8,15 @@
 
 <div x-data="{showModal:false,showDeleteModal:false,isEdit:false,deleteId:null,editFacility:null,lightboxOpen:false,lightboxImg:'',
     openAdd(){ this.isEdit=false; this.editFacility=null; this.showModal=true; },
-    openEdit(f){ this.isEdit=true; this.editFacility=f; this.showModal=true; },
+    openEdit(f){
+        this.isEdit=true;
+        this.editFacility=f;
+        this.showModal=true;
+        this.$nextTick(() => {
+            const form = document.getElementById('facilityEditForm');
+            if (form && f?.id) form.action = `/admin/content/facility/${f.id}`;
+        });
+    },
     confirmDelete(id){ this.deleteId=id; this.showDeleteModal=true; },
     openLightbox(img){ this.lightboxImg=img; this.lightboxOpen=true; }
 }">
@@ -140,12 +148,17 @@
 </div>
 
 <script>
-document.addEventListener('click', function() {
-    const form = document.getElementById('facilityEditForm');
-    const el = document.querySelector('[x-data*="editFacility"]');
-    if (!form || !el) return;
-    const f = Alpine.evaluate(el, 'editFacility');
-    if (f) form.action = `/admin/content/facility/${f.id}`;
+document.addEventListener('alpine:init', () => {
+    document.addEventListener('alpine:initialized', () => {
+        const wrapper = document.querySelector('[x-data*="editFacility"]');
+        if (!wrapper) return;
+        const observer = new MutationObserver(() => {
+            const form = document.getElementById('facilityEditForm');
+            const f = wrapper.__x?.$data?.editFacility;
+            if (form && f?.id) form.action = `/admin/content/facility/${f.id}`;
+        });
+        observer.observe(wrapper, { attributes: true, subtree: true, childList: true });
+    });
 });
 </script>
 @endsection

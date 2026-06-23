@@ -1204,48 +1204,188 @@ Alpine.data("reservation", (dbMenus = []) => ({
     },
 
     downloadReceipt() {
-        const card = document.getElementById('receipt-card');
-        if (!card) { window.print(); return; }
+        const self = this;
+        const fmt  = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n);
+        const date = new Date().toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
 
-        // Kumpulkan semua style dari halaman
-        const styles = Array.from(document.styleSheets).map(sheet => {
-            try {
-                return Array.from(sheet.cssRules).map(r => r.cssText).join('\n');
-            } catch(e) {
-                // cross-origin sheet
-                return sheet.href ? `@import url('${sheet.href}');` : '';
-            }
-        }).join('\n');
+        // Label metode pembayaran
+        const pmLabels = {
+            cash: 'Tunai', qris: 'QRIS', dana: 'DANA', ovo: 'OVO',
+            shopeepay: 'ShopeePay', linkaja: 'LinkAja',
+            mandiri: 'Bank Mandiri', bri: 'Bank BRI', bni: 'Bank BNI',
+            bca: 'Bank BCA', permata: 'Bank Permata', ocbc: 'Bank OCBC',
+        };
+        const pmLabel = pmLabels[self.paymentMethod] || self.paymentMethod;
 
-        const win = window.open('', '_blank', 'width=900,height=700');
-        win.document.write(`<!DOCTYPE html>
+        // Rows menu
+        const menuRows = self.selectedItems.map(item => `
+            <tr>
+                <td style="padding:6px 8px;border-bottom:1px solid #f0f0f0;">${item.name}</td>
+                <td style="padding:6px 8px;border-bottom:1px solid #f0f0f0;text-align:center;">x${item.qty}</td>
+                <td style="padding:6px 8px;border-bottom:1px solid #f0f0f0;text-align:right;">${fmt(item.price)}</td>
+                <td style="padding:6px 8px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:600;">${fmt(item.price * item.qty)}</td>
+            </tr>`).join('');
+
+        const dpAmount   = parseInt(self.dpNominal) || 0;
+        const sisaAmount = Math.max(0, self.selectedMenuTotal - dpAmount);
+
+        // VA number jika VA
+        const vaPrefix = { mandiri:'88808', bri:'26215', bni:'8277', bca:'57799', permata:'8629', ocbc:'9999' };
+        const isVA     = ['mandiri','bri','bni','bca','permata','ocbc'].includes(self.paymentMethod);
+        const isEwallet= ['qris','dana','ovo','shopeepay','linkaja'].includes(self.paymentMethod);
+        const vaNum    = isVA ? (vaPrefix[self.paymentMethod] + (self.reservationCode || '').replace('#RES-','').replace('RES-','')) : '';
+
+        const paymentSection = isVA ? `
+            <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:14px;margin-top:12px;">
+                <p style="font-size:11px;color:#6366f1;font-weight:700;margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em;">Virtual Account ${pmLabel}</p>
+                <p style="font-size:22px;font-weight:800;color:#4338ca;letter-spacing:.1em;margin:0;">${vaNum}</p>
+                <p style="font-size:11px;color:#6b7280;margin:6px 0 0;">Atas Nama: <strong>Restoran Nusantara</strong> &nbsp;·&nbsp; Batas Bayar: <strong style="color:#ef4444;">24 jam</strong></p>
+            </div>` :
+        isEwallet ? `
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;margin-top:12px;text-align:center;">
+                <p style="font-size:11px;color:#2563eb;font-weight:700;margin:0 0 8px;text-transform:uppercase;letter-spacing:.05em;">Bayar via ${pmLabel}</p>
+                <div style="width:110px;height:110px;margin:0 auto 8px;background:#f3f4f6;border:2px dashed #d1d5db;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:11px;color:#9ca3af;">QR Code</span>
+                </div>
+                <p style="font-size:11px;color:#6b7280;margin:0;">No. Ref: <strong>${self.reservationCode || '—'}</strong></p>
+            </div>` :
+        `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;margin-top:12px;">
+            <p style="font-size:12px;color:#15803d;font-weight:600;margin:0;">💵 Bayar tunai saat kedatangan di kasir restoran.</p>
+        </div>`;
+
+        const html = `<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Struk Reservasi — Restoran Nusantara</title>
 <style>
-${styles}
-body { background: white !important; padding: 24px; font-family: sans-serif; }
-.no-print-hide { display: none !important; }
-.print-only { display: block !important; }
-@media print {
-    .no-print-hide { display: none !important; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #1f2937; }
+  .page { max-width: 680px; margin: 0 auto; background: #fff; }
+  @media print {
+    body { background: white; }
+    .no-print { display: none !important; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-}
+  }
 </style>
 </head>
 <body>
-${card.outerHTML}
+<div class="page">
+
+  <div style="background:linear-gradient(135deg,#ea580c,#f97316);padding:28px 32px;color:white;text-align:center;">
+    <div style="font-size:28px;font-weight:900;letter-spacing:.04em;margin-bottom:4px;">RESTORAN NUSANTARA</div>
+    <div style="font-size:13px;opacity:.85;">Bukti Pembayaran Reservasi</div>
+    <div style="margin-top:16px;background:rgba(255,255,255,.15);border-radius:12px;display:inline-block;padding:10px 28px;">
+        <div style="font-size:11px;opacity:.8;margin-bottom:2px;text-transform:uppercase;letter-spacing:.06em;">Kode Reservasi</div>
+        <div style="font-size:26px;font-weight:900;letter-spacing:.15em;font-family:monospace;">${self.reservationCode || '—'}</div>
+    </div>
+  </div>
+
+  <div style="padding:24px 32px;">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+
+        <div style="background:#f9fafb;border-radius:12px;padding:16px;border:1px solid #e5e7eb;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-bottom:10px;">Detail Reservasi</div>
+            ${[
+                ['Tanggal', self.form.date],
+                ['Jam', self.form.time + ' WIB'],
+                ['Tamu', self.form.guests + ' orang'],
+                ['Area', self.form.tableArea ? (self.form.tableArea.charAt(0).toUpperCase() + self.form.tableArea.slice(1)) : '—'],
+                ['Meja', self.getTableLabel(self.form.tableNumber)],
+            ].map(([k,v]) => `
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                <span style="color:#6b7280;">${k}</span>
+                <span style="font-weight:600;">${v || '—'}</span>
+            </div>`).join('')}
+        </div>
+
+        <div style="background:#f9fafb;border-radius:12px;padding:16px;border:1px solid #e5e7eb;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-bottom:10px;">Detail Tamu</div>
+            ${[
+                ['Nama', self.form.name],
+                ['Telepon', self.form.phone],
+                ['Email', self.form.email || '—'],
+            ].map(([k,v]) => `
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                <span style="color:#6b7280;">${k}</span>
+                <span style="font-weight:600;">${v || '—'}</span>
+            </div>`).join('')}
+            ${self.form.notes ? `
+            <div style="font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid #e5e7eb;">
+                <span style="color:#6b7280;">Catatan:</span><br>
+                <span style="font-weight:500;">${self.form.notes}</span>
+            </div>` : ''}
+        </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6b7280;margin-bottom:10px;">Menu Dipesan</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead>
+                <tr style="background:#f3f4f6;">
+                    <th style="padding:8px;text-align:left;font-size:11px;color:#6b7280;font-weight:600;">Menu</th>
+                    <th style="padding:8px;text-align:center;font-size:11px;color:#6b7280;font-weight:600;">Qty</th>
+                    <th style="padding:8px;text-align:right;font-size:11px;color:#6b7280;font-weight:600;">Harga</th>
+                    <th style="padding:8px;text-align:right;font-size:11px;color:#6b7280;font-weight:600;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>${menuRows}</tbody>
+            <tfoot>
+                <tr style="background:#fff7ed;">
+                    <td colspan="3" style="padding:10px 8px;font-weight:700;font-size:14px;">Total Menu</td>
+                    <td style="padding:10px 8px;text-align:right;font-weight:800;font-size:16px;color:#ea580c;">${fmt(self.selectedMenuTotal)}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:16px;margin-bottom:20px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#ea580c;margin-bottom:10px;">Ringkasan Pembayaran</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+            <span style="color:#6b7280;">Metode Pembayaran</span>
+            <span style="font-weight:600;">${pmLabel}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+            <span style="color:#6b7280;">Total Pesanan</span>
+            <span style="font-weight:600;">${fmt(self.selectedMenuTotal)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+            <span style="color:#6b7280;">DP Dibayar</span>
+            <span style="font-weight:700;color:#ea580c;">${fmt(dpAmount)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;padding-top:10px;border-top:2px solid #fdba74;margin-top:6px;">
+            <span style="font-weight:700;">Sisa Pembayaran</span>
+            <span style="font-weight:800;color:#dc2626;font-size:16px;">${fmt(sisaAmount)}</span>
+        </div>
+        <p style="font-size:11px;color:#9ca3af;margin-top:8px;">* Sisa pembayaran dibayarkan saat datang ke restoran.</p>
+        ${paymentSection}
+    </div>
+
+    <div style="text-align:center;border-top:2px dashed #e5e7eb;padding-top:16px;">
+        <p style="font-weight:800;font-size:15px;color:#1f2937;margin-bottom:4px;">Restoran Nusantara</p>
+        <p style="font-size:12px;color:#6b7280;">Terima kasih! Tunjukkan struk ini kepada staff kami.</p>
+        <p style="font-size:11px;color:#9ca3af;margin-top:4px;">Pertanyaan? Hubungi <strong>0812-3456-7890</strong></p>
+        <p style="font-size:10px;color:#d1d5db;margin-top:12px;">Dicetak: ${date}</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="no-print" style="text-align:center;padding:16px;background:#f8fafc;">
+    <button onclick="window.print()" style="background:#ea580c;color:white;border:none;padding:12px 32px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-right:8px;">🖨️ Cetak / Simpan PDF</button>
+    <button onclick="window.close()" style="background:#6b7280;color:white;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">✕ Tutup</button>
+</div>
+
 <script>
-// Remove interactive Alpine attributes so static copy works
-document.querySelectorAll('[x-show]').forEach(el => {
-    if (el.style.display === 'none') el.remove();
-    else el.removeAttribute('x-show');
-});
-setTimeout(() => { window.print(); }, 600);
+window.addEventListener('load', () => { window.print(); });
 <\/script>
-</body></html>`);
+</body></html>`;
+
+        const win = window.open('', '_blank', 'width=780,height=900,scrollbars=yes');
+        if (!win) { alert('Popup diblokir. Izinkan popup untuk mencetak struk.'); return; }
+        win.document.open();
+        win.document.write(html);
         win.document.close();
     },
 

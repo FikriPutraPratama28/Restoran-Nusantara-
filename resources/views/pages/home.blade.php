@@ -463,26 +463,26 @@
 <section id="tentang" class="section bg-white dark:bg-dark-800">
     <div class="container-custom">
         <div class="text-center mb-12">
-            <span class="badge badge-primary mb-3">Tentang Kami</span>
+            <span class="badge badge-primary mb-3">{{ $about->badge ?? 'Tentang Kami' }}</span>
             <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
                 Cerita <span class="gradient-text">Kami</span>
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">Dari dapur keluarga ke rumah makan digital modern</p>
+            <p class="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">{{ $about->tagline ?? 'Dari dapur keluarga ke rumah makan digital modern' }}</p>
         </div>
 
         {{-- Story --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             <div x-data x-intersect="$el.classList.add('animate-slide-up')">
-                <span class="badge badge-primary mb-4">Kisah Kami</span>
-                <h3 class="font-display text-4xl font-bold text-gray-900 dark:text-white mb-6">Berawal dari Cinta<br>terhadap Kuliner</h3>
-                <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                    Rumah Makan Saung Bambu didirikan pada tahun 2016 dengan satu misi sederhana: menyajikan cita rasa autentik masakan Nusantara dengan sentuhan modern yang memudahkan semua orang menikmatinya.
-                </p>
-                <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                    Dimulai dari warung kecil di sudut kota, kini kami telah berkembang menjadi rumah makan digital yang melayani ribuan pelanggan setiap harinya.
-                </p>
+                <span class="badge badge-primary mb-4">{{ $about->subtitle ?? 'Kisah Kami' }}</span>
+                <h3 class="font-display text-4xl font-bold text-gray-900 dark:text-white mb-6">{{ $about->title ?? 'Berawal dari Cinta terhadap Kuliner' }}</h3>
+                @if($about->description_1)
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">{{ $about->description_1 }}</p>
+                @endif
+                @if($about->description_2)
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">{{ $about->description_2 }}</p>
+                @endif
                 <div class="grid grid-cols-2 gap-4">
-                    @foreach([['value'=>'2019','label'=>'Tahun Berdiri'],['value'=>'10K+','label'=>'Pelanggan Puas'],['value'=>'500+','label'=>'Menu Tersedia'],['value'=>'4.9★','label'=>'Rating Google']] as $s)
+                    @foreach($about->stats ?? [['value'=>'2019','label'=>'Tahun Berdiri'],['value'=>'10K+','label'=>'Pelanggan Puas'],['value'=>'500+','label'=>'Menu Tersedia'],['value'=>'4.9★','label'=>'Rating Google']] as $s)
                     <div class="bg-gray-50 dark:bg-dark-700 rounded-xl p-4">
                         <div class="text-2xl font-bold text-primary-600">{{ $s['value'] }}</div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">{{ $s['label'] }}</div>
@@ -491,15 +491,15 @@
                 </div>
             </div>
             <div class="relative" x-data x-intersect="$el.classList.add('animate-fade-in')">
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=500&fit=crop" alt="Restaurant" class="rounded-2xl shadow-2xl w-full">
+                <img src="{{ $about->image_src }}" alt="Restaurant" class="rounded-2xl shadow-2xl w-full">
                 <div class="absolute -bottom-6 -left-6 bg-white dark:bg-dark-800 rounded-2xl p-4 shadow-xl">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            </div>
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        </div>
                         <div>
-                            <div class="font-bold text-gray-900 dark:text-white text-sm">Chef Berpengalaman</div>
-                            <div class="text-gray-500 dark:text-gray-400 text-xs">15+ tahun pengalaman</div>
+                            <div class="font-bold text-gray-900 dark:text-white text-sm">{{ $about->chef_label ?? 'Chef Berpengalaman' }}</div>
+                            <div class="text-gray-500 dark:text-gray-400 text-xs">{{ $about->chef_sub ?? '15+ tahun pengalaman' }}</div>
                         </div>
                     </div>
                 </div>
@@ -647,17 +647,30 @@
         </div>
 
         @php
-        $galleryImages = [
-            ['src' => 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop', 'caption' => 'Suasana makan malam romantis', 'span' => 'col-span-2 row-span-2'],
-            ['src' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop', 'caption' => 'Interior restoran modern', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop', 'caption' => 'Keluarga bahagia bersantap', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=300&fit=crop', 'caption' => 'Momen spesial bersama pasangan', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&h=300&fit=crop', 'caption' => 'Kumpul bersama teman', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=400&h=300&fit=crop', 'caption' => 'Perayaan ulang tahun', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&h=300&fit=crop', 'caption' => 'Makan siang bisnis', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=400&h=300&fit=crop', 'caption' => 'Pelanggan setia kami', 'span' => ''],
-            ['src' => 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop', 'caption' => 'Hidangan spesial chef', 'span' => ''],
-        ];
+        // Ambil dari database, fallback ke hardcoded jika kosong
+        $dbGallery = \App\Models\GalleryImage::active()->orderBy('sort_order')->get();
+
+        if ($dbGallery->count() > 0) {
+            $galleryImages = $dbGallery->map(function($img, $i) {
+                return [
+                    'src'     => $img->image_src,
+                    'caption' => $img->caption ?? $img->title ?? 'Momen bersama',
+                    'span'    => $i === 0 ? 'col-span-2 row-span-2' : '',
+                ];
+            })->toArray();
+        } else {
+            $galleryImages = [
+                ['src' => 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop', 'caption' => 'Suasana makan malam romantis', 'span' => 'col-span-2 row-span-2'],
+                ['src' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop', 'caption' => 'Interior restoran modern', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop', 'caption' => 'Keluarga bahagia bersantap', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=300&fit=crop', 'caption' => 'Momen spesial bersama pasangan', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&h=300&fit=crop', 'caption' => 'Kumpul bersama teman', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=400&h=300&fit=crop', 'caption' => 'Perayaan ulang tahun', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&h=300&fit=crop', 'caption' => 'Makan siang bisnis', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=400&h=300&fit=crop', 'caption' => 'Pelanggan setia kami', 'span' => ''],
+                ['src' => 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop', 'caption' => 'Hidangan spesial chef', 'span' => ''],
+            ];
+        }
         $imgList = array_column($galleryImages, 'src');
         @endphp
 
@@ -713,36 +726,6 @@
             </button>
         </div>
 
-        {{-- Customer Photos --}}
-        <div class="mt-16">
-            <h3 class="font-display text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
-                Foto Pelanggan Kami
-            </h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                @php
-                $customers = [
-                    ['img' => 'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=200&h=200&fit=crop&crop=face', 'name' => 'Budi & Keluarga', 'rating' => 5],
-                    ['img' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=200&h=200&fit=crop&crop=face', 'name' => 'Siti & Teman', 'rating' => 5],
-                    ['img' => 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=200&h=200&fit=crop&crop=face', 'name' => 'Ahmad & Pasangan', 'rating' => 5],
-                    ['img' => 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=200&h=200&fit=crop&crop=face', 'name' => 'Rina & Sahabat', 'rating' => 5],
-                    ['img' => 'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=200&h=200&fit=crop&crop=face', 'name' => 'Doni & Grup', 'rating' => 5],
-                    ['img' => 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=200&h=200&fit=crop&crop=face', 'name' => 'Maya & Rekan', 'rating' => 5],
-                ];
-                @endphp
-                @foreach($customers as $c)
-                <div class="text-center group" x-data x-intersect="$el.classList.add('animate-slide-up')">
-                    <div class="relative w-20 h-20 mx-auto mb-2">
-                        <img src="{{ $c['img'] }}" alt="{{ $c['name'] }}" class="w-full h-full rounded-full object-cover border-3 border-white dark:border-dark-700 shadow-lg group-hover:scale-110 transition-transform duration-300" loading="lazy">
-                        <div class="absolute -bottom-1 -right-1 bg-yellow-400 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-gray-900">★</div>
-                    </div>
-                    <p class="text-xs font-medium text-gray-700 dark:text-gray-300">{{ $c['name'] }}</p>
-                    <div class="flex justify-center gap-0.5 mt-1">
-                        @for($s=0;$s<$c['rating'];$s++)<span class="text-yellow-400 text-xs">★</span>@endfor
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
     </div>
 </section>
 
