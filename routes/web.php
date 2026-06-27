@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ReservationController;
 
 // ── Frontend (Publik) ─────────────────────────────────────────────────────
@@ -108,5 +109,14 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Activity Log
     Route::get('/activity-log',    [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-log')->middleware('permission:view_activity_log');
     Route::delete('/activity-log', [\App\Http\Controllers\Admin\ActivityLogController::class, 'clear'])->name('activity-log.clear')->middleware('permission:clear_activity_log');
+
+    // ── MANAJEMEN USER (Super Admin only) ─────────────────────────────────
+    Route::middleware('role:super_admin')->group(function () {
+        Route::get('/users',                          [UserController::class, 'index'])->name('users');
+        Route::post('/users',                         [UserController::class, 'store'])->name('users.store');
+        Route::put('/users/{user}',                   [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}',                [UserController::class, 'destroy'])->name('users.destroy');
+        Route::patch('/users/{user}/toggle-active',   [UserController::class, 'toggleActive'])->name('users.toggle-active');
+    });
 });
 

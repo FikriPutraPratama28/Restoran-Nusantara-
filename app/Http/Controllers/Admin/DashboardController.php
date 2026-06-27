@@ -38,7 +38,7 @@ class DashboardController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
 
-            if ($user->role !== 'admin') {
+            if (!in_array($user->role, ['admin', 'super_admin'])) {
                 Auth::logout();
                 return back()
                     ->withErrors(['email' => 'Akses ditolak. Anda bukan administrator.'])

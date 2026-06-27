@@ -29,6 +29,11 @@ class RoleMiddleware
         }
 
         if (!in_array($user->role, $roles)) {
+            // Super Admin selalu diizinkan ke semua route admin
+            if ($user->role === 'super_admin') {
+                return $next($request);
+            }
+
             // Redirect ke halaman yang sesuai dengan role mereka
             return match($user->role) {
                 'admin'    => redirect()->route('admin.dashboard')->with('error', 'Akses ditolak.'),

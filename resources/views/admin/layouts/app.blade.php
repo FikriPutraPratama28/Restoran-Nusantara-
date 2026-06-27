@@ -93,6 +93,7 @@
                 ['label' => 'SISTEM', 'items' => [
                     ['route' => 'admin.activity-log', 'icon' => 'orders',   'label' => 'Activity Log'],
                     ['route' => 'admin.settings',     'icon' => 'settings', 'label' => 'Pengaturan'],
+                    ...($user && $user->isSuperAdmin() ? [['route' => 'admin.users', 'icon' => 'users', 'label' => 'Manajemen User']] : []),
                 ]],
             ] : []),
         ];
@@ -135,8 +136,14 @@
                 {{ strtoupper(substr(session('admin_name', 'A'), 0, 1)) }}
             </div>
             <div class="flex-1 min-w-0">
-                <div class="text-[13px] font-semibold text-slate-800 dark:text-slate-200 truncate">{{ session('admin_name', 'Administrator') }}</div>
-                <div class="text-[11px] text-slate-500 truncate">{{ auth()->user()->email ?? 'admin@restoran.id' }}</div>
+                <div class="text-[13px] font-semibold text-slate-800 dark:text-slate-200 truncate">{{ session('admin_name', auth()->user()->name ?? 'Administrator') }}</div>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                    @php $role = auth()->user()->role ?? 'admin'; @endphp
+                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full
+                        {{ $role === 'super_admin' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' }}">
+                        {{ $role === 'super_admin' ? 'Super Admin' : 'Admin' }}
+                    </span>
+                </div>
             </div>
             <a href="{{ route('admin.logout') }}" title="Logout" class="text-slate-500 hover:text-red-400 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

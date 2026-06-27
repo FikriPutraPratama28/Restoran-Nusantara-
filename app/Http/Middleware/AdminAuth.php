@@ -24,7 +24,7 @@ class AdminAuth
             }
         }
 
-        $isAdminAuth    = auth()->check() && auth()->user()->role === 'admin';
+        $isAdminAuth    = auth()->check() && in_array(auth()->user()->role, ['admin', 'super_admin']);
 
         if (!$isAdminSession && !$isAdminAuth) {
             if ($request->expectsJson()) {
