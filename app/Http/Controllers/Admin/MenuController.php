@@ -28,13 +28,7 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        // Sanitize price: strip thousand separators (dots/commas) so '35.000' becomes '35000'
-        if ($request->filled('price')) {
-            $request->merge(['price' => preg_replace('/[^0-9]/', '', $request->input('price'))]);
-        }
-        if ($request->filled('original_price')) {
-            $request->merge(['original_price' => preg_replace('/[^0-9]/', '', $request->input('original_price'))]);
-        }
+        $this->sanitizePriceInputs($request);
 
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
@@ -71,13 +65,7 @@ class MenuController extends Controller
 
     public function update(Request $request, Menu $menu)
     {
-        // Sanitize price: strip thousand separators (dots/commas) so '35.000' becomes '35000'
-        if ($request->filled('price')) {
-            $request->merge(['price' => preg_replace('/[^0-9]/', '', $request->input('price'))]);
-        }
-        if ($request->filled('original_price')) {
-            $request->merge(['original_price' => preg_replace('/[^0-9]/', '', $request->input('original_price'))]);
-        }
+        $this->sanitizePriceInputs($request);
 
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
@@ -141,5 +129,17 @@ class MenuController extends Controller
         $menu->update(['is_stock' => !$menu->is_stock]);
         ActivityLog::log('toggle_stock', 'Menu', "Mengubah stok menu \"{$menu->name}\" menjadi " . ($menu->is_stock ? 'tersedia' : 'habis'), $menu);
         return response()->json(['is_stock' => $menu->is_stock]);
+    }
+
+    /**
+     * Bersihkan input harga: buang pemisah ribuan sehingga '35.000' menjadi '35000'.
+     */
+    private function sanitizePriceInputs(Request $request): void
+    {
+        foreach (['price', 'original_price'] as $field) {
+            if ($request->filled($field)) {
+                $request->merge([$field => preg_replace('/[^0-9]/', '', $request->input($field))]);
+            }
+        }
     }
 }

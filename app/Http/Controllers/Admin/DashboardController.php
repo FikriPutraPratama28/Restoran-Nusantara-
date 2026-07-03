@@ -109,16 +109,9 @@ class DashboardController extends Controller
                 ->where('status', '!=', 'cancelled')
                 ->get();
             
-            $itemsCount = 0;
-            $revenue = 0;
-            foreach ($dayReservations as $r) {
-                if (is_array($r->ordered_items)) {
-                    foreach ($r->ordered_items as $item) {
-                        $itemsCount += $item['qty'] ?? 0;
-                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
-                    }
-                }
-            }
+            $tally = $this->tallyOrderedItems($dayReservations);
+            $itemsCount = $tally['items'];
+            $revenue = $tally['rev'];
             
             $chartData[] = [
                 'day'   => $dateObj->translatedFormat('D'),
@@ -131,16 +124,7 @@ class DashboardController extends Controller
         $maxChart = (int) max(max(array_column($chartData, 'value')), 1);
 
         // ── Top Menu (dinamis berdasarkan order) ─────────────────────────
-        $menuCounts = [];
-        foreach ($activeReservations as $res) {
-            if (is_array($res->ordered_items)) {
-                foreach ($res->ordered_items as $item) {
-                    $menuId = $item['id'];
-                    $qty = $item['qty'] ?? 0;
-                    $menuCounts[$menuId] = ($menuCounts[$menuId] ?? 0) + $qty;
-                }
-            }
-        }
+        $menuCounts = $this->tallyMenuCounts($activeReservations);
         arsort($menuCounts);
         $topMenuIds = array_keys(array_slice($menuCounts, 0, 5, true));
         $topMenus = Menu::whereIn('id', $topMenuIds)->get();
@@ -245,16 +229,9 @@ class DashboardController extends Controller
             $dayReservations = Reservation::whereDate('reservation_date', $dateStr)
                 ->where('status', '!=', 'cancelled')
                 ->get();
-            $itemsCount = 0;
-            $revenue = 0;
-            foreach ($dayReservations as $r) {
-                if (is_array($r->ordered_items)) {
-                    foreach ($r->ordered_items as $item) {
-                        $itemsCount += $item['qty'] ?? 0;
-                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
-                    }
-                }
-            }
+            $tally = $this->tallyOrderedItems($dayReservations);
+            $itemsCount = $tally['items'];
+            $revenue = $tally['rev'];
             $salesHarian[] = [
                 'label' => $dateObj->translatedFormat('D, d M'),
                 'short' => $dateObj->translatedFormat('D'),
@@ -272,16 +249,9 @@ class DashboardController extends Controller
             $weekReservations = Reservation::whereBetween('reservation_date', [$startObj->toDateString(), $endObj->toDateString()])
                 ->where('status', '!=', 'cancelled')
                 ->get();
-            $itemsCount = 0;
-            $revenue = 0;
-            foreach ($weekReservations as $r) {
-                if (is_array($r->ordered_items)) {
-                    foreach ($r->ordered_items as $item) {
-                        $itemsCount += $item['qty'] ?? 0;
-                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
-                    }
-                }
-            }
+            $tally = $this->tallyOrderedItems($weekReservations);
+            $itemsCount = $tally['items'];
+            $revenue = $tally['rev'];
             $salesMingguan[] = [
                 'label' => $startObj->format('d M') . ' – ' . $endObj->format('d M'),
                 'short' => 'Minggu ' . (4 - $i),
@@ -298,16 +268,9 @@ class DashboardController extends Controller
                 ->whereYear('reservation_date', $dateObj->year)
                 ->where('status', '!=', 'cancelled')
                 ->get();
-            $itemsCount = 0;
-            $revenue = 0;
-            foreach ($monthReservations as $r) {
-                if (is_array($r->ordered_items)) {
-                    foreach ($r->ordered_items as $item) {
-                        $itemsCount += $item['qty'] ?? 0;
-                        $revenue += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
-                    }
-                }
-            }
+            $tally = $this->tallyOrderedItems($monthReservations);
+            $itemsCount = $tally['items'];
+            $revenue = $tally['rev'];
             $salesBulanan[] = [
                 'label' => $dateObj->translatedFormat('F Y'),
                 'short' => $dateObj->translatedFormat('M'),
@@ -318,16 +281,7 @@ class DashboardController extends Controller
 
         // Top menu terlaris (dinamis berdasarkan order)
         $allReservations = Reservation::where('status', '!=', 'cancelled')->get();
-        $menuCounts = [];
-        foreach ($allReservations as $res) {
-            if (is_array($res->ordered_items)) {
-                foreach ($res->ordered_items as $item) {
-                    $menuId = $item['id'];
-                    $qty = $item['qty'] ?? 0;
-                    $menuCounts[$menuId] = ($menuCounts[$menuId] ?? 0) + $qty;
-                }
-            }
-        }
+        $menuCounts = $this->tallyMenuCounts($allReservations);
         arsort($menuCounts);
         $topMenuIds = array_keys(array_slice($menuCounts, 0, 10, true));
         $topMenus = Menu::whereIn('id', $topMenuIds)->get();
@@ -340,16 +294,9 @@ class DashboardController extends Controller
         }
 
         // Ringkasan penjualan riil
-        $totalItems   = 0;
-        $totalRevEst  = 0;
-        foreach ($allReservations as $res) {
-            if (is_array($res->ordered_items)) {
-                foreach ($res->ordered_items as $item) {
-                    $totalItems += $item['qty'] ?? 0;
-                    $totalRevEst += ($item['price'] ?? 0) * ($item['qty'] ?? 0);
-                }
-            }
-        }
+        $summary = $this->tallyOrderedItems($allReservations);
+        $totalItems  = $summary['items'];
+        $totalRevEst = $summary['rev'];
         $avgRating    = Menu::where('is_active', true)->avg('rating') ?? 0;
         $menuHabis    = Menu::where('is_stock', false)->where('is_active', true)->count();
 
@@ -400,4 +347,48 @@ class DashboardController extends Controller
         ));
     }
     public function settings()     { return view('admin.settings'); }
+
+    // ── Helpers ──────────────────────────────────────────
+
+    /**
+     * Hitung total item terjual & estimasi pendapatan dari koleksi reservasi.
+     *
+     * @return array{items:int, rev:int}
+     */
+    private function tallyOrderedItems($reservations): array
+    {
+        $items = 0;
+        $rev   = 0;
+        foreach ($reservations as $r) {
+            if (is_array($r->ordered_items)) {
+                foreach ($r->ordered_items as $item) {
+                    $qty = $item['qty'] ?? 0;
+                    $items += $qty;
+                    $rev   += ($item['price'] ?? 0) * $qty;
+                }
+            }
+        }
+        return ['items' => $items, 'rev' => $rev];
+    }
+
+    /**
+     * Akumulasi jumlah qty per menu id dari koleksi reservasi.
+     *
+     * @return array<int|string, int>
+     */
+    private function tallyMenuCounts($reservations): array
+    {
+        $counts = [];
+        foreach ($reservations as $res) {
+            if (is_array($res->ordered_items)) {
+                foreach ($res->ordered_items as $item) {
+                    if (!isset($item['id'])) {
+                        continue;
+                    }
+                    $counts[$item['id']] = ($counts[$item['id']] ?? 0) + ($item['qty'] ?? 0);
+                }
+            }
+        }
+        return $counts;
+    }
 }
