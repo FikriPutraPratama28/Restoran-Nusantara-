@@ -18,7 +18,7 @@ class ThrottleLogin
     public function handle(Request $request, Closure $next): Response
     {
         $key = 'login:' . sha1($request->ip() . '|' . strtolower($request->input('email', '')));
-        $maxAttempts = (int) env('RATE_LIMIT_LOGIN', 5);
+        $maxAttempts = (int) config('security.rate_limit_login', 5);
 
         if ($this->limiter->tooManyAttempts($key, $maxAttempts)) {
             $seconds = $this->limiter->availableIn($key);

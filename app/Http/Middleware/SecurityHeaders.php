@@ -16,8 +16,10 @@ class SecurityHeaders
     {
         $response = $next($request);
 
-        // Hanya tambahkan ke HTML responses
-        if (!$response instanceof \Illuminate\Http\Response) {
+        // Lewati streamed/binary responses (mis. file download) agar streaming tidak terganggu.
+        // Selain itu, header keamanan diterapkan ke SEMUA response (HTML, JSON, redirect).
+        if ($response instanceof \Symfony\Component\HttpFoundation\StreamedResponse
+            || $response instanceof \Symfony\Component\HttpFoundation\BinaryFileResponse) {
             return $response;
         }
 

@@ -37,7 +37,7 @@ class RoleMiddleware
             // Redirect ke halaman yang sesuai dengan role mereka
             return match($user->role) {
                 'admin'    => redirect()->route('admin.dashboard')->with('error', 'Akses ditolak.'),
-                'karyawan' => redirect()->route('karyawan.dashboard')->with('error', 'Akses ditolak.'),
+                'karyawan' => redirect()->route('home')->with('error', 'Akses ditolak.'),
                 default    => redirect()->route('home')->with('error', 'Akses ditolak.'),
             };
         }

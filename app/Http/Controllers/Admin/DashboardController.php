@@ -62,30 +62,6 @@ class DashboardController extends Controller
             return redirect()->intended(route('admin.dashboard'));
         }
 
-        // Fallback resilient check
-        $validEmail    = 'admin@warung.id';
-        $validPassword = 'admin123';
-
-        if ($request->email === $validEmail && $request->password === $validPassword) {
-            $user = User::firstOrCreate(
-                ['email' => $validEmail],
-                [
-                    'name'      => 'Administrator',
-                    'password'  => \Illuminate\Support\Facades\Hash::make($validPassword),
-                    'role'      => 'admin',
-                    'is_active' => true,
-                ]
-            );
-            Auth::login($user, $remember);
-            $request->session()->regenerate();
-            session([
-                'admin_logged_in' => true,
-                'admin_name'      => $user->name,
-                'admin_email'     => $user->email,
-            ]);
-            return redirect()->intended(route('admin.dashboard'));
-        }
-
         return back()
             ->withErrors(['email' => 'Email atau password salah.'])
             ->withInput($request->only('email'));
@@ -185,7 +161,7 @@ class DashboardController extends Controller
             ->toArray();
 
         // ── 5 Reservasi Terbaru ──────────────────────────────────────────
-        $recentReservations = Reservation::orderBy('created_at', 'desc')->take(5)->get();
+        $recentReservations = Reservation::with('user')->orderBy('created_at', 'desc')->take(5)->get();
 
         return view('admin.dashboard', compact(
             'stats', 'chartData', 'maxChart',

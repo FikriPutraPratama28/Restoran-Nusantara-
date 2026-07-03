@@ -18,18 +18,11 @@ class PermissionMiddleware
      */
     public function handle(Request $request, Closure $next, string ...$permissions): Response
     {
-        // Cek login via Laravel Auth ATAU legacy admin session
-        $isAdminSession = session('admin_logged_in') === true;
-        $isAuthUser     = Auth::check();
-
-        if (!$isAuthUser && !$isAdminSession) {
+        // Wajib terautentikasi. AdminAuth sudah memulihkan Auth dari session admin legacy bila valid,
+        // sehingga jalur "session-only = akses penuh" (bypass permission) dihapus.
+        if (!Auth::check()) {
             return redirect()->route('login')
                 ->with('error', 'Silakan login terlebih dahulu.');
-        }
-
-        // Legacy admin session = akses penuh (admin role)
-        if ($isAdminSession && !$isAuthUser) {
-            return $next($request);
         }
 
         $user = Auth::user();

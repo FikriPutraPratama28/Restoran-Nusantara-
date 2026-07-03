@@ -81,9 +81,10 @@ class ReservationController extends Controller
                 'reservation'      => $reservation,
             ], 201);
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal membuat reservasi: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal membuat reservasi: ' . $e->getMessage(),
+                'message' => 'Gagal membuat reservasi. Silakan coba lagi.',
             ], 500);
         }
     }
