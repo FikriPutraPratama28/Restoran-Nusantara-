@@ -123,6 +123,19 @@
                             {{ $status['label'] }}
                         </span>
 
+                        @php $isPaid = ($r->payment_status ?? 'unpaid') === 'paid'; @endphp
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider <?php echo $isPaid ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400'; ?>">
+                            <?php echo $isPaid ? 'Lunas' : 'Belum Lunas'; ?>
+                        </span>
+                        <form action="<?php echo route('admin.reservations.payment', $r->id); ?>" method="POST" class="inline">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="payment_status" value="<?php echo $isPaid ? 'unpaid' : 'paid'; ?>">
+                            <button type="submit" title="<?php echo $isPaid ? 'Tandai Belum Lunas' : 'Tandai Lunas'; ?>" class="w-8 h-8 rounded-xl bg-violet-500/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center hover:bg-violet-500/20 hover:scale-105 active:scale-95 transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m3 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H10a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            </button>
+                        </form>
+
                         @if($r->status === 'pending')
                             <form action="{{ route('admin.reservations.status', $r->id) }}" method="POST" class="inline">
                                 @csrf

@@ -51,8 +51,10 @@ class User extends Authenticatable
     // ── Permission ───────────────────────────────────────────────────────
 
     /**
-     * Super Admin : akses penuh ke semua fitur termasuk manajemen user.
-     * Admin       : akses penuh ke semua fitur operasional.
+     * Super Admin : akses penuh ke semua fitur (konten, laporan, pengaturan,
+     *               activity log, & manajemen user).
+     * Admin resto : DIBATASI pada operasional — kelola menu/produk, melihat
+     *               transaksi/reservasi, & approval status pembayaran.
      * Pelanggan   : tidak ada akses admin.
      */
     public function hasPermission(string $permission): bool
@@ -64,13 +66,11 @@ class User extends Authenticatable
 
         $permissions = [
             'admin' => [
-                'delete_data',
-                'edit_menu',
-                'edit_content',
-                'view_reports',
                 'view_dashboard',
-                'view_activity_log',
-                'clear_activity_log',
+                'edit_menu',          // tambah / edit produk
+                'delete_data',        // hapus produk (menu)
+                'view_transactions',  // lihat reservasi / transaksi
+                'approve_payment',    // approval lunas / belum lunas
             ],
             'pelanggan' => [],
         ];

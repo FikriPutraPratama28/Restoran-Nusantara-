@@ -213,6 +213,29 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'Status reservasi berhasil diperbarui menjadi ' . ucfirst($validated['status']));
     }
 
+    /**
+     * Approval status pembayaran (lunas / belum lunas).
+     */
+    public function updatePaymentStatus(Request $request, Reservation $reservation)
+    {
+        $validated = $request->validate([
+            'payment_status' => 'required|in:paid,unpaid',
+        ]);
+
+        $reservation->update(['payment_status' => $validated['payment_status']]);
+
+        $label = $validated['payment_status'] === 'paid' ? 'Lunas' : 'Belum Lunas';
+
+        ActivityLog::log(
+            'update_payment_status',
+            'Reservation',
+            'Mengubah status pembayaran reservasi ' . ($reservation->reservation_code ?? '#RES-' . $reservation->id) . " menjadi {$label}",
+            $reservation
+        );
+
+        return redirect()->back()->with('success', 'Status pembayaran diperbarui menjadi ' . $label);
+    }
+
     public function reports(Request $request)
     {
         $tab   = $request->get('tab', 'penjualan');

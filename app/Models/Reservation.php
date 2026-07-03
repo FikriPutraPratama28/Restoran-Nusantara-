@@ -23,6 +23,7 @@ class Reservation extends Model
         'table_number',
         'status',
         'payment_method',
+        'payment_status',
         'ordered_items',
     ];
 
@@ -55,6 +56,17 @@ class Reservation extends Model
             $qty = isset($item['qty']) ? (int) $item['qty'] : 1;
             return $carry + ($price * $qty);
         }, 0);
+    }
+
+    // Accessor status pembayaran
+    public function getIsPaidAttribute(): bool
+    {
+        return ($this->payment_status ?? 'unpaid') === 'paid';
+    }
+
+    public function getPaymentStatusLabelAttribute(): string
+    {
+        return $this->is_paid ? 'Lunas' : 'Belum Lunas';
     }
 
     // Relationship

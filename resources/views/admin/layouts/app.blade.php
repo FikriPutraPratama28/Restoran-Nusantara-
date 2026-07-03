@@ -78,13 +78,15 @@
                 ['route' => 'admin.menu',         'icon' => 'menu',     'label' => 'Menu Makanan'],
                 ['route' => 'admin.reservations', 'icon' => 'calendar', 'label' => 'Reservasi'],
             ]],
-            ['label' => 'KONTEN', 'items' => [
-                ['route' => 'admin.content.hero',     'icon' => 'image',    'label' => 'Hero / Banner'],
-                ['route' => 'admin.content.promo',    'icon' => 'promo',    'label' => 'Promo'],
-                ['route' => 'admin.content.about',    'icon' => 'about',    'label' => 'Cerita Kami'],
-                ['route' => 'admin.content.facility', 'icon' => 'building', 'label' => 'Fasilitas'],
-                ['route' => 'admin.content.gallery',  'icon' => 'image',    'label' => 'Galeri'],
-            ]],
+            ...($user && $user->hasPermission('edit_content') ? [
+                ['label' => 'KONTEN', 'items' => [
+                    ['route' => 'admin.content.hero',     'icon' => 'image',    'label' => 'Hero / Banner'],
+                    ['route' => 'admin.content.promo',    'icon' => 'promo',    'label' => 'Promo'],
+                    ['route' => 'admin.content.about',    'icon' => 'about',    'label' => 'Cerita Kami'],
+                    ['route' => 'admin.content.facility', 'icon' => 'building', 'label' => 'Fasilitas'],
+                    ['route' => 'admin.content.gallery',  'icon' => 'image',    'label' => 'Galeri'],
+                ]],
+            ] : []),
             ...($user && $user->hasPermission('view_reports') ? [
                 ['label' => 'LAPORAN', 'items' => [
                     ['route' => 'admin.reports', 'icon' => 'chart',  'label' => 'Penjualan',         'query' => ['tab' => 'penjualan']],
