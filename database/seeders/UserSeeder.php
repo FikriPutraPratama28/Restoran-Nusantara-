@@ -10,11 +10,22 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // ── Super Admin ───────────────────────────────────────────────────
+        User::firstOrCreate(
+            ['email' => 'superadmin@warung.id'],
+            [
+                'name'      => 'Super Administrator',
+                'password'  => Hash::make('superadmin123'),
+                'role'      => 'super_admin',
+                'is_active' => true,
+            ]
+        );
+
         // ── Admin ─────────────────────────────────────────────────────────
         User::firstOrCreate(
             ['email' => 'admin@warung.id'],
             [
-                'name'      => 'Administrator',
+                'name'      => 'Resto Admin',
                 'password'  => Hash::make('admin123'),
                 'role'      => 'admin',
                 'is_active' => true,
@@ -34,7 +45,8 @@ class UserSeeder extends Seeder
         );
 
         $this->command->info('✅ Users seeded!');
-        $this->command->info('   Admin     → admin@warung.id / admin123');
-        $this->command->info('   Pelanggan → pelanggan@warung.id / pelanggan123');
+        $this->command->info('   Super Admin → superadmin@warung.id / superadmin123');
+        $this->command->info('   Admin       → admin@warung.id / admin123');
+        $this->command->info('   Pelanggan   → pelanggan@warung.id / pelanggan123');
     }
 }

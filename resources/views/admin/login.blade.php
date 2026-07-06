@@ -141,22 +141,38 @@
 
             {{-- Demo Credentials --}}
             <div class="bg-violet-950/40 border border-violet-800/40 rounded-2xl p-4 mb-6">
-                <div class="flex items-center gap-2 mb-2">
+                <div class="flex items-center gap-2 mb-3">
                     <svg class="w-3.5 h-3.5 text-violet-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
                     </svg>
                     <p class="text-violet-300 text-xs font-bold uppercase tracking-wider font-jakarta">Demo Credentials</p>
                 </div>
+                
+                {{-- Super Admin --}}
+                <div class="flex items-center justify-between pb-3 mb-3 border-b border-violet-800/20">
+                    <div>
+                        <p class="text-[10px] text-violet-400 font-bold uppercase font-jakarta mb-0.5">Super Admin (Akses Penuh)</p>
+                        <p class="text-slate-300 text-xs font-medium">Email: <span class="text-violet-300 font-mono">superadmin@warung.id</span></p>
+                        <p class="text-slate-300 text-xs font-medium">Password: <span class="text-violet-300 font-mono">superadmin123</span></p>
+                    </div>
+                    <button type="button"
+                        onclick="document.getElementById('email').value='superadmin@warung.id'; document.getElementById('password').value='superadmin123';"
+                        class="text-[10px] bg-violet-600 hover:bg-violet-700 text-white font-bold px-2.5 py-1.5 rounded-lg transition-all font-jakarta uppercase tracking-wider">
+                        Isi
+                    </button>
+                </div>
+
+                {{-- Resto Admin --}}
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-slate-300 text-sm font-medium">Email: <span class="text-violet-300 font-mono">admin@warung.id</span></p>
-                        <p class="text-slate-300 text-sm font-medium">Password: <span class="text-violet-300 font-mono">admin123</span></p>
+                        <p class="text-[10px] text-violet-400 font-bold uppercase font-jakarta mb-0.5">Resto Admin (Operasional)</p>
+                        <p class="text-slate-300 text-xs font-medium">Email: <span class="text-violet-300 font-mono">admin@warung.id</span></p>
+                        <p class="text-slate-300 text-xs font-medium">Password: <span class="text-violet-300 font-mono">admin123</span></p>
                     </div>
-                    {{-- Auto-fill button --}}
                     <button type="button"
                         onclick="document.getElementById('email').value='admin@warung.id'; document.getElementById('password').value='admin123';"
-                        class="text-xs bg-violet-600 hover:bg-violet-700 text-white font-bold px-3 py-1.5 rounded-lg transition-all font-jakarta uppercase tracking-wider">
-                        Isi Otomatis
+                        class="text-[10px] bg-violet-600 hover:bg-violet-700 text-white font-bold px-2.5 py-1.5 rounded-lg transition-all font-jakarta uppercase tracking-wider">
+                        Isi
                     </button>
                 </div>
             </div>
